@@ -31,65 +31,104 @@ namespace NEA4
         public Form1()
         {
             InitializeComponent();
+        }
 
-            
-            pitch = 0.1;
-            bounds = 10;
-            fBounds = bounds / pitch;
-            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
-            double min = -bounds;
-            double xValue = min;
-            double yMin = 0;
-            double yMax = 0;
-            
-            for (int i = 0; i < (fBounds * 2); i++)
+        private double abs(double v) //absolute
+        {
+            return Math.Abs(v);
+        }
+        private double cos(double v) 
+        {
+            return Math.Cos(v);
+        }
+        private double sin(double v) 
+        {
+            return Math.Sin(v);
+        }
+        private double add(double v, double u)
+        {
+            return v + u;
+        }
+        private double sub(double v, double u)
+        {
+            return v - u;
+        }
+        private double mult(double v, double u)
+        {
+            return v * u;
+        }
+        private double div(double v, double u)
+        {
+            return v / u;
+        }
+
+        private double power(double v, double u ) //v^u
+        {
+            return Math.Pow(v,u);
+        }
+
+        private void DisplayButton_Click(object sender, EventArgs e)
+        {
+            if(RPNTextBox.Text != "")
             {
-                coordinates[i].x = xValue;
-                coordinates[i].y = Function(coordinates[i].x);
-                if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
+                string RPNinput = RPNTextBox.Text;
+                pitch = 0.1;
+                bounds = 10;
+                fBounds = bounds / pitch;
+                Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
+                double min = -bounds;
+                double xValue = min;
+                double yMin = 0;
+                double yMax = 0;
+
+                for (int i = 0; i < (fBounds * 2); i++)
                 {
-                    if(i == 0)
+                    coordinates[i].x = xValue;
+                    coordinates[i].y = ProcessRPN(RPNinput, coordinates[i].x);
+                    if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
                     {
-                        coordinates[i].y = 0;
+                        if (i == 0)
+                        {
+                            coordinates[i].y = 0;
+                        }
+                        else
+                        {
+                            coordinates[i].y = coordinates[i - 1].y;
+                        }
+
                     }
-                    else
+                    if (coordinates[i].y < yMin)
                     {
-                        coordinates[i].y = coordinates[i - 1].y;
+                        yMin = coordinates[i].y;
                     }
-                    
+                    if (coordinates[i].y > yMax)
+                    {
+                        yMax = coordinates[i].y;
+                    }
+                    xValue = xValue + pitch;
+
+
                 }
-                if(coordinates[i].y < yMin)
+
+
+                ObservablePoint[] ValueArray = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                for (int i = 0; i < fBounds * 2; i++)
                 {
-                    yMin = coordinates[i].y;
+                    ValueArray[i] = new ObservablePoint(coordinates[i].x, coordinates[i].y);
                 }
-                if (coordinates[i].y > yMax)
+                ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                for (int i = 0; i < fBounds * 2; i++)
                 {
-                    yMax = coordinates[i].y;
+                    XAxis[i] = new ObservablePoint(coordinates[i].x, 0);
                 }
-                xValue = xValue + pitch;
+                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                for (int i = 0; i < fBounds * 2; i++)
+                {
+                    YAxis[i] = new ObservablePoint(0, coordinates[i].y);
+                }
 
-
-            }
-            
-
-            ObservablePoint[] ValueArray = new ObservablePoint[Convert.ToInt32(fBounds*2)];
-            for (int i = 0; i < fBounds*2; i++)
-            {
-                ValueArray[i] = new ObservablePoint(coordinates[i].x, coordinates[i].y);
-            }
-            ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
-            for (int i = 0; i < fBounds * 2; i++)
-            {
-                XAxis[i] = new ObservablePoint(coordinates[i].x, 0);
-            }
-            ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
-            for (int i = 0; i < fBounds * 2; i++)
-            {
-                YAxis[i] = new ObservablePoint(0, coordinates[i].y);
-            }
-
-            cartesianChart1.Series = new ISeries[]
-            {
+                cartesianChart1.Series = new ISeries[]
+                {
                 new LineSeries<ObservablePoint>
                 {
                     Values = XAxis,
@@ -123,62 +162,75 @@ namespace NEA4
                 },
 
 
-            };
-
-        }
-
-        private double Function(double x)
-        {
-            //return A(((x-5)*(x+3))); //change later with user input
-            //return Math.Pow(Math.E, x);
-            //return Math.Sin(x);
-            //return Math.Sin(x) / x;
-            //double function = Math.Sin(x) / x;
-            //double function = Math.Sqrt(x);
-            double function = sin(x);
-            return function;
-
-            //if (x == 0)
-            //{
-            //    return 0;
-            //}
-            //else
-            //{
-            //    return function;
-            //}
-
-
-
-        }
-        
-        private double abs(double v) //absolute
-        {
-            return Math.Abs(v);
-        }
-        private double sin(double x) //absolute
-        {
-            return Math.Sin(x);
-        }
-        private double cos(double x) //absolute
-        {
-            return Math.Cos(x);
-        }
-        private double power(double v, double u ) //v^u
-        {
-            return Math.Pow(v,u);
-        }
-
-        private void DisplayButton_Click(object sender, EventArgs e)
-        {
-            if(RPNTextBox.Text != "")
-            {
-                ProcessRPN(RPNTextBox.Text);
+                };
             }
         }
         
-        private void ProcessRPN(string input)
+        private double ProcessRPN(string input, double x)
         {
-            Stack st = new Stack();
+            Stack functionStack = new Stack();
+            Stack variableStack = new Stack();
+            variableStack.Push(x);
+            foreach (char c in input)
+            {
+                if((int)c == 120)
+                {
+
+                }
+                else if((int)c >47 && (int)c <58) // 0 - 9
+                {
+                    variableStack.Push(c);
+                }
+                else // if((int)c > 96 && (int)c <= 122
+                {
+                    double temp;
+                    double temp2;
+                    switch (c.ToString())
+                    {
+                        case "a":
+                            temp = (double)variableStack.Pop();
+                            variableStack.Push(abs(temp));
+                            break;
+                        case "c":
+                            temp = (double)variableStack.Pop();
+                            variableStack.Push(cos(temp));
+                            break;
+                        case "s":
+                            temp = (double)variableStack.Pop();
+                            variableStack.Push(sin(temp));
+                            break;
+                        case "^":
+                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+                            temp2 = (double)variableStack.Pop();
+                            variableStack.Push(power(temp, temp2));
+                            break;
+                        case "+":
+                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+                            temp2 = (double)variableStack.Pop();
+                            variableStack.Push(add(temp, temp2));
+                            break;
+                        case "-":
+                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+                            temp2 = (double)variableStack.Pop();
+                            variableStack.Push(sub(temp, temp2));
+                            break;
+                        case "*":
+                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+                            temp2 = (double)variableStack.Pop();
+                            variableStack.Push(mult(temp, temp2));
+                            break;
+                        case "/":
+                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+                            temp2 = (double)variableStack.Pop();
+                            variableStack.Push(div(temp, temp2));
+                            break;
+
+                    }
+                }
+                
+            }
+
+            return (double)variableStack.Pop();
 
         }
     }
