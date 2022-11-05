@@ -135,7 +135,7 @@ namespace NEA4
             //return Math.Sin(x) / x;
             //double function = Math.Sin(x) / x;
             //double function = Math.Sqrt(x);
-            double function = Math.Tan(x);
+            double function = sin(x);
             return function;
 
             //if (x == 0)
