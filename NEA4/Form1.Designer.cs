@@ -46,6 +46,7 @@
             this.d2 = new System.Windows.Forms.TextBox();
             this.a2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -188,17 +189,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1110, 319);
+            this.label1.Location = new System.Drawing.Point(1053, 319);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 15);
             this.label1.TabIndex = 16;
             this.label1.Text = "det = ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(1318, 319);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 15);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "det = ";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1670, 1102);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.c2);
             this.Controls.Add(this.b2);
@@ -241,5 +252,6 @@
         private TextBox d2;
         private TextBox a2;
         private Label label1;
+        private Label label2;
     }
 }
