@@ -65,7 +65,13 @@ namespace NEA4
 
         private double power(double v, double u ) //v^u
         {
-            return Math.Pow(v,u);
+            double temp = 1;
+            for (int i = 0; i < u; i++)
+            {
+                temp = temp * v;
+            }
+            return temp;
+            //return Math.Pow(v,u);
         }
 
         private void DisplayButton_Click(object sender, EventArgs e)
@@ -226,6 +232,12 @@ namespace NEA4
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
                             temp2 = (double)variableStack.Pop();
                             variableStack.Push(div(temp2, temp));
+                            break;
+                        case "p":
+                            variableStack.Push(Math.PI);
+                            break;
+                        case "e":
+                            variableStack.Push(Math.E);
                             break;
 
                     }
