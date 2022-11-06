@@ -22,6 +22,7 @@ namespace NEA4
         private double pitch;
         private double bounds;
         private double fBounds;
+        private double forceYBounds;
         struct Coordinate
         {
             public double x;
@@ -80,21 +81,23 @@ namespace NEA4
                 double xValue = min;
                 double yMin = 0;
                 double yMax = 0;
+                forceYBounds = 100000000;
 
                 for (int i = 0; i < (fBounds * 2); i++)
                 {
                     coordinates[i].x = xValue;
                     coordinates[i].y = ProcessRPN(RPNinput, coordinates[i].x);
-                    if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
+                    if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity || abs(coordinates[i].y) > forceYBounds )
                     {
-                        if (i == 0)
-                        {
-                            coordinates[i].y = 0;
-                        }
-                        else
-                        {
-                            coordinates[i].y = coordinates[i - 1].y;
-                        }
+                        RemoveCoordinate(coordinates, i);
+                        //if (i == 0)
+                        //{
+                        //    coordinates[i].y = 0;
+                        //}
+                        //else
+                        //{
+                        //    coordinates[i].y = coordinates[i - 1].y;
+                        //}
 
                     }
                     if (coordinates[i].y < yMin)
@@ -129,57 +132,57 @@ namespace NEA4
 
                 cartesianChart1.Series = new ISeries[]
                 {
-                new LineSeries<ObservablePoint>
-                {
-                    Values = XAxis,
-                    Fill = null,
-                    GeometrySize = 0.1f,
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = XAxis,
+                        Fill = null,
+                        GeometrySize = 0.1f,
 
-                    Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
-
-
-
-                },
-                new LineSeries<ObservablePoint>
-                {
-                    Values = YAxis,
-                    Fill = null,
-                    GeometrySize = 0.1f,
-                    Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
 
 
 
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = YAxis,
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
 
-                },
-                new LineSeries<ObservablePoint>
-                {
-                    Values = ValueArray,
-                    Fill = null,
-                    GeometrySize = 0.1f,
-                    Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
 
 
-                },
+
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = ValueArray,
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+
+
+                    },
 
 
                 };
             }
         }
         
-        private double ProcessRPN(string input, double x)
+        private double ProcessRPN(string input, double xInput)
         {
             Stack functionStack = new Stack();
             Stack variableStack = new Stack();
-            variableStack.Push(x);
+            
             foreach (char c in input)
             {
                 if((int)c == 120)
                 {
-
+                    variableStack.Push(xInput);
                 }
                 else if((int)c >47 && (int)c <58) // 0 - 9
                 {
-                    variableStack.Push(c);
+                    variableStack.Push((double)(c));
                 }
                 else // if((int)c > 96 && (int)c <= 122
                 {
@@ -202,7 +205,7 @@ namespace NEA4
                         case "^":
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
                             temp2 = (double)variableStack.Pop();
-                            variableStack.Push(power(temp, temp2));
+                            variableStack.Push(power(temp2, temp));
                             break;
                         case "+":
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
@@ -212,7 +215,7 @@ namespace NEA4
                         case "-":
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
                             temp2 = (double)variableStack.Pop();
-                            variableStack.Push(sub(temp, temp2));
+                            variableStack.Push(sub(temp2, temp));
                             break;
                         case "*":
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
@@ -222,7 +225,7 @@ namespace NEA4
                         case "/":
                             temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
                             temp2 = (double)variableStack.Pop();
-                            variableStack.Push(div(temp, temp2));
+                            variableStack.Push(div(temp2, temp));
                             break;
 
                     }
@@ -233,5 +236,15 @@ namespace NEA4
             return (double)variableStack.Pop();
 
         }
+
+        private Coordinate[] RemoveCoordinate(Coordinate[] input, int index)
+        {
+            for (int i = index; i < (input.Length-1); i++)
+            {
+                input[i] = input[i + 1];
+            }
+            return input;
+        }
+        
     }
 }
