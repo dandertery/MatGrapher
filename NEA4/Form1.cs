@@ -23,6 +23,8 @@ namespace NEA4
         private double bounds;
         private double fBounds;
         private double forceYBounds;
+        Matrix lMat = new Matrix(1, 0, 0, 1);
+        Matrix rMat = new Matrix(1, 0, 0, 1);
         struct Coordinate
         {
             public double x;
@@ -32,6 +34,7 @@ namespace NEA4
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private double abs(double v) //absolute
@@ -65,13 +68,13 @@ namespace NEA4
 
         private double power(double v, double u ) //v^u
         {
-            double temp = 1;
-            for (int i = 0; i < u; i++)
-            {
-                temp = temp * v;
-            }
-            return temp;
-            //return Math.Pow(v,u);
+            //double temp = 1;
+            //for (int i = 0; i < u; i++)
+            //{
+            //    temp = temp * v;
+            //}
+            //return temp;
+            return Math.Pow(v,u);
         }
 
         private void DisplayButton_Click(object sender, EventArgs e)
@@ -177,7 +180,6 @@ namespace NEA4
         
         private double ProcessRPN(string input, double xInput)
         {
-            Stack functionStack = new Stack();
             Stack variableStack = new Stack();
             
             foreach (char c in input)
@@ -257,6 +259,70 @@ namespace NEA4
             }
             return input;
         }
-        
+
+        private void a1_TextChanged(object sender, EventArgs e)
+        {
+            if(!lMat.requestChange("a", a1.Text))
+            {
+                a1.Text = lMat.Get("a").ToString();
+            }
+
+        }
+
+        private void b1_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("b", b1.Text))
+            {
+                b1.Text = lMat.Get("b").ToString();
+            }
+        }
+
+        private void c1_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("c", c1.Text))
+            {
+                c1.Text = lMat.Get("c").ToString();
+            }
+        }
+
+        private void d1_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("d", d1.Text))
+            {
+                d1.Text = lMat.Get("d").ToString();
+            }
+        }
+
+        private void a2_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("a", a2.Text))
+            {
+                a2.Text = rMat.Get("a").ToString();
+            }
+        }
+
+        private void b2_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("b", b2.Text))
+            {
+                b2.Text = rMat.Get("b").ToString();
+            }
+        }
+
+        private void c2_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("c", c2.Text))
+            {
+                c2.Text = rMat.Get("c").ToString();
+            }
+        }
+
+        private void d2_TextChanged(object sender, EventArgs e)
+        {
+            if (!lMat.requestChange("d", d2.Text))
+            {
+                d2.Text = rMat.Get("d").ToString();
+            }
+        }
     }
 }
