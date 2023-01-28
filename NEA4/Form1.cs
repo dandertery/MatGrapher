@@ -1,4 +1,4 @@
-using LiveChartsCore;
+﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using SkiaSharp.Views;
 using LiveChartsCore.Defaults;
@@ -11,29 +11,73 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
+using System.Diagnostics;
+using System.Runtime;
+//https://www.youtube.com/watch?v=TTsyUclt-XU
 namespace NEA4
 {
-    public partial class Form1 : Form
+    public partial class MatGrapher : Form
     {
         private double pitch;
         private double bounds;
         private double fBounds;
         private double forceYBounds;
-        Matrix lMat = new Matrix(1, 0, 0, 1);
-        Matrix rMat = new Matrix(1, 0, 0, 1);
+        private double min;
+        private int functionListNumber = 0;
+        private Matrix lMat = new Matrix(-4, 3, 1, -2);
+        private Matrix rMat = new Matrix(-4, 3, 1, -2);
+        private Stack<Function> fs = new Stack<Function>();
+        private Queue<Matrix> ms = new Queue<Matrix>();
+        private string[] functionArray = { "cos", "sin", "ln", "abs" };
+        private string[] operationArray = { "^", "*", "/", "-", "+" };
+
+        private Variable k;
+        private Variable q;
+        private Variable p;
+
         struct Coordinate
         {
             public double x;
             public double y;
 
         }
-        public Form1()
+        struct Variable
         {
+            public string letter;
+            public double value;
+        }
+        
+        struct Function
+        {
+            public int breakpoints;
+            public List<ObservablePoint[]> fSections;
+            public string name;
+            public double yMin;
+            public double yMax;
+            public double xMin;
+            public double xMax;
+        }
+        public MatGrapher()
+        {
+            bounds = 10;
             InitializeComponent();
+            cartesianChart1.EasingFunction = null;
+            checkMatrixTimer.Start();
+            k = new Variable();
+            k.letter = "K";
+            k.value = double.Parse(kTextbox.Text);
+            p = new Variable();
+            p.letter = "P";
+            p.value = double.Parse(pTextbox.Text);
+            q = new Variable();
+            q.letter = "Q";
+            q.value = double.Parse(qTextbox.Text);
+            Stack<Function> empty = new Stack<Function>();
+            DisplayFunctions(empty);
+
 
         }
 
@@ -65,7 +109,6 @@ namespace NEA4
         {
             return v / u;
         }
-
         private double power(double v, double u ) //v^u
         {
             //double temp = 1;
@@ -76,68 +119,504 @@ namespace NEA4
             //return temp;
             return Math.Pow(v,u);
         }
-
-        private void DisplayButton_Click(object sender, EventArgs e)
+        private Function ApplyMatrixStack(Function input) //remember in format
         {
-            if(RPNTextBox.Text != "")
+            Function function = input;
+            Queue<Matrix> msCopy = ms;
+            for (int i = 0; i < msCopy.Count; i++)
             {
-                string RPNinput = RPNTextBox.Text;
-                pitch = 0.1;
-                bounds = 10;
-                fBounds = bounds / pitch;
-                Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
-                double min = -bounds;
-                double xValue = min;
-                double yMin = 0;
-                double yMax = 0;
-                forceYBounds = 100000000;
+                function = ApplyMatrix(function, msCopy.Dequeue());
+            }
+            return function;
+        }
+        private void UpdateFunctions()
+        {
 
-                for (int i = 0; i < (fBounds * 2); i++)
+
+            try
+            {
+                fs = new Stack<Function>();
+                for (int i = 0; i < FunctionList.Items.Count; i++)
                 {
-                    coordinates[i].x = xValue;
-                    coordinates[i].y = ProcessRPN(RPNinput, coordinates[i].x);
-                    if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity || abs(coordinates[i].y) > forceYBounds )
-                    {
-                        RemoveCoordinate(coordinates, i);
-                        //if (i == 0)
-                        //{
-                        //    coordinates[i].y = 0;
-                        //}
-                        //else
-                        //{
-                        //    coordinates[i].y = coordinates[i - 1].y;
-                        //}
+                    fs.Push(ApplyMatrixStack(ProcessInput(FunctionList.Items[i].ToString().Substring(4))));
+                }
+                DisplayFunctions(fs);
+            }
+            catch (Exception ex)
+            {
 
-                    }
-                    if (coordinates[i].y < yMin)
+            }
+        }
+        private Function ProcessInput(string input)
+        {
+            Parsing TreeInput = new Parsing(input);
+            pitch = 0.1;
+
+            fBounds = bounds / pitch;
+            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
+
+            List<Variable> variableArray = new List<Variable>();
+            Variable xTemp = new Variable();
+            xTemp.value = 0;
+            xTemp.letter = "x";
+            variableArray.Add(xTemp);
+
+            min = -bounds;
+            double xValue = min;
+            double yMin = 0;
+            double yMax = 0;
+            forceYBounds = bounds;
+
+            Function function;
+            function.breakpoints = 0;
+            function.name = "y = " + input;
+            function.fSections = new List<ObservablePoint[]>();
+            function.xMin = xValue;
+            function.xMax = bounds;
+            KPQ();
+            Variable[] kpqArray = new Variable[3];
+            kpqArray[0] = k;
+            kpqArray[1] = p;
+            kpqArray[2] = q;
+            for (int i = 0; i < kpqArray.Length; i++)
+            {
+                variableArray.Add(kpqArray[i]);
+            }
+
+            Variable E = new Variable();
+            Variable PI = new Variable();
+            E.letter = "e";
+            E.value = Math.E;
+            PI.letter = "𝜋";
+            PI.value = Math.PI;
+            variableArray.Add(E);
+            variableArray.Add(PI);
+
+            List<int> tempLengthList = new List<int>();
+            tempLengthList.Add(0);
+            int listIndexer = 0;
+            bool previousNaN = false;
+            for (int i = 0; i < (fBounds * 2); i++)
+            {
+                coordinates[i].x = lMat.checkForBinaryError(xValue, 6);
+                //coordinates[i].x = xValue;
+                //coordinates[i].y = ProcessRPN(RPNinput, coordinates[i].x);
+
+                TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
+                xTemp.value = coordinates[i].x;
+                xTemp.letter = "x";
+                variableArray[0] = xTemp;
+
+                coordinates[i].y = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
+                //coordinates[i].y = ProcessTree(abstractSyntaxTree, variableArray);
+                //has -1?
+
+                if (coordinates[i].y < yMin)
+                {
+                    yMin = coordinates[i].y;
+                }
+                if (coordinates[i].y > yMax)
+                {
+                    yMax = coordinates[i].y;
+                }
+                xValue = xValue + pitch;
+
+
+            }
+            for (int i = 0; i < (coordinates.Length); i++)
+            {
+                if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity || Math.Abs(coordinates[i].y) > forceYBounds)
+                {
+                    coordinates = RemoveCoordinate(coordinates, i);
+                    i--;
+                    if(!previousNaN)
                     {
-                        yMin = coordinates[i].y;
+                        function.breakpoints++;
+
+                        listIndexer++;
+                        tempLengthList.Add(0);
+                        
                     }
-                    if (coordinates[i].y > yMax)
-                    {
-                        yMax = coordinates[i].y;
-                    }
-                    xValue = xValue + pitch;
+                    previousNaN = true;
+                    
 
 
                 }
-
-
-                ObservablePoint[] ValueArray = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
-                for (int i = 0; i < fBounds * 2; i++)
+                else
                 {
-                    ValueArray[i] = new ObservablePoint(coordinates[i].x, coordinates[i].y);
+                    tempLengthList[listIndexer]++;
+                    previousNaN = false;
+                }
+            }
+
+            function.yMin = yMin;
+            function.yMax = yMax;
+            
+            
+            for (int i = 0; i < tempLengthList.Count; i++)
+            {
+                if(tempLengthList[i] > 0)
+                {
+                    
+                }
+                else
+                {
+                    tempLengthList.Remove(i);
+                    function.breakpoints--;
+                }
+                
+            }
+            List<int> arrayLengths = tempLengthList;
+
+
+            Coordinate[][] CoordinatesArrays = new Coordinate[function.breakpoints + 1][];
+
+            CoordinatesArrays[0] = new Coordinate[arrayLengths[0]];
+            CoordinatesArrays[0][0] = coordinates[0];
+            int c = 1;
+
+            for (int i = 0; i < (function.breakpoints + 1); i++)
+            {
+                if (i > 0)
+                {
+                    CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
+                }
+                while (c < Convert.ToInt32(coordinates.Length) && (coordinates[c].x == lMat.checkForBinaryError((coordinates[c - 1].x + pitch), 2)))
+                {
+                    CoordinatesArrays[i][c] = coordinates[c]; //here
+                    c++;
+                }
+
+
+            }
+            ObservablePoint[][] ValuesArrays = new ObservablePoint[function.breakpoints + 1][];
+
+            for (int i = 0; i < (function.breakpoints + 1); i++)
+            {
+                ValuesArrays[i] = new ObservablePoint[Convert.ToInt32(CoordinatesArrays[i].Length)];
+                for (int z = 0; z < CoordinatesArrays[i].Length; z++)
+                {
+                    ValuesArrays[i][z] = new ObservablePoint(CoordinatesArrays[i][z].x, CoordinatesArrays[i][z].y);
+                }
+            }
+
+            for (int i = 0; i < (function.breakpoints + 1); i++)
+            {
+                function.fSections.Add(ValuesArrays[i]);
+            }
+            return function;
+        }
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            
+            if (RPNTextBox.Text != "")
+            {
+
+                RPNTextBox.Text = "";
+                functionListNumber++;
+            }
+            
+        }
+        private string TransformationType(Matrix input)
+        {
+            return "a";
+        }
+        private void Animate()
+        {
+
+        }
+
+
+        private void KPQ()
+        {
+            try
+            {
+                k = new Variable();
+                k.letter = "K";
+                k.value = double.Parse(kTextbox.Text);
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                p = new Variable();
+                p.letter = "P";
+                p.value = double.Parse(pTextbox.Text);
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                q = new Variable();
+                q.letter = "Q";
+                q.value = double.Parse(qTextbox.Text);
+            }
+            catch
+            {
+
+            }
+
+        }
+        //private void DisplayButton_Click(object sender, EventArgs e)
+        //{
+        //    if(fs.Count > 0)
+        //    {
+
+        //        DisplayFunctions(fs);
+        //    }
+
+        //}
+
+        private double ProcessTree(TreeNode inputTree, List<Variable> varinputs)
+        {
+            
+            int value;
+            
+            if(inputTree.leftChild == null && inputTree.rightChild == null)
+            {
+                
+                if(int.TryParse(inputTree.token.contents, out value))
+                {
+                    return (double)value;
+                }
+                else
+                {
+                    for (int i = 0; i < varinputs.Count; i++)
+                    {
+                        if(inputTree.token.contents == varinputs[i].letter)
+                        {
+                            return varinputs[i].value;
+                        }
+                    }
+                }
+            }
+            else if (inputTree.leftChild == null)
+            {
+                double rightValue = ProcessTree(inputTree.rightChild, varinputs);
+                int index = -1;  
+                for (int i = 0; i < functionArray.Length; i++)
+                {
+                    if(inputTree.token.contents == functionArray[i])
+                    {
+                        index = i;
+                    }
+                }
+                if (index == -1)
+                {
+                    throw new Exception("function not found in list");
+                }
+                switch (index)
+                {
+                    case 0:
+                        return Math.Cos(rightValue);
+
+                    case 1:
+                        return Math.Sin(rightValue);
+
+                    case 2:
+                        return Math.Log(rightValue);
+
+                    case 3:
+                        return Math.Abs(rightValue);
+
+                }   
+            }
+            else
+            {
+                double leftValue = ProcessTree(inputTree.leftChild, varinputs);
+                double rightValue = ProcessTree(inputTree.rightChild, varinputs);
+                int index = -1;
+                for (int i = 0; i < operationArray.Length; i++)
+                {
+                    if (inputTree.token.contents == operationArray[i])
+                    {
+                        index = i;
+                    }
+                }
+
+                switch (index)
+                {
+                    case 0:
+                        return Math.Pow(leftValue, rightValue);
+
+                    case 1:
+                        return leftValue * rightValue;
+
+                    case 2:
+                        return leftValue / rightValue;
+
+                    case 3:
+                        return leftValue - rightValue;
+
+                    case 4:
+                        return leftValue + rightValue;
+
+                }
+            }
+            return -1;
+            
+        }
+
+        private Function ApplyMatrix(Function fInput, Matrix input)
+        {
+            Stack<Function> fscopy = new Stack<Function>(fs);
+            double localxMin = 0;
+            double localxMax = 0;
+            double localyMin = 0;
+            double localyMax = 0;
+
+            Function function = fInput;
+            for (int z = 0; z < function.fSections.Count; z++)
+            {
+                for (int n = 0; n < function.fSections[z].Length; n++)
+                {
+                    function.fSections[z][n] = ApplyToObservablePoint(function.fSections[z][n], input);
+                    if (function.fSections[z][n].X < localxMin)
+                    {
+                        localxMin = (double)function.fSections[z][n].X;
+                    }
+                    else if (function.fSections[z][n].X > localxMax)
+                    {
+                        localxMax = (double)function.fSections[z][n].X;
+                    }
+
+                    if (function.fSections[z][n].Y < localyMin)
+                    {
+                        localyMin = (double)function.fSections[z][n].Y;
+                    }
+                    else if (function.fSections[z][n].Y > localyMax)
+                    {
+                        localyMax = (double)function.fSections[z][n].Y;
+                    }
+                }
+            }
+            function.xMin = localxMin;
+            function.xMax = localxMax;
+            function.yMin = localyMin;
+            function.yMax = localyMax;
+            return function;
+
+
+
+
+            //for (int i = 0; i < temp.Count; i++)
+            //{
+            //    temp2.Push(temp.Pop());
+            //}
+            //fs = temp2;
+
+
+
+            //DisplayFunctions(fs);
+        }
+
+        private ObservablePoint ApplyToObservablePoint(ObservablePoint inputCoordinate, Matrix inputMatrix)
+        {
+            double x;
+            double y;
+            x = ((double)inputCoordinate.X * inputMatrix.Get("a")) + ((double)inputCoordinate.Y * inputMatrix.Get("b"));
+            y = ((double)inputCoordinate.X * inputMatrix.Get("c")) + ((double)inputCoordinate.Y * inputMatrix.Get("d"));
+
+            inputCoordinate.X = x;
+            inputCoordinate.Y = y;
+            return inputCoordinate;
+        }
+
+        private void DisplayFunctions(Stack<Function> fsinput) //64 functions! (WHY CAN'T I FIX THIS) all rage about this expressed here -> AHHG=GGGHGHGHGHGHHG ahahdhfgfggfgfgfggdf eilfjh\esklfjhhnse\lkj adhhshshdshdh hdidkifhfghgeh ahaujsidfhfidhe aoaoaoaoao
+        {
+            int implementedMemory = 64;
+
+            Stack<Function> fscopy = new Stack<Function>(fsinput);
+            int bpcount = 0;
+            double ymax = 0;
+            double ymin = 0;
+            double xmax = 0;
+            double xmin = 0;
+            for (int i = 0; i < fscopy.Count; i++)
+            {
+                Function f = fscopy.Pop();
+                if (ymin > f.yMin)
+                {
+                    ymin = f.yMin;
+                }
+                if (ymax < f.yMax)
+                {
+                    ymax = f.yMax;
+                }
+                if (xmin > f.xMin)
+                {
+                    xmin = f.xMin;
+                }
+                if (xmax < f.xMax)
+                {
+                    xmax = f.xMax;
+                }
+                bpcount = bpcount + f.breakpoints+1;
+
+            }
+            ymax = bounds;
+            ymin = -bounds;
+            xmax = bounds;
+            xmin = -bounds;
+            if (bpcount < implementedMemory)
+            {
+                ObservablePoint[][] displayLines = new ObservablePoint[implementedMemory][];
+                fscopy = new Stack<Function>(fsinput);
+                int w = 0;
+                for (int i = 0; i < fsinput.Count; i++)
+                {
+                    Function f = fscopy.Pop();
+                    for (int z = 0; z < (f.breakpoints + 1); z++)
+                    {
+                        displayLines[w] = f.fSections[z];
+                        w++;
+                    }
+                }
+                if (ymax == ymin) //empty case
+                {
+
+                    
+                    pitch = 0.1;
+                    fBounds = bounds / pitch;
+                    
+                    min = -bounds;
+                }
+                double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
+                double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
+
+                double ypitch = ((ymax - ymin) / (fBounds * 2));
+                double xpitch = ((xmax - xmin) / (fBounds * 2));
+                double xValue = xmin;
+                double yValue = ymin;
+                
+
+                for (int i = 0; i < xcoordinates.Length; i++)
+                {
+                    xcoordinates[i] = xValue;
+                    xValue = xValue + xpitch;
+                }
+                for (int i = 0; i < ycoordinates.Length; i++)
+                {
+                    ycoordinates[i] = yValue;
+                    yValue = yValue + ypitch;
                 }
                 ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
                 for (int i = 0; i < fBounds * 2; i++)
                 {
-                    XAxis[i] = new ObservablePoint(coordinates[i].x, 0);
+                    XAxis[i] = new ObservablePoint(xcoordinates[i], 0);
                 }
-                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)]; //DO THIS DO THIS DO THIS
                 for (int i = 0; i < fBounds * 2; i++)
                 {
-                    YAxis[i] = new ObservablePoint(0, coordinates[i].y);
+                    YAxis[i] = new ObservablePoint(0, ycoordinates[i]);
                 }
+
+
+
 
                 cartesianChart1.Series = new ISeries[]
                 {
@@ -148,9 +627,6 @@ namespace NEA4
                         GeometrySize = 0.1f,
 
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
-
-
-
                     },
                     new LineSeries<ObservablePoint>
                     {
@@ -159,110 +635,485 @@ namespace NEA4
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
 
-
-
-
                     },
                     new LineSeries<ObservablePoint>
                     {
-                        Values = ValueArray,
+                        Values = displayLines[0],
                         Fill = null,
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
-
-
                     },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[1],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[2],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[3],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[4],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[5],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[6],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[7],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[8],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[9],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[10],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[11],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[12],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[13],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[14],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[15],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[16],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[17],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[18],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[19],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[20],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[21],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[22],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[23],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[24],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[25],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[26],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[27],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[28],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[29],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[30],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[31],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[32],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[33],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[34],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[35],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[36],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[37],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[38],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[39],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[40],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[41],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[42],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[43],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[44],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[45],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[46],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[47],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[48],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[49],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[50],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[51],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[52],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[53],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[54],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[55],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[56],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[57],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[58],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[59],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[60],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[61],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[62],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayLines[63],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                }; //64
 
 
-                };
             }
+
         }
         
-        private double ProcessRPN(string input, double xInput)
-        {
-            Stack variableStack = new Stack();
-            
-            foreach (char c in input)
-            {
-                if((int)c == 120)
-                {
-                    variableStack.Push(xInput);
-                }
-                else if((int)c >47 && (int)c <58) // 0 - 9
-                {
-                    variableStack.Push((double)(c));
-                }
-                else // if((int)c > 96 && (int)c <= 122
-                {
-                    double temp;
-                    double temp2;
-                    switch (c.ToString())
-                    {
-                        case "a":
-                            temp = (double)variableStack.Pop();
-                            variableStack.Push(abs(temp));
-                            break;
-                        case "c":
-                            temp = (double)variableStack.Pop();
-                            variableStack.Push(cos(temp));
-                            break;
-                        case "s":
-                            temp = (double)variableStack.Pop();
-                            variableStack.Push(sin(temp));
-                            break;
-                        case "^":
-                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-                            temp2 = (double)variableStack.Pop();
-                            variableStack.Push(power(temp2, temp));
-                            break;
-                        case "+":
-                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-                            temp2 = (double)variableStack.Pop();
-                            variableStack.Push(add(temp, temp2));
-                            break;
-                        case "-":
-                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-                            temp2 = (double)variableStack.Pop();
-                            variableStack.Push(sub(temp2, temp));
-                            break;
-                        case "*":
-                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-                            temp2 = (double)variableStack.Pop();
-                            variableStack.Push(mult(temp, temp2));
-                            break;
-                        case "/":
-                            temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-                            temp2 = (double)variableStack.Pop();
-                            variableStack.Push(div(temp2, temp));
-                            break;
-                        case "p":
-                            variableStack.Push(Math.PI);
-                            break;
-                        case "e":
-                            variableStack.Push(Math.E);
-                            break;
-
-                    }
-                }
-                
-            }
-
-            return (double)variableStack.Pop();
-
-        }
+        
 
         private Coordinate[] RemoveCoordinate(Coordinate[] input, int index)
         {
+            Coordinate[] output = new Coordinate[input.Length-1];
+            for (int i = 0; i < index; i++)
+            {
+                output[i] = input[i];
+            }
             for (int i = index; i < (input.Length-1); i++)
             {
-                input[i] = input[i + 1];
+                output[i] = input[i + 1];
             }
-            return input;
+            return output;
         }
 
         private void a1_TextChanged(object sender, EventArgs e)
         {
-            if(!lMat.requestChange("a", a1.Text))
+            if(CheckForFloatingPoint(a1.Text) || (a1.Text == SixFigText(lMat.Get("a").ToString())))
+            {
+                
+            }
+            else if(!lMat.requestChange("a", a1.Text))
             {
                 a1.Text = lMat.Get("a").ToString();
             }
@@ -271,7 +1122,11 @@ namespace NEA4
 
         private void b1_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("b", b1.Text))
+            if (CheckForFloatingPoint(b1.Text) || (b1.Text == SixFigText(lMat.Get("b").ToString())))
+            {
+
+            }
+            else if (!lMat.requestChange("b", b1.Text))
             {
                 b1.Text = lMat.Get("b").ToString();
             }
@@ -279,7 +1134,11 @@ namespace NEA4
 
         private void c1_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("c", c1.Text))
+            if (CheckForFloatingPoint(c1.Text) || (c1.Text == SixFigText(lMat.Get("c").ToString())))
+            {
+
+            }
+            else if (!lMat.requestChange("c", c1.Text))
             {
                 c1.Text = lMat.Get("c").ToString();
             }
@@ -287,7 +1146,11 @@ namespace NEA4
 
         private void d1_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("d", d1.Text))
+            if (CheckForFloatingPoint(d1.Text) || (d1.Text == SixFigText(lMat.Get("d").ToString())))
+            {
+
+            }
+            else if (!lMat.requestChange("d", d1.Text))
             {
                 d1.Text = lMat.Get("d").ToString();
             }
@@ -295,7 +1158,11 @@ namespace NEA4
 
         private void a2_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("a", a2.Text))
+            if (CheckForFloatingPoint(a2.Text) || (a2.Text == SixFigText(rMat.Get("a").ToString())))
+            {
+
+            }
+            else if (!rMat.requestChange("a", a2.Text))
             {
                 a2.Text = rMat.Get("a").ToString();
             }
@@ -303,7 +1170,11 @@ namespace NEA4
 
         private void b2_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("b", b2.Text))
+            if (CheckForFloatingPoint(b2.Text) || (b2.Text == SixFigText(rMat.Get("b").ToString())))
+            {
+
+            }
+            else if (!rMat.requestChange("b", b2.Text))
             {
                 b2.Text = rMat.Get("b").ToString();
             }
@@ -311,7 +1182,11 @@ namespace NEA4
 
         private void c2_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("c", c2.Text))
+            if (CheckForFloatingPoint(c2.Text) || (c2.Text == SixFigText(rMat.Get("c").ToString())))
+            {
+
+            }
+            else if (!rMat.requestChange("c", c2.Text))
             {
                 c2.Text = rMat.Get("c").ToString();
             }
@@ -319,10 +1194,579 @@ namespace NEA4
 
         private void d2_TextChanged(object sender, EventArgs e)
         {
-            if (!lMat.requestChange("d", d2.Text))
+            if (CheckForFloatingPoint(d2.Text) || (d2.Text == SixFigText(rMat.Get("d").ToString())))
+            {
+
+            }
+            else if (!rMat.requestChange("d", d2.Text))
             {
                 d2.Text = rMat.Get("d").ToString();
             }
         }
+
+        private void MultiplyRightButton_Click(object sender, EventArgs e)
+        {
+            rMat = rMat.Multiplication(lMat, rMat);
+        }
+
+        private void fTimer_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool CheckForFloatingPoint(string input)
+        {
+            if(input.Length == 0 || input[input.Length - 1] == '.')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void checkMatrixTimer_Tick(object sender, EventArgs e)
+        {
+            checkMatrix();
+        }
+
+        private void checkMatrix()
+        {
+
+            if (!CheckForFloatingPoint(a1.Text))
+            {
+                a1.Text = SixFigText(lMat.Get("a").ToString());
+            }
+            if (!CheckForFloatingPoint(b1.Text))
+            {
+                b1.Text = SixFigText(lMat.Get("b").ToString());
+            }
+            if (!CheckForFloatingPoint(c1.Text))
+            {
+                c1.Text = SixFigText(lMat.Get("c").ToString());
+            }
+            if (!CheckForFloatingPoint(d1.Text))
+            {
+                d1.Text = SixFigText(lMat.Get("d").ToString());
+            }
+            if (!CheckForFloatingPoint(a2.Text))
+            {
+                a2.Text = SixFigText(rMat.Get("a").ToString());
+            }
+            if (!CheckForFloatingPoint(b2.Text))
+            {
+                b2.Text = SixFigText(rMat.Get("b").ToString());
+            }
+            if (!CheckForFloatingPoint(c2.Text))
+            {
+                c2.Text = SixFigText(rMat.Get("c").ToString());
+            }
+            if (!CheckForFloatingPoint(d2.Text))
+            {
+                d2.Text = SixFigText(rMat.Get("d").ToString());
+            }
+            if (rMat.GetStringType() == "unknown")
+            {
+                AnimateButton.Enabled = false;
+            }
+            else
+            {
+                AnimateButton.Enabled = true;
+            }
+
+            detA.Text = SixFigText(lMat.getDet().ToString());
+            detB.Text = SixFigText(rMat.getDet().ToString());
+        }
+        private string SixFigText(string input)
+        {
+            bool foundPoint = false;
+            int z = 6;
+            int index = input.Length - 1;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if(input[i] == '.')
+                {
+                    foundPoint = true;
+                    
+                }
+                if(foundPoint)
+                {
+                    z--;
+                }
+                if(z == 0)
+                {
+                    index = i;
+                }
+            }
+            string output = input.Remove(index + 1);
+            return output;
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void Clear()
+        {
+            FunctionList.Items.Clear();
+            fs = new Stack<Function>();
+            UpdateFunctions();
+        }
+
+        private void Remove()
+        {
+            if (FunctionList.SelectedItems.Count == 1)
+            {
+                string functionName = FunctionList.SelectedItem.ToString();
+                FunctionList.Items.Remove(FunctionList.SelectedItem);
+
+                Stack<Function> stackTemp = new Stack<Function>();
+                for (int i = 0; i < fs.Count; i++)
+                {
+                    Function f = fs.Pop();
+                    if (f.name == functionName) //could improve by only removing one of a function, but why would someone input two of a function?
+                    {
+
+                    }
+                    else
+                    {
+                        stackTemp.Push(f);
+                    }
+                }
+                for (int i = 0; i < stackTemp.Count; i++)
+                {
+                    fs.Push(stackTemp.Pop());
+                }
+            }
+            UpdateFunctions();
+        }
+        private TreeNode FindRoot(TreeNode input)
+        {
+            TreeNode output = input;
+            if(input.leftChild == null && input.rightChild == null)
+            {
+                if(input.token.tree != null)
+                {
+                    output = FindRoot(input.token.tree[0]);
+                    return output;
+                }
+                else
+                {
+                    return output;
+                }
+
+                
+            }
+            else
+            {
+                
+                return output;
+            }
+        }
+        private void switchMatrices()
+        {
+            Matrix temp = rMat;
+            rMat = lMat;
+            lMat = temp;
+        }
+
+        private Matrix OnInverseClick(Matrix input)
+        {
+            return input.Inverse(input);
+        }
+        private Matrix OnTransposeClick(Matrix input)
+        {
+            return input.Transpose(input);
+        }
+
+        private void SwitchButton_Click(object sender, EventArgs e)
+        {
+            switchMatrices();
+        }
+
+        private void InverseLeft_Click(object sender, EventArgs e)
+        {
+            lMat = OnInverseClick(lMat);
+        }
+
+        private void InverseRight_Click(object sender, EventArgs e)
+        {
+            rMat = OnInverseClick(rMat);
+        }
+
+        private void TransposeLeft_Click(object sender, EventArgs e)
+        {
+            lMat = OnTransposeClick(lMat);
+        }
+
+        private void TransposeRight_Click(object sender, EventArgs e)
+        {
+            rMat = OnTransposeClick(lMat);
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            Remove();
+        }
+
+        private void cartesianChart1_Load(object sender, EventArgs e)
+        {
+
+        }
+        private Variable[] ListToArray(List<Variable> input)
+        {
+            Variable[] output = new Variable[input.Count];
+            for (int i = 0; i < input.Count; i++)
+            {
+                output[i] = input[i];
+            }
+            return output;
+        }
+
+        private List<Variable> ArrayToList(Variable[] input)
+        {
+            List<Variable> output = new List<Variable>();
+            for (int i = 0; i < input.Length; i++)
+            {
+                output.Add(input[i]);
+            }
+            return output;
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kRadio_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateFunctions();
+        }
+
+        private void RPNInputLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pTextbox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateFunctions();
+        }
+
+
+
+        private void FunctionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void qTextbox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateFunctions();
+        }
+        private void pRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void qRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void GridButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FunctionButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BitmapButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void piButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void eButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ApplyMatrixButton_Click(object sender, EventArgs e)
+        {
+            ms.Enqueue(rMat);
+            MatrixList.Items.Add(rMat.getName());
+            UpdateFunctions();
+        }
+
+        private void BoundsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bounds = double.Parse(BoundsTextBox.Text);
+                UpdateFunctions();
+            }
+            catch (Exception)
+            {
+
+                BoundsTextBox.Text = "";
+            }
+        }
+
+        private void RPNTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (RPNTextBox.Text != "")
+                {
+
+                    string RPNinput = RPNTextBox.Text;
+                    
+                    
+                    Function function = ProcessInput(RPNinput);
+                    if (FunctionList.Items.Count < functionListNumber+1)
+                    {
+                        FunctionList.Items.Add(function.name);
+                    }
+                    else
+                    {
+                        FunctionList.Items[functionListNumber] = (function.name);
+                    }
+                    
+                    fs.Push(function);
+                    UpdateFunctions();
+                }
+            }
+            catch (Exception)
+            {
+
+                
+            }
+        }
+
+        private void RemoveMatrix_Click(object sender, EventArgs e)
+        {
+            if (MatrixList.SelectedItems.Count == 1)
+            {
+                string matrixName = MatrixList.SelectedItem.ToString();
+                MatrixList.Items.Remove(FunctionList.SelectedItem);
+
+                Queue<Matrix> queueTemp = new Queue<Matrix>();
+                for (int i = 0; i < ms.Count; i++)
+                {
+                    Matrix m = ms.Dequeue();
+                    if (m.getName() == matrixName) //could improve by only removing one of a function, but why would someone input two of a function?
+                    {
+
+                    }
+                    else
+                    {
+                        queueTemp.Enqueue(m);
+                    }
+                }
+                ms = queueTemp;
+            }
+            UpdateFunctions();
+        }
+
+        private void ClearMatrix_Click(object sender, EventArgs e)
+        {
+            MatrixList.Items.Clear();
+            ms = new Queue<Matrix>();
+            UpdateFunctions();
+        }
+
+        private void AnimateButton_Click(object sender, EventArgs e)
+        {
+            string type = rMat.GetStringType();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+        //private double ProcessRPN(string input, double xInput)
+        //{
+        //    Stack variableStack = new Stack();
+
+        //    foreach (char c in input)
+        //    {
+        //        if ((int)c == 120)
+        //        {
+        //            variableStack.Push(xInput);
+        //        }
+        //        else if ((int)c > 47 && (int)c < 58) // 0 - 9
+        //        {
+        //            variableStack.Push((double)(c));
+        //        }
+        //        else // if((int)c > 96 && (int)c <= 122
+        //        {
+        //            double temp;
+        //            double temp2;
+        //            switch (c.ToString())
+        //            {
+        //                case "a":
+        //                    temp = (double)variableStack.Pop();
+        //                    variableStack.Push(abs(temp));
+        //                    break;
+        //                case "c":
+        //                    temp = (double)variableStack.Pop();
+        //                    variableStack.Push(cos(temp));
+        //                    break;
+        //                case "s":
+        //                    temp = (double)variableStack.Pop();
+        //                    variableStack.Push(sin(temp));
+        //                    break;
+        //                case "^":
+        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+        //                    temp2 = (double)variableStack.Pop();
+        //                    variableStack.Push(power(temp2, temp));
+        //                    break;
+        //                case "+":
+        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+        //                    temp2 = (double)variableStack.Pop();
+        //                    variableStack.Push(add(temp, temp2));
+        //                    break;
+        //                case "-":
+        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+        //                    temp2 = (double)variableStack.Pop();
+        //                    variableStack.Push(sub(temp2, temp));
+        //                    break;
+        //                case "*":
+        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+        //                    temp2 = (double)variableStack.Pop();
+        //                    variableStack.Push(mult(temp, temp2));
+        //                    break;
+        //                case "/":
+        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
+        //                    temp2 = (double)variableStack.Pop();
+        //                    variableStack.Push(div(temp2, temp));
+        //                    break;
+        //                case "p":
+        //                    variableStack.Push(Math.PI);
+        //                    break;
+        //                case "e":
+        //                    variableStack.Push(Math.E);
+        //                    break;
+
+        //            }
+        //        }
+
+        //    }
+
+        //    return (double)variableStack.Pop();
+
+        //}
     }
 }
