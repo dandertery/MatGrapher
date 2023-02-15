@@ -475,6 +475,10 @@ namespace NEA4
 
         private int FindRoot(TreeNode[] input)
         {
+            if(input == null)
+            {
+                throw new Exception();
+            }
             int index = input.Length - 1;
             while (input[index].parent != null)
             {

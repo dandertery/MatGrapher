@@ -76,6 +76,7 @@ namespace NEA4
             q.letter = "Q";
             q.value = double.Parse(qTextbox.Text);
             Stack<Function> empty = new Stack<Function>();
+            //UpdateFunctions();
             DisplayFunctions(empty);
 
 
@@ -111,18 +112,12 @@ namespace NEA4
         }
         private double power(double v, double u ) //v^u
         {
-            //double temp = 1;
-            //for (int i = 0; i < u; i++)
-            //{
-            //    temp = temp * v;
-            //}
-            //return temp;
             return Math.Pow(v,u);
         }
-        private Function ApplyMatrixStack(Function input) //remember in format
+        private Function ApplyMatrixQueue(Function input) //remember in format
         {
             Function function = input;
-            Queue<Matrix> msCopy = ms;
+            Queue<Matrix> msCopy = new Queue<Matrix>(ms);
             for (int i = 0; i < msCopy.Count; i++)
             {
                 function = ApplyMatrix(function, msCopy.Dequeue());
@@ -131,14 +126,12 @@ namespace NEA4
         }
         private void UpdateFunctions()
         {
-
-
             try
             {
                 fs = new Stack<Function>();
                 for (int i = 0; i < FunctionList.Items.Count; i++)
                 {
-                    fs.Push(ApplyMatrixStack(ProcessInput(FunctionList.Items[i].ToString().Substring(4))));
+                    fs.Push(ApplyMatrixQueue(ProcessInput(FunctionList.Items[i].ToString().Substring(4))));
                 }
                 DisplayFunctions(fs);
             }
@@ -238,9 +231,6 @@ namespace NEA4
                         
                     }
                     previousNaN = true;
-                    
-
-
                 }
                 else
                 {
@@ -255,11 +245,7 @@ namespace NEA4
             
             for (int i = 0; i < tempLengthList.Count; i++)
             {
-                if(tempLengthList[i] > 0)
-                {
-                    
-                }
-                else
+                if(!(tempLengthList[i] > 0))
                 {
                     tempLengthList.Remove(i);
                     function.breakpoints--;
@@ -317,10 +303,6 @@ namespace NEA4
             }
             
         }
-        private string TransformationType(Matrix input)
-        {
-            return "a";
-        }
         private void Animate()
         {
 
@@ -361,15 +343,6 @@ namespace NEA4
             }
 
         }
-        //private void DisplayButton_Click(object sender, EventArgs e)
-        //{
-        //    if(fs.Count > 0)
-        //    {
-
-        //        DisplayFunctions(fs);
-        //    }
-
-        //}
 
         private double ProcessTree(TreeNode inputTree, List<Variable> varinputs)
         {
@@ -500,18 +473,6 @@ namespace NEA4
             function.yMax = localyMax;
             return function;
 
-
-
-
-            //for (int i = 0; i < temp.Count; i++)
-            //{
-            //    temp2.Push(temp.Pop());
-            //}
-            //fs = temp2;
-
-
-
-            //DisplayFunctions(fs);
         }
 
         private ObservablePoint ApplyToObservablePoint(ObservablePoint inputCoordinate, Matrix inputMatrix)
@@ -536,30 +497,18 @@ namespace NEA4
             double ymin = 0;
             double xmax = 0;
             double xmin = 0;
+
             for (int i = 0; i < fscopy.Count; i++)
             {
                 Function f = fscopy.Pop();
-                if (ymin > f.yMin)
-                {
-                    ymin = f.yMin;
-                }
-                if (ymax < f.yMax)
-                {
-                    ymax = f.yMax;
-                }
-                if (xmin > f.xMin)
-                {
-                    xmin = f.xMin;
-                }
-                if (xmax < f.xMax)
-                {
-                    xmax = f.xMax;
-                }
                 bpcount = bpcount + f.breakpoints+1;
 
             }
+            bpcount--;
+            
             ymax = bounds;
             ymin = -bounds;
+
             xmax = bounds;
             xmin = -bounds;
             if (bpcount < implementedMemory)
@@ -578,11 +527,8 @@ namespace NEA4
                 }
                 if (ymax == ymin) //empty case
                 {
-
-                    
                     pitch = 0.1;
-                    fBounds = bounds / pitch;
-                    
+                    fBounds = bounds / pitch;              
                     min = -bounds;
                 }
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
@@ -593,7 +539,6 @@ namespace NEA4
                 double xValue = xmin;
                 double yValue = ymin;
                 
-
                 for (int i = 0; i < xcoordinates.Length; i++)
                 {
                     xcoordinates[i] = xValue;
@@ -614,9 +559,6 @@ namespace NEA4
                 {
                     YAxis[i] = new ObservablePoint(0, ycoordinates[i]);
                 }
-
-
-
 
                 cartesianChart1.Series = new ISeries[]
                 {
@@ -1434,7 +1376,94 @@ namespace NEA4
             }
             return output;
         }
+        private void ApplyMatrixButton_Click(object sender, EventArgs e)
+        {
+            ms.Enqueue(rMat);
+            MatrixList.Items.Add(rMat.getName());
+            UpdateFunctions();
+        }
 
+        private void BoundsTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                bounds = double.Parse(BoundsTextBox.Text);
+                UpdateFunctions();
+            }
+            catch (Exception)
+            {
+
+                BoundsTextBox.Text = "";
+            }
+        }
+
+        private void RPNTextBox_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (RPNTextBox.Text != "")
+                {
+
+                    string RPNinput = RPNTextBox.Text;
+
+
+                    Function function = ProcessInput(RPNinput);
+                    if (FunctionList.Items.Count < functionListNumber + 1)
+                    {
+                        FunctionList.Items.Add(function.name);
+                    }
+                    else
+                    {
+                        FunctionList.Items[functionListNumber] = (function.name);
+                    }
+
+                    fs.Push(function);
+                    UpdateFunctions();
+                }
+            }
+            catch (Exception)
+            {
+
+
+            }
+        }
+
+        private void RemoveMatrix_Click(object sender, EventArgs e)
+        {
+            if (MatrixList.SelectedItems.Count == 1)
+            {
+                string matrixName = MatrixList.SelectedItem.ToString();
+                MatrixList.Items.Remove(MatrixList.SelectedItem);
+
+                Queue<Matrix> queueTemp = new Queue<Matrix>();
+                for (int i = 0; i < ms.Count; i++)
+                {
+                    Matrix m = ms.Dequeue();
+                    if (m.getName() == matrixName) //could improve by only removing one of a function, but why would someone input two of a function?
+                    {
+
+                    }
+                    else
+                    {
+                        queueTemp.Enqueue(m);
+                    }
+                }
+                ms = queueTemp;
+            }
+            UpdateFunctions();
+        }
+
+        private void ClearMatrix_Click(object sender, EventArgs e)
+        {
+            MatrixList.Items.Clear();
+            ms = new Queue<Matrix>();
+            UpdateFunctions();
+        }
+
+        private void AnimateButton_Click(object sender, EventArgs e)
+        {
+            string type = rMat.GetStringType();
+        }
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
@@ -1603,94 +1632,7 @@ namespace NEA4
 
         }
 
-        private void ApplyMatrixButton_Click(object sender, EventArgs e)
-        {
-            ms.Enqueue(rMat);
-            MatrixList.Items.Add(rMat.getName());
-            UpdateFunctions();
-        }
 
-        private void BoundsTextBox_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                bounds = double.Parse(BoundsTextBox.Text);
-                UpdateFunctions();
-            }
-            catch (Exception)
-            {
-
-                BoundsTextBox.Text = "";
-            }
-        }
-
-        private void RPNTextBox_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (RPNTextBox.Text != "")
-                {
-
-                    string RPNinput = RPNTextBox.Text;
-                    
-                    
-                    Function function = ProcessInput(RPNinput);
-                    if (FunctionList.Items.Count < functionListNumber+1)
-                    {
-                        FunctionList.Items.Add(function.name);
-                    }
-                    else
-                    {
-                        FunctionList.Items[functionListNumber] = (function.name);
-                    }
-                    
-                    fs.Push(function);
-                    UpdateFunctions();
-                }
-            }
-            catch (Exception)
-            {
-
-                
-            }
-        }
-
-        private void RemoveMatrix_Click(object sender, EventArgs e)
-        {
-            if (MatrixList.SelectedItems.Count == 1)
-            {
-                string matrixName = MatrixList.SelectedItem.ToString();
-                MatrixList.Items.Remove(FunctionList.SelectedItem);
-
-                Queue<Matrix> queueTemp = new Queue<Matrix>();
-                for (int i = 0; i < ms.Count; i++)
-                {
-                    Matrix m = ms.Dequeue();
-                    if (m.getName() == matrixName) //could improve by only removing one of a function, but why would someone input two of a function?
-                    {
-
-                    }
-                    else
-                    {
-                        queueTemp.Enqueue(m);
-                    }
-                }
-                ms = queueTemp;
-            }
-            UpdateFunctions();
-        }
-
-        private void ClearMatrix_Click(object sender, EventArgs e)
-        {
-            MatrixList.Items.Clear();
-            ms = new Queue<Matrix>();
-            UpdateFunctions();
-        }
-
-        private void AnimateButton_Click(object sender, EventArgs e)
-        {
-            string type = rMat.GetStringType();
-        }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
