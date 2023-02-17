@@ -88,7 +88,6 @@
             this.UnitSquareButton = new System.Windows.Forms.Button();
             this.TriangleButton = new System.Windows.Forms.Button();
             this.AnimateButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.BoundsTextBox = new System.Windows.Forms.TextBox();
             this.MatrixList = new System.Windows.Forms.ListBox();
@@ -97,6 +96,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.LinesOf = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.InvLine1TextBox = new System.Windows.Forms.TextBox();
+            this.InvLine2TextBox = new System.Windows.Forms.TextBox();
+            this.LOfInvPointsTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -141,9 +146,9 @@
             // GridButton
             // 
             this.GridButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GridButton.Location = new System.Drawing.Point(12, 790);
+            this.GridButton.Location = new System.Drawing.Point(12, 747);
             this.GridButton.Name = "GridButton";
-            this.GridButton.Size = new System.Drawing.Size(300, 80);
+            this.GridButton.Size = new System.Drawing.Size(300, 52);
             this.GridButton.TabIndex = 4;
             this.GridButton.Text = "Grid";
             this.GridButton.UseVisualStyleBackColor = true;
@@ -268,7 +273,7 @@
             // InvariantLinesButton
             // 
             this.InvariantLinesButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 655);
+            this.InvariantLinesButton.Location = new System.Drawing.Point(9, 805);
             this.InvariantLinesButton.Name = "InvariantLinesButton";
             this.InvariantLinesButton.Size = new System.Drawing.Size(300, 40);
             this.InvariantLinesButton.TabIndex = 18;
@@ -279,7 +284,7 @@
             // EigenvectorsButton
             // 
             this.EigenvectorsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EigenvectorsButton.Location = new System.Drawing.Point(12, 699);
+            this.EigenvectorsButton.Location = new System.Drawing.Point(9, 655);
             this.EigenvectorsButton.Name = "EigenvectorsButton";
             this.EigenvectorsButton.Size = new System.Drawing.Size(300, 40);
             this.EigenvectorsButton.TabIndex = 19;
@@ -290,7 +295,7 @@
             // LinesOfInvariantPointsButton
             // 
             this.LinesOfInvariantPointsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(12, 876);
+            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(8, 845);
             this.LinesOfInvariantPointsButton.Name = "LinesOfInvariantPointsButton";
             this.LinesOfInvariantPointsButton.Size = new System.Drawing.Size(300, 40);
             this.LinesOfInvariantPointsButton.TabIndex = 20;
@@ -301,7 +306,7 @@
             // SwitchButton
             // 
             this.SwitchButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SwitchButton.Location = new System.Drawing.Point(563, 790);
+            this.SwitchButton.Location = new System.Drawing.Point(803, 513);
             this.SwitchButton.Name = "SwitchButton";
             this.SwitchButton.Size = new System.Drawing.Size(150, 50);
             this.SwitchButton.TabIndex = 21;
@@ -312,7 +317,7 @@
             // MultiplyRightButton
             // 
             this.MultiplyRightButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.MultiplyRightButton.Location = new System.Drawing.Point(408, 790);
+            this.MultiplyRightButton.Location = new System.Drawing.Point(649, 513);
             this.MultiplyRightButton.Name = "MultiplyRightButton";
             this.MultiplyRightButton.Size = new System.Drawing.Size(150, 50);
             this.MultiplyRightButton.TabIndex = 22;
@@ -323,7 +328,7 @@
             // ApplyMatrixButton
             // 
             this.ApplyMatrixButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ApplyMatrixButton.Location = new System.Drawing.Point(719, 790);
+            this.ApplyMatrixButton.Location = new System.Drawing.Point(959, 513);
             this.ApplyMatrixButton.Name = "ApplyMatrixButton";
             this.ApplyMatrixButton.Size = new System.Drawing.Size(150, 50);
             this.ApplyMatrixButton.TabIndex = 23;
@@ -494,7 +499,7 @@
             // kTextbox
             // 
             this.kTextbox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.kTextbox.Location = new System.Drawing.Point(701, 401);
+            this.kTextbox.Location = new System.Drawing.Point(700, 386);
             this.kTextbox.Name = "kTextbox";
             this.kTextbox.Size = new System.Drawing.Size(100, 52);
             this.kTextbox.TabIndex = 41;
@@ -504,7 +509,7 @@
             // pTextbox
             // 
             this.pTextbox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.pTextbox.Location = new System.Drawing.Point(875, 404);
+            this.pTextbox.Location = new System.Drawing.Point(874, 389);
             this.pTextbox.Name = "pTextbox";
             this.pTextbox.Size = new System.Drawing.Size(100, 52);
             this.pTextbox.TabIndex = 42;
@@ -514,7 +519,7 @@
             // qTextbox
             // 
             this.qTextbox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.qTextbox.Location = new System.Drawing.Point(1046, 404);
+            this.qTextbox.Location = new System.Drawing.Point(1045, 389);
             this.qTextbox.Name = "qTextbox";
             this.qTextbox.Size = new System.Drawing.Size(100, 52);
             this.qTextbox.TabIndex = 43;
@@ -678,17 +683,18 @@
             // UnitSquareButton
             // 
             this.UnitSquareButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.UnitSquareButton.Location = new System.Drawing.Point(12, 745);
+            this.UnitSquareButton.Location = new System.Drawing.Point(12, 701);
             this.UnitSquareButton.Name = "UnitSquareButton";
             this.UnitSquareButton.Size = new System.Drawing.Size(147, 40);
             this.UnitSquareButton.TabIndex = 58;
             this.UnitSquareButton.Text = "Unit Square";
             this.UnitSquareButton.UseVisualStyleBackColor = true;
+            this.UnitSquareButton.Click += new System.EventHandler(this.UnitSquareButton_Click);
             // 
             // TriangleButton
             // 
             this.TriangleButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TriangleButton.Location = new System.Drawing.Point(165, 745);
+            this.TriangleButton.Location = new System.Drawing.Point(165, 701);
             this.TriangleButton.Name = "TriangleButton";
             this.TriangleButton.Size = new System.Drawing.Size(147, 40);
             this.TriangleButton.TabIndex = 59;
@@ -698,7 +704,7 @@
             // AnimateButton
             // 
             this.AnimateButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AnimateButton.Location = new System.Drawing.Point(959, 507);
+            this.AnimateButton.Location = new System.Drawing.Point(1084, 574);
             this.AnimateButton.Name = "AnimateButton";
             this.AnimateButton.Size = new System.Drawing.Size(150, 50);
             this.AnimateButton.TabIndex = 60;
@@ -706,22 +712,11 @@
             this.AnimateButton.UseVisualStyleBackColor = true;
             this.AnimateButton.Click += new System.EventHandler(this.AnimateButton_Click);
             // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.Location = new System.Drawing.Point(875, 790);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(150, 50);
-            this.button2.TabIndex = 61;
-            this.button2.Text = "Reset";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(648, 335);
+            this.label3.Location = new System.Drawing.Point(648, 330);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(138, 46);
             this.label3.TabIndex = 62;
@@ -730,7 +725,7 @@
             // BoundsTextBox
             // 
             this.BoundsTextBox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BoundsTextBox.Location = new System.Drawing.Point(786, 335);
+            this.BoundsTextBox.Location = new System.Drawing.Point(790, 330);
             this.BoundsTextBox.Name = "BoundsTextBox";
             this.BoundsTextBox.Size = new System.Drawing.Size(108, 52);
             this.BoundsTextBox.TabIndex = 63;
@@ -741,7 +736,7 @@
             // 
             this.MatrixList.FormattingEnabled = true;
             this.MatrixList.ItemHeight = 15;
-            this.MatrixList.Location = new System.Drawing.Point(1100, 650);
+            this.MatrixList.Location = new System.Drawing.Point(1136, 641);
             this.MatrixList.Name = "MatrixList";
             this.MatrixList.Size = new System.Drawing.Size(197, 199);
             this.MatrixList.TabIndex = 64;
@@ -749,7 +744,7 @@
             // ClearMatrix
             // 
             this.ClearMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ClearMatrix.Location = new System.Drawing.Point(1303, 710);
+            this.ClearMatrix.Location = new System.Drawing.Point(1339, 701);
             this.ClearMatrix.Name = "ClearMatrix";
             this.ClearMatrix.Size = new System.Drawing.Size(92, 32);
             this.ClearMatrix.TabIndex = 66;
@@ -760,7 +755,7 @@
             // RemoveMatrix
             // 
             this.RemoveMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RemoveMatrix.Location = new System.Drawing.Point(1304, 672);
+            this.RemoveMatrix.Location = new System.Drawing.Point(1340, 663);
             this.RemoveMatrix.Name = "RemoveMatrix";
             this.RemoveMatrix.Size = new System.Drawing.Size(92, 32);
             this.RemoveMatrix.TabIndex = 65;
@@ -771,7 +766,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(656, 424);
+            this.label4.Location = new System.Drawing.Point(655, 409);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(14, 15);
             this.label4.TabIndex = 67;
@@ -780,7 +775,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(855, 424);
+            this.label5.Location = new System.Drawing.Point(854, 409);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(14, 15);
             this.label5.TabIndex = 68;
@@ -789,17 +784,71 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1026, 424);
+            this.label6.Location = new System.Drawing.Point(1025, 409);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(16, 15);
             this.label6.TabIndex = 69;
             this.label6.Text = "Q";
+            // 
+            // LinesOf
+            // 
+            this.LinesOf.AutoSize = true;
+            this.LinesOf.Location = new System.Drawing.Point(647, 810);
+            this.LinesOf.Name = "LinesOf";
+            this.LinesOf.Size = new System.Drawing.Size(54, 15);
+            this.LinesOf.TabIndex = 70;
+            this.LinesOf.Text = "InvLine1:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(647, 842);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(54, 15);
+            this.label8.TabIndex = 71;
+            this.label8.Text = "InvLine2:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(834, 813);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 15);
+            this.label7.TabIndex = 72;
+            this.label7.Text = "LOfInvPoints:";
+            // 
+            // InvLine1TextBox
+            // 
+            this.InvLine1TextBox.Location = new System.Drawing.Point(717, 807);
+            this.InvLine1TextBox.Name = "InvLine1TextBox";
+            this.InvLine1TextBox.Size = new System.Drawing.Size(100, 23);
+            this.InvLine1TextBox.TabIndex = 73;
+            // 
+            // InvLine2TextBox
+            // 
+            this.InvLine2TextBox.Location = new System.Drawing.Point(717, 837);
+            this.InvLine2TextBox.Name = "InvLine2TextBox";
+            this.InvLine2TextBox.Size = new System.Drawing.Size(100, 23);
+            this.InvLine2TextBox.TabIndex = 74;
+            // 
+            // LOfInvPointsTextBox
+            // 
+            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(916, 810);
+            this.LOfInvPointsTextBox.Name = "LOfInvPointsTextBox";
+            this.LOfInvPointsTextBox.Size = new System.Drawing.Size(100, 23);
+            this.LOfInvPointsTextBox.TabIndex = 75;
             // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1444, 881);
+            this.Controls.Add(this.LOfInvPointsTextBox);
+            this.Controls.Add(this.InvLine2TextBox);
+            this.Controls.Add(this.InvLine1TextBox);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.LinesOf);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -808,7 +857,6 @@
             this.Controls.Add(this.MatrixList);
             this.Controls.Add(this.BoundsTextBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.AnimateButton);
             this.Controls.Add(this.TriangleButton);
             this.Controls.Add(this.UnitSquareButton);
@@ -934,7 +982,6 @@
         private Button UnitSquareButton;
         private Button TriangleButton;
         private Button AnimateButton;
-        private Button button2;
         private Label label3;
         private TextBox BoundsTextBox;
         private ListBox MatrixList;
@@ -943,5 +990,11 @@
         private Label label4;
         private Label label5;
         private Label label6;
+        private Label LinesOf;
+        private Label label8;
+        private Label label7;
+        private TextBox InvLine1TextBox;
+        private TextBox InvLine2TextBox;
+        private TextBox LOfInvPointsTextBox;
     }
 }

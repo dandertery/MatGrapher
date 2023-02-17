@@ -33,6 +33,18 @@
         {
             return type;
         }
+        public string GetInvLine1()
+        {
+            return invLine1;
+        }
+        public string GetInvLine2()
+        {
+            return invLine2;
+        }
+        public string GetInvPointLine()
+        {
+            return invPointLine;
+        }
 
         public string DetermineType()
         {
@@ -209,8 +221,8 @@
             double m1 = SolveQuadratic(b, a - d, -c, true);
             double m2 = SolveQuadratic(b, a - d, -c, false);
 
-            invLine1 = "y = " + m1 + "x";
-            invLine2 = "y = " + m2 + "x";
+            invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
+            invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
         }
         private void FindLinesOfInvariantPoints()
         {
@@ -218,7 +230,7 @@
             if(((1-a)/b) == ((-c)/(d-1)))
             {
                 m = (1 - a) / b;
-                invPointLine = "y = " + m + "x";
+                invPointLine = "y = " + SixFigText(m.ToString()) + "x";
             }
             
         }
@@ -232,6 +244,30 @@
             }
 
             return (-bInput + (quad * Math.Sqrt(Math.Pow(bInput, 2) - (4 * aInput * cInput)))) / (2*aInput);
+        }
+        private string SixFigText(string input)
+        {
+            bool foundPoint = false;
+            int z = 6;
+            int index = input.Length - 1;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '.')
+                {
+                    foundPoint = true;
+
+                }
+                if (foundPoint)
+                {
+                    z--;
+                }
+                if (z == 0)
+                {
+                    index = i;
+                }
+            }
+            string output = input.Remove(index + 1);
+            return output;
         }
 
 
