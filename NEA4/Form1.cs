@@ -1774,9 +1774,9 @@ namespace NEA4
 
         }
 
-        private void button17_Click(object sender, EventArgs e)
+        private void sinButton_Click(object sender, EventArgs e)
         {
-
+            RPNTextBox.Text = RPNTextBox.Text + "sin()";
         }
 
 

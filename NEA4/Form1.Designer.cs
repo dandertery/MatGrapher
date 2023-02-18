@@ -81,7 +81,7 @@
             this.button11 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
+            this.sinButton = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
@@ -636,16 +636,16 @@
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
-            // button17
+            // sinButton
             // 
-            this.button17.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button17.Location = new System.Drawing.Point(1346, 194);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(64, 50);
-            this.button17.TabIndex = 54;
-            this.button17.Text = "sin";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
+            this.sinButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sinButton.Location = new System.Drawing.Point(1346, 194);
+            this.sinButton.Name = "sinButton";
+            this.sinButton.Size = new System.Drawing.Size(64, 50);
+            this.sinButton.TabIndex = 54;
+            this.sinButton.Text = "sin";
+            this.sinButton.UseVisualStyleBackColor = true;
+            this.sinButton.Click += new System.EventHandler(this.sinButton_Click);
             // 
             // button18
             // 
@@ -863,7 +863,7 @@
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
             this.Controls.Add(this.button18);
-            this.Controls.Add(this.button17);
+            this.Controls.Add(this.sinButton);
             this.Controls.Add(this.button15);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.button10);
@@ -975,7 +975,7 @@
         private Button button11;
         private Button button15;
         private Button button16;
-        private Button button17;
+        private Button sinButton;
         private Button button18;
         private Button button19;
         private Button button20;
