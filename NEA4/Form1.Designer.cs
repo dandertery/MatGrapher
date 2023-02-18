@@ -79,10 +79,10 @@
             this.button8 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
-            this.button15 = new System.Windows.Forms.Button();
+            this.absButton = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.sinButton = new System.Windows.Forms.Button();
-            this.button18 = new System.Windows.Forms.Button();
+            this.cosButton = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.UnitSquareButton = new System.Windows.Forms.Button();
@@ -529,7 +529,7 @@
             // piButton
             // 
             this.piButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.piButton.Location = new System.Drawing.Point(1233, 187);
+            this.piButton.Location = new System.Drawing.Point(649, 462);
             this.piButton.Name = "piButton";
             this.piButton.Size = new System.Drawing.Size(50, 50);
             this.piButton.TabIndex = 44;
@@ -540,7 +540,7 @@
             // eButton
             // 
             this.eButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.eButton.Location = new System.Drawing.Point(1235, 418);
+            this.eButton.Location = new System.Drawing.Point(1313, 180);
             this.eButton.Name = "eButton";
             this.eButton.Size = new System.Drawing.Size(50, 50);
             this.eButton.TabIndex = 45;
@@ -551,7 +551,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(1233, 131);
+            this.button4.Location = new System.Drawing.Point(1311, 292);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(50, 50);
             this.button4.TabIndex = 47;
@@ -562,7 +562,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(1233, 75);
+            this.button5.Location = new System.Drawing.Point(1311, 236);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(50, 50);
             this.button5.TabIndex = 46;
@@ -573,7 +573,7 @@
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(1290, 131);
+            this.button7.Location = new System.Drawing.Point(1368, 292);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(50, 50);
             this.button7.TabIndex = 49;
@@ -584,7 +584,7 @@
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button8.Location = new System.Drawing.Point(1290, 187);
+            this.button8.Location = new System.Drawing.Point(1368, 348);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(50, 50);
             this.button8.TabIndex = 48;
@@ -595,7 +595,7 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button10.Location = new System.Drawing.Point(1235, 362);
+            this.button10.Location = new System.Drawing.Point(1313, 124);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(50, 50);
             this.button10.TabIndex = 51;
@@ -606,7 +606,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button11.Location = new System.Drawing.Point(1233, 306);
+            this.button11.Location = new System.Drawing.Point(1311, 68);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(50, 50);
             this.button11.TabIndex = 50;
@@ -614,21 +614,21 @@
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
-            // button15
+            // absButton
             // 
-            this.button15.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button15.Location = new System.Drawing.Point(1346, 250);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(64, 50);
-            this.button15.TabIndex = 53;
-            this.button15.Text = "Abs";
-            this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
+            this.absButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.absButton.Location = new System.Drawing.Point(1368, 68);
+            this.absButton.Name = "absButton";
+            this.absButton.Size = new System.Drawing.Size(64, 50);
+            this.absButton.TabIndex = 53;
+            this.absButton.Text = "abs";
+            this.absButton.UseVisualStyleBackColor = true;
+            this.absButton.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
             // 
             this.button16.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button16.Location = new System.Drawing.Point(1290, 75);
+            this.button16.Location = new System.Drawing.Point(1368, 236);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(50, 50);
             this.button16.TabIndex = 52;
@@ -639,7 +639,7 @@
             // sinButton
             // 
             this.sinButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sinButton.Location = new System.Drawing.Point(1346, 194);
+            this.sinButton.Location = new System.Drawing.Point(1368, 12);
             this.sinButton.Name = "sinButton";
             this.sinButton.Size = new System.Drawing.Size(64, 50);
             this.sinButton.TabIndex = 54;
@@ -647,21 +647,21 @@
             this.sinButton.UseVisualStyleBackColor = true;
             this.sinButton.Click += new System.EventHandler(this.sinButton_Click);
             // 
-            // button18
+            // cosButton
             // 
-            this.button18.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button18.Location = new System.Drawing.Point(1346, 306);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(64, 50);
-            this.button18.TabIndex = 55;
-            this.button18.Text = "cos";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
+            this.cosButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.cosButton.Location = new System.Drawing.Point(1368, 124);
+            this.cosButton.Name = "cosButton";
+            this.cosButton.Size = new System.Drawing.Size(64, 50);
+            this.cosButton.TabIndex = 55;
+            this.cosButton.Text = "cos";
+            this.cosButton.UseVisualStyleBackColor = true;
+            this.cosButton.Click += new System.EventHandler(this.cosButton_Click);
             // 
             // button19
             // 
             this.button19.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button19.Location = new System.Drawing.Point(1233, 250);
+            this.button19.Location = new System.Drawing.Point(1311, 12);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(50, 50);
             this.button19.TabIndex = 56;
@@ -672,7 +672,7 @@
             // button20
             // 
             this.button20.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button20.Location = new System.Drawing.Point(1346, 362);
+            this.button20.Location = new System.Drawing.Point(1368, 180);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(64, 50);
             this.button20.TabIndex = 57;
@@ -734,11 +734,12 @@
             // 
             // MatrixList
             // 
+            this.MatrixList.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MatrixList.FormattingEnabled = true;
-            this.MatrixList.ItemHeight = 15;
+            this.MatrixList.ItemHeight = 23;
             this.MatrixList.Location = new System.Drawing.Point(1136, 641);
             this.MatrixList.Name = "MatrixList";
-            this.MatrixList.Size = new System.Drawing.Size(197, 199);
+            this.MatrixList.Size = new System.Drawing.Size(197, 188);
             this.MatrixList.TabIndex = 64;
             // 
             // ClearMatrix
@@ -862,9 +863,9 @@
             this.Controls.Add(this.UnitSquareButton);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.button19);
-            this.Controls.Add(this.button18);
+            this.Controls.Add(this.cosButton);
             this.Controls.Add(this.sinButton);
-            this.Controls.Add(this.button15);
+            this.Controls.Add(this.absButton);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button11);
@@ -973,10 +974,10 @@
         private Button button8;
         private Button button10;
         private Button button11;
-        private Button button15;
+        private Button absButton;
         private Button button16;
         private Button sinButton;
-        private Button button18;
+        private Button cosButton;
         private Button button19;
         private Button button20;
         private Button UnitSquareButton;

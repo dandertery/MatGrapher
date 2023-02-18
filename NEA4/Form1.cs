@@ -1709,9 +1709,9 @@ namespace NEA4
 
         }
 
-        private void button18_Click(object sender, EventArgs e)
+        private void cosButton_Click(object sender, EventArgs e)
         {
-
+            RPNTextBox.Text = RPNTextBox.Text + "cos()";
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -1731,12 +1731,12 @@ namespace NEA4
 
         private void piButton_Click(object sender, EventArgs e)
         {
-
+            RPNTextBox.Text = RPNTextBox.Text + "π"; 
         }
 
         private void eButton_Click(object sender, EventArgs e)
         {
-
+            RPNTextBox.Text = RPNTextBox.Text + "e";
         }
 
         private void button4_Click(object sender, EventArgs e)
