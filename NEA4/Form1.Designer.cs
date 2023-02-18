@@ -173,7 +173,7 @@
             // a1
             // 
             this.a1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.a1.Location = new System.Drawing.Point(315, 630);
+            this.a1.Location = new System.Drawing.Point(333, 630);
             this.a1.Name = "a1";
             this.a1.Size = new System.Drawing.Size(150, 39);
             this.a1.TabIndex = 8;
@@ -183,7 +183,7 @@
             // d1
             // 
             this.d1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.d1.Location = new System.Drawing.Point(473, 676);
+            this.d1.Location = new System.Drawing.Point(491, 676);
             this.d1.Name = "d1";
             this.d1.Size = new System.Drawing.Size(150, 39);
             this.d1.TabIndex = 9;
@@ -193,7 +193,7 @@
             // b1
             // 
             this.b1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.b1.Location = new System.Drawing.Point(473, 630);
+            this.b1.Location = new System.Drawing.Point(491, 630);
             this.b1.Name = "b1";
             this.b1.Size = new System.Drawing.Size(150, 39);
             this.b1.TabIndex = 10;
@@ -203,7 +203,7 @@
             // c1
             // 
             this.c1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.c1.Location = new System.Drawing.Point(315, 675);
+            this.c1.Location = new System.Drawing.Point(333, 675);
             this.c1.Name = "c1";
             this.c1.Size = new System.Drawing.Size(150, 39);
             this.c1.TabIndex = 11;
@@ -306,7 +306,7 @@
             // SwitchButton
             // 
             this.SwitchButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SwitchButton.Location = new System.Drawing.Point(803, 513);
+            this.SwitchButton.Location = new System.Drawing.Point(803, 518);
             this.SwitchButton.Name = "SwitchButton";
             this.SwitchButton.Size = new System.Drawing.Size(150, 50);
             this.SwitchButton.TabIndex = 21;
@@ -317,7 +317,7 @@
             // MultiplyRightButton
             // 
             this.MultiplyRightButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.MultiplyRightButton.Location = new System.Drawing.Point(649, 513);
+            this.MultiplyRightButton.Location = new System.Drawing.Point(647, 518);
             this.MultiplyRightButton.Name = "MultiplyRightButton";
             this.MultiplyRightButton.Size = new System.Drawing.Size(150, 50);
             this.MultiplyRightButton.TabIndex = 22;
@@ -328,7 +328,7 @@
             // ApplyMatrixButton
             // 
             this.ApplyMatrixButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ApplyMatrixButton.Location = new System.Drawing.Point(959, 513);
+            this.ApplyMatrixButton.Location = new System.Drawing.Point(959, 518);
             this.ApplyMatrixButton.Name = "ApplyMatrixButton";
             this.ApplyMatrixButton.Size = new System.Drawing.Size(150, 50);
             this.ApplyMatrixButton.TabIndex = 23;
@@ -339,7 +339,7 @@
             // InverseLeft
             // 
             this.InverseLeft.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InverseLeft.Location = new System.Drawing.Point(315, 569);
+            this.InverseLeft.Location = new System.Drawing.Point(333, 569);
             this.InverseLeft.Name = "InverseLeft";
             this.InverseLeft.Size = new System.Drawing.Size(150, 50);
             this.InverseLeft.TabIndex = 24;
@@ -361,7 +361,7 @@
             // button9
             // 
             this.button9.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button9.Location = new System.Drawing.Point(958, 610);
+            this.button9.Location = new System.Drawing.Point(958, 615);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(120, 30);
             this.button9.TabIndex = 26;
@@ -372,7 +372,7 @@
             // TransposeLeft
             // 
             this.TransposeLeft.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TransposeLeft.Location = new System.Drawing.Point(473, 569);
+            this.TransposeLeft.Location = new System.Drawing.Point(491, 569);
             this.TransposeLeft.Name = "TransposeLeft";
             this.TransposeLeft.Size = new System.Drawing.Size(150, 50);
             this.TransposeLeft.TabIndex = 27;
@@ -394,7 +394,7 @@
             // button12
             // 
             this.button12.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button12.Location = new System.Drawing.Point(958, 646);
+            this.button12.Location = new System.Drawing.Point(958, 651);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(120, 30);
             this.button12.TabIndex = 29;
@@ -405,7 +405,7 @@
             // button13
             // 
             this.button13.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button13.Location = new System.Drawing.Point(958, 688);
+            this.button13.Location = new System.Drawing.Point(958, 687);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(120, 30);
             this.button13.TabIndex = 30;
@@ -416,7 +416,7 @@
             // button14
             // 
             this.button14.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button14.Location = new System.Drawing.Point(958, 574);
+            this.button14.Location = new System.Drawing.Point(958, 579);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(120, 30);
             this.button14.TabIndex = 31;
@@ -529,7 +529,7 @@
             // piButton
             // 
             this.piButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.piButton.Location = new System.Drawing.Point(1247, 477);
+            this.piButton.Location = new System.Drawing.Point(1233, 187);
             this.piButton.Name = "piButton";
             this.piButton.Size = new System.Drawing.Size(50, 50);
             this.piButton.TabIndex = 44;
@@ -540,7 +540,7 @@
             // eButton
             // 
             this.eButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.eButton.Location = new System.Drawing.Point(1360, 477);
+            this.eButton.Location = new System.Drawing.Point(1235, 418);
             this.eButton.Name = "eButton";
             this.eButton.Size = new System.Drawing.Size(50, 50);
             this.eButton.TabIndex = 45;
@@ -551,7 +551,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.Location = new System.Drawing.Point(1247, 421);
+            this.button4.Location = new System.Drawing.Point(1233, 131);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(50, 50);
             this.button4.TabIndex = 47;
@@ -562,7 +562,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(1247, 365);
+            this.button5.Location = new System.Drawing.Point(1233, 75);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(50, 50);
             this.button5.TabIndex = 46;
@@ -573,7 +573,7 @@
             // button7
             // 
             this.button7.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button7.Location = new System.Drawing.Point(1304, 421);
+            this.button7.Location = new System.Drawing.Point(1290, 131);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(50, 50);
             this.button7.TabIndex = 49;
@@ -584,7 +584,7 @@
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button8.Location = new System.Drawing.Point(1304, 477);
+            this.button8.Location = new System.Drawing.Point(1290, 187);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(50, 50);
             this.button8.TabIndex = 48;
@@ -595,7 +595,7 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button10.Location = new System.Drawing.Point(1360, 421);
+            this.button10.Location = new System.Drawing.Point(1235, 362);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(50, 50);
             this.button10.TabIndex = 51;
@@ -606,7 +606,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button11.Location = new System.Drawing.Point(1358, 365);
+            this.button11.Location = new System.Drawing.Point(1233, 306);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(50, 50);
             this.button11.TabIndex = 50;
@@ -628,7 +628,7 @@
             // button16
             // 
             this.button16.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button16.Location = new System.Drawing.Point(1304, 365);
+            this.button16.Location = new System.Drawing.Point(1290, 75);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(50, 50);
             this.button16.TabIndex = 52;
@@ -661,7 +661,7 @@
             // button19
             // 
             this.button19.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button19.Location = new System.Drawing.Point(1290, 250);
+            this.button19.Location = new System.Drawing.Point(1233, 250);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(50, 50);
             this.button19.TabIndex = 56;
@@ -672,7 +672,7 @@
             // button20
             // 
             this.button20.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button20.Location = new System.Drawing.Point(1277, 306);
+            this.button20.Location = new System.Drawing.Point(1346, 362);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(64, 50);
             this.button20.TabIndex = 57;
@@ -704,7 +704,7 @@
             // AnimateButton
             // 
             this.AnimateButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AnimateButton.Location = new System.Drawing.Point(1084, 574);
+            this.AnimateButton.Location = new System.Drawing.Point(1115, 518);
             this.AnimateButton.Name = "AnimateButton";
             this.AnimateButton.Size = new System.Drawing.Size(150, 50);
             this.AnimateButton.TabIndex = 60;

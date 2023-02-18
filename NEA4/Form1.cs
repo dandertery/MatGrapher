@@ -27,16 +27,15 @@ namespace NEA4
         private double forceYBounds;
         private double min;
         private int functionListNumber = 0;
-        private Matrix lMat = new Matrix(-4, 3, 1, -2);
-        private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private bool unitSquareDisplay = false;
-
-        private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);
-        private Stack<Function> fs = new Stack<Function>();
-        private Queue<Matrix> ms = new Queue<Matrix>();
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
-
+        private ObservablePoint[] UnitSquare = new ObservablePoint[45];
+        private Matrix lMat = new Matrix(-4, 3, 1, -2);
+        private Matrix rMat = new Matrix(-4, 3, 1, -2);
+        private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);    
+        private Stack<Function> fs = new Stack<Function>();
+        private Queue<Matrix> ms = new Queue<Matrix>();
         private Variable k;
         private Variable q;
         private Variable p;
@@ -45,7 +44,12 @@ namespace NEA4
         {
             public double x;
             public double y;
+        }
 
+        struct NamedCoordArray
+        {
+            public Coordinate[] coordinateArray;
+            public string name;
         }
         struct Variable
         {
@@ -64,12 +68,20 @@ namespace NEA4
             public double xMax;
         }
         public MatGrapher()
-        {
-            
+        {          
             bounds = 10;
+            pitch = 0.1;
+            fBounds = bounds / pitch;
             InitializeComponent();
             cartesianChart1.EasingFunction = null;
             checkMatrixTimer.Start();
+            InitialiseKPQ();          
+            DefineUnitSquare();
+            UpdateFunctions();
+        }
+
+        private void InitialiseKPQ()
+        {
             k = new Variable();
             k.letter = "K";
             k.value = double.Parse(kTextbox.Text);
@@ -79,11 +91,40 @@ namespace NEA4
             q = new Variable();
             q.letter = "Q";
             q.value = double.Parse(qTextbox.Text);
-            Stack<Function> empty = new Stack<Function>();
-            //UpdateFunctions();
-            DisplayFunctions(empty);
+        }
 
+        private void DefineUnitSquare()
+        {
+            UnitSquare[0] = new ObservablePoint(0, 0);
+            int b = 1;
+            for (double i = 0; i < 10; i++)
+            {
+                UnitSquare[b] = new ObservablePoint(0, i / 10 + 0.1);
+                b++;
+            }
+            UnitSquare[b] = new ObservablePoint(0, 1);
+            b++;
+            for (double i = 0; i < 10; i++)
+            {
+                UnitSquare[b] = new ObservablePoint(i / 10 + 0.1, 1);
+                b++;
+            }
 
+            UnitSquare[b] = new ObservablePoint(1, 1);
+            b++;
+            for (double i = 10; i > 0; i--)
+            {
+                UnitSquare[b] = new ObservablePoint(1, i / 10);
+                b++;
+            }
+            UnitSquare[b] = new ObservablePoint(1, 0);
+            b++;
+            for (double i = 10; i > 0; i--)
+            {
+                UnitSquare[b] = new ObservablePoint(i / 10, 0);
+                b++;
+            }
+            UnitSquare[b] = new ObservablePoint(0, 0);
         }
 
         private double abs(double v) //absolute
@@ -135,12 +176,8 @@ namespace NEA4
 
             }
         }
-        private  Function ToFunction(Coordinate[] input)
+        private  Function ToFunction(NamedCoordArray input)
         {
-
-
-
-
             min = -bounds;
             double xValue = min;
             double yMin = 0;
@@ -149,7 +186,7 @@ namespace NEA4
 
             Function function;
             function.breakpoints = 0;
-            function.name = "y = " + input;
+            function.name = "y = " + input.name;
             function.fSections = new List<ObservablePoint[]>();
             function.xMin = xValue;
             function.xMax = bounds;
@@ -158,7 +195,7 @@ namespace NEA4
             tempLengthList.Add(0);
             int listIndexer = 0;
             bool previousNaN = false;
-            Coordinate[] coordinates = input;
+            Coordinate[] coordinates = input.coordinateArray;
             for (int i = 0; i < (coordinates.Length); i++)
             {
 
@@ -193,7 +230,6 @@ namespace NEA4
 
             function.yMin = yMin;
             function.yMax = yMax;
-
 
             for (int i = 0; i < tempLengthList.Count; i++)
             {
@@ -244,7 +280,7 @@ namespace NEA4
             }
             return function;
         }
-        private Coordinate[] ProcessInput(string input)
+        private NamedCoordArray ProcessInput(string input)
         {
             Parsing TreeInput = new Parsing(input);
             pitch = 0.1;
@@ -287,8 +323,12 @@ namespace NEA4
                 variableArray[0] = xTemp;
 
                 coordinates[i].y = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
+                xValue = xValue + pitch;
             }
-            return coordinates;
+            NamedCoordArray output = new NamedCoordArray();
+            output.coordinateArray = coordinates;
+            output.name = input;
+            return output;
         }
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -432,19 +472,17 @@ namespace NEA4
             
         }
 
-        private Coordinate[] ApplyMatrix(Coordinate[] cInput, Matrix input)
+        private NamedCoordArray ApplyMatrix(NamedCoordArray cInput, Matrix input)
         {
-            Coordinate[] result = cInput;
-            for (int i = 0; i < cInput.Length; i++)
+            Coordinate[] result = cInput.coordinateArray;
+            for (int i = 0; i < cInput.coordinateArray.Length; i++)
             {
                 result[i] = ApplyToCoordinate(result[i], input);
             }
-            return result;
-
-            
-
-           
-
+            NamedCoordArray output = new NamedCoordArray();
+            output.coordinateArray = result;
+            output.name = cInput.name;
+            return output;
         }
         
         private Coordinate ApplyToCoordinate(Coordinate inputCoordinate, Matrix inputMatrix)
@@ -455,80 +493,60 @@ namespace NEA4
             y = ((double)inputCoordinate.x * inputMatrix.Get("c")) + ((double)inputCoordinate.y * inputMatrix.Get("d"));
             Coordinate outputCoordinate = new Coordinate();
             outputCoordinate.x = x;
-            outputCoordinate.x = y;
+            outputCoordinate.y = y;
             return outputCoordinate;
         }
-        private Coordinate ApplyToCoordinate(Coordinate inputCoordinate, Matrix inputMatrix)
+        private ObservablePoint ApplyToObservablePoint(ObservablePoint inputCoordinate, Matrix inputMatrix)
         {
             double x;
             double y;
-            x = ((double)inputCoordinate.x * inputMatrix.Get("a")) + ((double)inputCoordinate.y * inputMatrix.Get("b"));
-            y = ((double)inputCoordinate.x * inputMatrix.Get("c")) + ((double)inputCoordinate.y * inputMatrix.Get("d"));
-            Coordinate outputCoordinate = new Coordinate();
-            outputCoordinate.x = x;
-            outputCoordinate.x = y;
+            x = ((double)inputCoordinate.X * inputMatrix.Get("a")) + ((double)inputCoordinate.Y * inputMatrix.Get("b"));
+            y = ((double)inputCoordinate.X * inputMatrix.Get("c")) + ((double)inputCoordinate.Y * inputMatrix.Get("d"));
+            ObservablePoint outputCoordinate = new ObservablePoint();
+            outputCoordinate.X = x;
+            outputCoordinate.Y = y;
             return outputCoordinate;
         }
-        private ObservablePoint[] CutFunctionToBounds(ObservablePoint[] input)
+        private ObservablePoint[][] CutFunctionToBounds(ObservablePoint[] input)
         {
+            List<ObservablePoint[]> result = new List<ObservablePoint[]>();
             ObservablePoint[] temp = input;
+            List<ObservablePoint> addTo = new List<ObservablePoint>();
+            int w = 0;
             for (int i = 0; i < temp.Length; i++)
             {
-                if(temp[i].X > bounds || temp[i].X < -bounds)
+                if(temp[i].X > bounds || temp[i].X < -bounds || input[i].Y > bounds || temp[i].Y < -bounds)
                 {
-                    temp = RemoveObservablePoint(temp, i);
+                    if(addTo.Count > 0)
+                    {
+                        result.Add(OPListToArray(addTo));
+                        addTo = new List<ObservablePoint>();
+                    }
+                    
                 }
-                else if(input[i].Y > bounds || temp[i].Y < -bounds)
+                else
                 {
-                    temp = RemoveObservablePoint(temp, i);
+                    addTo.Add(temp[i]);
                 }
 
+
             }
-            return temp;
+            result.Add(OPListToArray(addTo));
+            ObservablePoint[][] output = new ObservablePoint[result.Count][];
+            for (int i = 0; i < result.Count; i++)
+            {
+                output[i] = result[i];
+            }
+            return output;
         }
         private void DisplayFunctions(Stack<Function> fsinput) //64 functions! (WHY CAN'T I FIX THIS) all rage about this expressed here -> AHHG=GGGHGHGHGHGHHG ahahdhfgfggfgfgfggdf eilfjh\esklfjhhnse\lkj adhhshshdshdh hdidkifhfghgeh ahaujsidfhfidhe aoaoaoaoao
         {
             //unit Square
-            ObservablePoint[] UnitSquare = new ObservablePoint[45];
-            
-            UnitSquare[0] = new ObservablePoint(0, 0);
-            int b = 1;
-            for (double i = 0; i < 10; i++)
-            {
-                UnitSquare[b] = new ObservablePoint(0, i/10+0.1);
-                b++;
-            }
-            UnitSquare[b] = new ObservablePoint(0, 1);
-            b++;
-            for (double i = 0; i < 10; i++)
-            {
-                UnitSquare[b] = new ObservablePoint(i/10 + 0.1, 1);
-                b++;
-            }
-            
-            UnitSquare[b] = new ObservablePoint(1, 1);
-            b++;
-            for (double i = 10; i > 0; i--)
-            {
-                UnitSquare[b] = new ObservablePoint(1, i/10);
-                b++;
-            }
-            UnitSquare[b] = new ObservablePoint(1, 0);
-            b++;
-            for (double i = 10; i > 0; i--)
-            {
-                UnitSquare[b] = new ObservablePoint(i / 10, 0);
-                b++;
-            }
-            UnitSquare[b] = new ObservablePoint(0, 0);
 
-            for (int i = 0; i < UnitSquare.Length; i++)
-            {
-                UnitSquare[i] = ApplyToObservablePoint(UnitSquare[i], QueueMatrix);
-            }
+
             
             int implementedMemory = 64;
-
+            ObservablePoint[] displayUnitSquare = new ObservablePoint[1];
             Stack<Function> fscopy = new Stack<Function>(fsinput);
             int bpcount = 0;
             double ymax = 0;
@@ -542,7 +560,7 @@ namespace NEA4
                 bpcount = bpcount + f.breakpoints+1;
 
             }
-            bpcount--;
+            //bpcount--;
             
             ymax = bounds;
             ymin = -bounds;
@@ -554,19 +572,31 @@ namespace NEA4
                 ObservablePoint[][] displayLines = new ObservablePoint[implementedMemory][];
                 fscopy = new Stack<Function>(fsinput);
                 int w = 0;
+                
                 for (int i = 0; i < fsinput.Count; i++)
                 {
                     Function f = fscopy.Pop();
                     for (int z = 0; z < (f.breakpoints + 1); z++)
                     {
-                        displayLines[w] = f.fSections[z];
-                        w++;
+                        ObservablePoint[][] temp = CutFunctionToBounds(f.fSections[z]);
+                        for (int d = 0; d < temp.Length; d++)
+                        {
+                            displayLines[w] = temp[d];
+                            w++;
+                        }
+                        
                     }
                 }
-                if(!unitSquareDisplay)
+                
+                if(unitSquareDisplay)
                 {
-                    UnitSquare = new ObservablePoint[1];
+                    displayUnitSquare = UnitSquare;
+                    for (int i = 0; i < UnitSquare.Length; i++)
+                    {
+                        displayUnitSquare[i] = ApplyToObservablePoint(UnitSquare[i], QueueMatrix);
+                    }
                 }
+                
                 if (ymax == ymin) //empty case
                 {
                     pitch = 0.1;
@@ -576,27 +606,26 @@ namespace NEA4
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
                 double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
 
-                double ypitch = ((ymax - ymin) / (fBounds * 2));
-                double xpitch = ((xmax - xmin) / (fBounds * 2));
-                double xValue = xmin;
-                double yValue = ymin;
-                
+
+                double xValue = -bounds;
+                double yValue = -bounds;
+
                 for (int i = 0; i < xcoordinates.Length; i++)
                 {
                     xcoordinates[i] = xValue;
-                    xValue = xValue + xpitch;
+                    xValue = xValue + pitch;
                 }
                 for (int i = 0; i < ycoordinates.Length; i++)
                 {
                     ycoordinates[i] = yValue;
-                    yValue = yValue + ypitch;
+                    yValue = yValue + pitch;
                 }
                 ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
                 for (int i = 0; i < fBounds * 2; i++)
                 {
                     XAxis[i] = new ObservablePoint(xcoordinates[i], 0);
                 }
-                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)]; //DO THIS DO THIS DO THIS
+                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
                 for (int i = 0; i < fBounds * 2; i++)
                 {
                     YAxis[i] = new ObservablePoint(0, ycoordinates[i]);
@@ -627,7 +656,7 @@ namespace NEA4
                     },
                     new LineSeries<ObservablePoint>
                     {
-                        Values =  UnitSquare,
+                        Values =  displayUnitSquare,
                         Fill = null,
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 }
@@ -1454,6 +1483,15 @@ namespace NEA4
         {
 
         }
+        private ObservablePoint[] OPListToArray(List<ObservablePoint> input)
+        {
+            ObservablePoint[] output = new ObservablePoint[input.Count];
+            for (int i = 0; i < input.Count; i++)
+            {
+                output[i] = input[i];
+            }
+            return output;
+        }
         private Variable[] ListToArray(List<Variable> input)
         {
             Variable[] output = new Variable[input.Count];
@@ -1516,17 +1554,17 @@ namespace NEA4
                     string RPNinput = RPNTextBox.Text;
 
 
-                    Function function = ProcessInput(RPNinput);
+                    //Function function = ToFunction(ProcessInput(RPNinput));
                     if (FunctionList.Items.Count < functionListNumber + 1)
                     {
-                        FunctionList.Items.Add(function.name);
+                        FunctionList.Items.Add("y = " + RPNinput);
                     }
                     else
                     {
-                        FunctionList.Items[functionListNumber] = (function.name);
+                        FunctionList.Items[functionListNumber] = ("y = " + RPNinput);
                     }
 
-                    fs.Push(function);
+                    
                     UpdateFunctions();
                 }
             }
