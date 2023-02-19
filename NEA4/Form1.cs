@@ -1731,7 +1731,7 @@ namespace NEA4
 
         private void piButton_Click(object sender, EventArgs e)
         {
-            RPNTextBox.Text = RPNTextBox.Text + "π"; 
+            RPNTextBox.Text = RPNTextBox.Text + "𝜋"; 
         }
 
         private void eButton_Click(object sender, EventArgs e)
