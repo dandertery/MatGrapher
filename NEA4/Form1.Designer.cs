@@ -102,6 +102,8 @@
             this.InvLine1TextBox = new System.Windows.Forms.TextBox();
             this.InvLine2TextBox = new System.Windows.Forms.TextBox();
             this.LOfInvPointsTextBox = new System.Windows.Forms.TextBox();
+            this.vLabel = new System.Windows.Forms.Label();
+            this.vTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -737,7 +739,7 @@
             this.MatrixList.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MatrixList.FormattingEnabled = true;
             this.MatrixList.ItemHeight = 23;
-            this.MatrixList.Location = new System.Drawing.Point(1136, 641);
+            this.MatrixList.Location = new System.Drawing.Point(1084, 574);
             this.MatrixList.Name = "MatrixList";
             this.MatrixList.Size = new System.Drawing.Size(197, 188);
             this.MatrixList.TabIndex = 64;
@@ -794,7 +796,7 @@
             // LinesOf
             // 
             this.LinesOf.AutoSize = true;
-            this.LinesOf.Location = new System.Drawing.Point(647, 810);
+            this.LinesOf.Location = new System.Drawing.Point(1057, 808);
             this.LinesOf.Name = "LinesOf";
             this.LinesOf.Size = new System.Drawing.Size(54, 15);
             this.LinesOf.TabIndex = 70;
@@ -803,7 +805,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(647, 842);
+            this.label8.Location = new System.Drawing.Point(1057, 840);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(54, 15);
             this.label8.TabIndex = 71;
@@ -812,7 +814,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(834, 813);
+            this.label7.Location = new System.Drawing.Point(1056, 779);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(78, 15);
             this.label7.TabIndex = 72;
@@ -820,30 +822,52 @@
             // 
             // InvLine1TextBox
             // 
-            this.InvLine1TextBox.Location = new System.Drawing.Point(717, 807);
+            this.InvLine1TextBox.Location = new System.Drawing.Point(1127, 805);
             this.InvLine1TextBox.Name = "InvLine1TextBox";
             this.InvLine1TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine1TextBox.TabIndex = 73;
             // 
             // InvLine2TextBox
             // 
-            this.InvLine2TextBox.Location = new System.Drawing.Point(717, 837);
+            this.InvLine2TextBox.Location = new System.Drawing.Point(1127, 835);
             this.InvLine2TextBox.Name = "InvLine2TextBox";
             this.InvLine2TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine2TextBox.TabIndex = 74;
             // 
             // LOfInvPointsTextBox
             // 
-            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(916, 810);
+            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(1138, 776);
             this.LOfInvPointsTextBox.Name = "LOfInvPointsTextBox";
             this.LOfInvPointsTextBox.Size = new System.Drawing.Size(100, 23);
             this.LOfInvPointsTextBox.TabIndex = 75;
+            // 
+            // vLabel
+            // 
+            this.vLabel.AutoSize = true;
+            this.vLabel.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.vLabel.Location = new System.Drawing.Point(660, 801);
+            this.vLabel.Name = "vLabel";
+            this.vLabel.Size = new System.Drawing.Size(34, 38);
+            this.vLabel.TabIndex = 77;
+            this.vLabel.Text = "V";
+            // 
+            // vTextBox
+            // 
+            this.vTextBox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.vTextBox.Location = new System.Drawing.Point(700, 793);
+            this.vTextBox.Name = "vTextBox";
+            this.vTextBox.Size = new System.Drawing.Size(100, 52);
+            this.vTextBox.TabIndex = 76;
+            this.vTextBox.Text = "1";
+            this.vTextBox.TextChanged += new System.EventHandler(this.vTextBox_TextChanged);
             // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1444, 881);
+            this.ClientSize = new System.Drawing.Size(1284, 881);
+            this.Controls.Add(this.vLabel);
+            this.Controls.Add(this.vTextBox);
             this.Controls.Add(this.LOfInvPointsTextBox);
             this.Controls.Add(this.InvLine2TextBox);
             this.Controls.Add(this.InvLine1TextBox);
@@ -997,5 +1021,7 @@
         private TextBox InvLine1TextBox;
         private TextBox InvLine2TextBox;
         private TextBox LOfInvPointsTextBox;
+        private Label vLabel;
+        private TextBox vTextBox;
     }
 }

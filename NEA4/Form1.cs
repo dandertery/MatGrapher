@@ -26,6 +26,7 @@ namespace NEA4
         private double fBounds;
         private double forceYBounds;
         private double min;
+        private double V;
         private int functionListNumber = 0;
         private bool unitSquareDisplay = false;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
@@ -1164,98 +1165,58 @@ namespace NEA4
 
         private void a1_TextChanged(object sender, EventArgs e)
         {
-            if(CheckForFloatingPoint(a1.Text) || (a1.Text == SixFigText(lMat.Get("a").ToString())))
-            {
-                
-            }
-            else if(!lMat.requestChange("a", a1.Text))
-            {
-                a1.Text = lMat.Get("a").ToString();
-            }
+            TextboxChanged(a1, "a", lMat);
 
         }
 
         private void b1_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(b1.Text) || (b1.Text == SixFigText(lMat.Get("b").ToString())))
-            {
-
-            }
-            else if (!lMat.requestChange("b", b1.Text))
-            {
-                b1.Text = lMat.Get("b").ToString();
-            }
+            TextboxChanged(b1, "b", lMat);
         }
 
         private void c1_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(c1.Text) || (c1.Text == SixFigText(lMat.Get("c").ToString())))
-            {
-
-            }
-            else if (!lMat.requestChange("c", c1.Text))
-            {
-                c1.Text = lMat.Get("c").ToString();
-            }
+            TextboxChanged(c1, "c", lMat);
         }
 
         private void d1_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(d1.Text) || (d1.Text == SixFigText(lMat.Get("d").ToString())))
-            {
-
-            }
-            else if (!lMat.requestChange("d", d1.Text))
-            {
-                d1.Text = lMat.Get("d").ToString();
-            }
+            TextboxChanged(d1, "d", lMat);
         }
 
         private void a2_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(a2.Text) || (a2.Text == SixFigText(rMat.Get("a").ToString())))
-            {
-
-            }
-            else if (!rMat.requestChange("a", a2.Text))
-            {
-                a2.Text = rMat.Get("a").ToString();
-            }
+            TextboxChanged(a2, "a", rMat);
         }
 
         private void b2_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(b2.Text) || (b2.Text == SixFigText(rMat.Get("b").ToString())))
-            {
-
-            }
-            else if (!rMat.requestChange("b", b2.Text))
-            {
-                b2.Text = rMat.Get("b").ToString();
-            }
+            TextboxChanged(b2, "b", rMat);
         }
 
         private void c2_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(c2.Text) || (c2.Text == SixFigText(rMat.Get("c").ToString())))
-            {
-
-            }
-            else if (!rMat.requestChange("c", c2.Text))
-            {
-                c2.Text = rMat.Get("c").ToString();
-            }
+            TextboxChanged(c2, "c", rMat);
         }
 
         private void d2_TextChanged(object sender, EventArgs e)
         {
-            if (CheckForFloatingPoint(d2.Text) || (d2.Text == SixFigText(rMat.Get("d").ToString())))
+            TextboxChanged(d2, "d", rMat);
+        }
+
+        private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
+        {
+            if (textBox.Text == "V")
+            {
+                inputMatrix.requestChange("letter", V.ToString());
+            }
+            else if (CheckForFloatingPoint(textBox.Text) || (textBox.Text == SixFigText(inputMatrix.Get("letter").ToString())))
             {
 
             }
-            else if (!rMat.requestChange("d", d2.Text))
+            else if (!inputMatrix.requestChange("letter", textBox.Text))
             {
-                d2.Text = rMat.Get("d").ToString();
+                textBox.Text = inputMatrix.Get("letter").ToString();
             }
         }
 
@@ -1280,44 +1241,35 @@ namespace NEA4
 
         private void checkMatrixTimer_Tick(object sender, EventArgs e)
         {
-            checkMatrix();
+            CheckMatrix();
         }
-
-        private void checkMatrix()
+        private void CheckMatrixValue(TextBox textBox, string letter, Matrix inputMatrix)
         {
+            if (!CheckForFloatingPoint(textBox.Text))
+            {
+                if(textBox.Text == "V" && V == inputMatrix.Get(letter))
+                {
 
-            if (!CheckForFloatingPoint(a1.Text))
-            {
-                a1.Text = SixFigText(lMat.Get("a").ToString());
+                }
+                else
+                {
+                    textBox.Text = SixFigText(inputMatrix.Get(letter).ToString());
+                }
+                
             }
-            if (!CheckForFloatingPoint(b1.Text))
-            {
-                b1.Text = SixFigText(lMat.Get("b").ToString());
-            }
-            if (!CheckForFloatingPoint(c1.Text))
-            {
-                c1.Text = SixFigText(lMat.Get("c").ToString());
-            }
-            if (!CheckForFloatingPoint(d1.Text))
-            {
-                d1.Text = SixFigText(lMat.Get("d").ToString());
-            }
-            if (!CheckForFloatingPoint(a2.Text))
-            {
-                a2.Text = SixFigText(rMat.Get("a").ToString());
-            }
-            if (!CheckForFloatingPoint(b2.Text))
-            {
-                b2.Text = SixFigText(rMat.Get("b").ToString());
-            }
-            if (!CheckForFloatingPoint(c2.Text))
-            {
-                c2.Text = SixFigText(rMat.Get("c").ToString());
-            }
-            if (!CheckForFloatingPoint(d2.Text))
-            {
-                d2.Text = SixFigText(rMat.Get("d").ToString());
-            }
+        }
+        private void CheckMatrix()
+        {
+            CheckMatrixValue(a1, "a", lMat);
+            CheckMatrixValue(b1, "b", lMat);
+            CheckMatrixValue(c1, "c", lMat);
+            CheckMatrixValue(d1, "d", lMat);
+
+            CheckMatrixValue(a2, "a", rMat);
+            CheckMatrixValue(b2, "b", rMat);
+            CheckMatrixValue(c2, "c", rMat);
+            CheckMatrixValue(d2, "d", rMat);
+
             if (rMat.GetStringType() == "unknown")
             {
                 AnimateButton.Enabled = false;
@@ -1790,6 +1742,12 @@ namespace NEA4
         {
             unitSquareDisplay = !unitSquareDisplay;
             UpdateFunctions();
+        }
+
+        private void vTextBox_TextChanged(object sender, EventArgs e)
+        {
+            V = Double.Parse(vTextBox.Text);
+            
         }
         //private double ProcessRPN(string input, double xInput)
         //{
