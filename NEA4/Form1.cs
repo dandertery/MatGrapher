@@ -24,11 +24,10 @@ namespace NEA4
         private double pitch;
         private double bounds;
         private double fBounds;
-        private double forceYBounds;
-        private double min;
         private Variable V;
         private int functionListNumber = 0;
         private bool unitSquareDisplay = false;
+        private bool displayGrid = false;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
         private ObservablePoint[] UnitSquare = new ObservablePoint[45];
@@ -181,18 +180,16 @@ namespace NEA4
         }
         private  Function ToFunction(NamedCoordArray input)
         {
-            min = -bounds;
-            double xValue = min;
-            double yMin = 0;
+            double yMin = 0;//ONLY NEEDED FOR DEBUGGING
             double yMax = 0;
-            forceYBounds = bounds;
+            double xMin = 0;
+            double xMax = 0;
 
             Function function;
             function.breakpoints = 0;
             function.name = "y = " + input.name;
             function.fSections = new List<ObservablePoint[]>();
-            function.xMin = xValue;
-            function.xMax = bounds;
+
 
             List<int> tempLengthList = new List<int>();
             tempLengthList.Add(0);
@@ -204,15 +201,8 @@ namespace NEA4
 
                 if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
                 {
-                    if (coordinates[i].y < yMin)
-                    {
-                        yMin = coordinates[i].y;
-                    }
-                    if (coordinates[i].y > yMax)
-                    {
-                        yMax = coordinates[i].y;
-                    }
-                    xValue = xValue + pitch;
+
+                    
                     coordinates = RemoveCoordinate(coordinates, i);
                     i--;
                     if (!previousNaN)
@@ -226,13 +216,33 @@ namespace NEA4
                 }
                 else
                 {
+                    if (coordinates[i].y < yMin) //ONLY NEEDED FOR DEBUGGING
+                    {
+                        yMin = coordinates[i].y;
+                    }
+                    if (coordinates[i].y > yMax)
+                    {
+                        yMax = coordinates[i].y;
+                    }
+                    if (coordinates[i].x < xMin)
+                    {
+                        xMin = coordinates[i].x;
+                    }
+                    if (coordinates[i].x > xMax)
+                    {
+                        xMax = coordinates[i].x;
+                    }
+
+
                     tempLengthList[listIndexer]++;
                     previousNaN = false;
                 }
             }
 
-            function.yMin = yMin;
+            function.yMin = yMin; //ONLY NEEDED FOR DEBUGGING
             function.yMax = yMax;
+            function.xMin = xMin;
+            function.xMax = xMax;
 
             for (int i = 0; i < tempLengthList.Count; i++)
             {
@@ -252,13 +262,15 @@ namespace NEA4
             CoordinatesArrays[0][0] = coordinates[0];
             int c = 1;
 
+            Matrix InverseQueueMatrix = QueueMatrix.Inverse(QueueMatrix);
+
             for (int i = 0; i < (function.breakpoints + 1); i++)
             {
                 if (i > 0)
                 {
                     CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
                 }
-                while (c < Convert.ToInt32(coordinates.Length) && (coordinates[c].x == lMat.checkForBinaryError((coordinates[c - 1].x + pitch), 2)))
+                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 2) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 2)))
                 {
                     CoordinatesArrays[i][c] = coordinates[c]; //here
                     c++;
@@ -273,7 +285,7 @@ namespace NEA4
                 ValuesArrays[i] = new ObservablePoint[Convert.ToInt32(CoordinatesArrays[i].Length)];
                 for (int z = 0; z < CoordinatesArrays[i].Length; z++)
                 {
-                    ValuesArrays[i][z] = new ObservablePoint(CoordinatesArrays[i][z].x, CoordinatesArrays[i][z].y);
+                    ValuesArrays[i][z] = new ObservablePoint(lMat.checkForBinaryError(CoordinatesArrays[i][z].x, 5), lMat.checkForBinaryError(CoordinatesArrays[i][z].y,5));
                 }
             }
 
@@ -603,8 +615,7 @@ namespace NEA4
                 if (ymax == ymin) //empty case
                 {
                     pitch = 0.1;
-                    fBounds = bounds / pitch;              
-                    min = -bounds;
+                    fBounds = bounds / pitch;                                
                 }
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
                 double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
@@ -1658,7 +1669,7 @@ namespace NEA4
 
         private void GridButton_Click(object sender, EventArgs e)
         {
-
+            displayGrid = !displayGrid;
         }
 
         private void FunctionButton_Click(object sender, EventArgs e)
