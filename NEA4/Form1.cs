@@ -26,7 +26,7 @@ namespace NEA4
         private double fBounds;
         private double forceYBounds;
         private double min;
-        private double V;
+        private Variable V;
         private int functionListNumber = 0;
         private bool unitSquareDisplay = false;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
@@ -72,6 +72,7 @@ namespace NEA4
         {          
             bounds = 10;
             pitch = 0.1;
+            V.letter = "V";
             fBounds = bounds / pitch;
             InitializeComponent();
             cartesianChart1.EasingFunction = null;
@@ -79,6 +80,7 @@ namespace NEA4
             InitialiseKPQ();          
             DefineUnitSquare();
             UpdateFunctions();
+           
         }
 
         private void InitialiseKPQ()
@@ -1203,23 +1205,50 @@ namespace NEA4
         {
             TextboxChanged(d2, "d", rMat);
         }
-
-        private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
+        private double ParseV(string text)
         {
-            if (textBox.Text == "V")
+            try
             {
-                inputMatrix.requestChange("letter", V.ToString());
+                List<Variable> variableArray = new List<Variable>();
+                variableArray.Add(V);
+                Parsing valueParser = new Parsing(text);
+                TreeNode abstractSyntaxTree = FindRoot(valueParser.GetTree());
+                double value = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
+                return value;
             }
-            else if (CheckForFloatingPoint(textBox.Text) || (textBox.Text == SixFigText(inputMatrix.Get("letter").ToString())))
+            catch(Exception ex)
             {
-
-            }
-            else if (!inputMatrix.requestChange("letter", textBox.Text))
-            {
-                textBox.Text = inputMatrix.Get("letter").ToString();
+                return double.NegativeInfinity;
             }
         }
+        private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
+        {
+            double value = ParseV(textBox.Text);
+            if (value == double.NegativeInfinity || CheckForFloatingPoint(textBox.Text) || (textBox.Text == SixFigText(inputMatrix.Get(letter).ToString())))
+            {
 
+            }
+            else if (!inputMatrix.requestChange(letter, value.ToString()) && !ContainsV(textBox.Text))
+            {
+                textBox.Text = inputMatrix.Get(letter).ToString();
+            }
+
+
+
+
+
+        }
+        private bool ContainsV(string input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if(input[i].ToString() == "V")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void MultiplyRightButton_Click(object sender, EventArgs e)
         {
             rMat = rMat.Multiplication(lMat, rMat);
@@ -1247,11 +1276,7 @@ namespace NEA4
         {
             if (!CheckForFloatingPoint(textBox.Text))
             {
-                if(textBox.Text == "V" && V == inputMatrix.Get(letter))
-                {
-
-                }
-                else
+                if(SixFigText(ParseV(textBox.Text).ToString()) != SixFigText(inputMatrix.Get(letter).ToString()))
                 {
                     textBox.Text = SixFigText(inputMatrix.Get(letter).ToString());
                 }
@@ -1746,9 +1771,19 @@ namespace NEA4
 
         private void vTextBox_TextChanged(object sender, EventArgs e)
         {
-            V = Double.Parse(vTextBox.Text);
-            
+            V.value = Double.Parse(vTextBox.Text);
+
+            TextboxChanged(a1, "a", lMat);
+            TextboxChanged(b1, "b", lMat);
+            TextboxChanged(c1, "c", lMat);
+            TextboxChanged(d1, "d", lMat);
+            TextboxChanged(a2, "a", rMat);
+            TextboxChanged(b2, "b", rMat);
+            TextboxChanged(c2, "c", rMat);
+            TextboxChanged(d2, "d", rMat);
+
         }
+        
         //private double ProcessRPN(string input, double xInput)
         //{
         //    Stack variableStack = new Stack();
