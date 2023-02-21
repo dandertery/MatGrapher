@@ -21,24 +21,25 @@ namespace NEA4
 {
     public partial class MatGrapher : Form
     {
+        private int functionListNumber = 0;
         private double pitch;
         private double bounds;
         private double fBounds;
-        private Variable V;
-        private int functionListNumber = 0;
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
+        private Variable k;
+        private Variable q;
+        private Variable p;
+        private Variable V;
         private ObservablePoint[] UnitSquare = new ObservablePoint[45];
         private Matrix lMat = new Matrix(-4, 3, 1, -2);
         private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);    
         private Stack<Function> fs = new Stack<Function>();
         private Queue<Matrix> ms = new Queue<Matrix>();
-        private Variable k;
-        private Variable q;
-        private Variable p;
+
 
         struct Coordinate
         {
