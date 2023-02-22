@@ -30,7 +30,7 @@ namespace NEA4
         private bool ShearX = true;
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
-        private Matrix EndAniMatrix;
+        private Matrix AniMatrix;
         private double aniPitch;
         private int steps;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
@@ -1578,7 +1578,9 @@ namespace NEA4
         {
             if(MatrixList.Items.Count == 0)
             {
-                EndAniMatrix = rMat;
+
+                AniMatrix = StartAniMatrix;
+                
                 animationType = rMat.GetStringType();
                 steps = 100;
                 
@@ -1596,13 +1598,13 @@ namespace NEA4
                 }
                 else if (animationType == "shear")
                 {
-                    if(EndAniMatrix.Get("b") == 0)
+                    if(rMat.Get("b") == 0)
                     {
-                        aniPitch = (EndAniMatrix.Get("c") - 1) / steps;
+                        aniPitch = (rMat.Get("c") / steps);
                     }
                     else
                     {
-
+                        aniPitch = (rMat.Get("b") / steps);
                     }
                 }
 
@@ -1860,21 +1862,24 @@ namespace NEA4
             }
             else if (animationType == "shear")
             {
-                if (EndAniMatrix.Get("b") == 0)
+                if (AniMatrix.Get("b") == 0)
                 {
-                    EndAniMatrix.requestChange("c", (EndAniMatrix.Get("c") + aniPitch).ToString());
+                    AniMatrix.requestChange("c", (AniMatrix.Get("c") + aniPitch).ToString());
                 }
                 else
                 {
-
+                    AniMatrix.requestChange("b", (AniMatrix.Get("b") + aniPitch).ToString());
                 }
             }
             steps--;
+
             if(steps == 0)
             {
                 AnimateTimer.Enabled = false;
             }
-            ms.Enqueue(EndAniMatrix);
+            rMat = AniMatrix;
+            ms = new Queue<Matrix>();
+            ms.Enqueue(AniMatrix);
             UpdateFunctions();
         }
 
