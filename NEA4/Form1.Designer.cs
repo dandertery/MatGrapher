@@ -54,12 +54,12 @@
             this.ApplyMatrixButton = new System.Windows.Forms.Button();
             this.InverseLeft = new System.Windows.Forms.Button();
             this.InverseRight = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.ReflectionButton = new System.Windows.Forms.Button();
             this.TransposeLeft = new System.Windows.Forms.Button();
             this.TransposeRight = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
+            this.RotationButton = new System.Windows.Forms.Button();
+            this.EnlargementButton = new System.Windows.Forms.Button();
+            this.ShearingButton = new System.Windows.Forms.Button();
             this.fTimer = new System.Windows.Forms.Timer(this.components);
             this.AddButton = new System.Windows.Forms.Button();
             this.FunctionList = new System.Windows.Forms.ListBox();
@@ -104,6 +104,7 @@
             this.LOfInvPointsTextBox = new System.Windows.Forms.TextBox();
             this.vLabel = new System.Windows.Forms.Label();
             this.vTextBox = new System.Windows.Forms.TextBox();
+            this.AnimateTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -360,16 +361,16 @@
             this.InverseRight.UseVisualStyleBackColor = true;
             this.InverseRight.Click += new System.EventHandler(this.InverseRight_Click);
             // 
-            // button9
+            // ReflectionButton
             // 
-            this.button9.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button9.Location = new System.Drawing.Point(958, 615);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(120, 30);
-            this.button9.TabIndex = 26;
-            this.button9.Text = "Reflection";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.ReflectionButton.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ReflectionButton.Location = new System.Drawing.Point(958, 615);
+            this.ReflectionButton.Name = "ReflectionButton";
+            this.ReflectionButton.Size = new System.Drawing.Size(120, 30);
+            this.ReflectionButton.TabIndex = 26;
+            this.ReflectionButton.Text = "Reflection";
+            this.ReflectionButton.UseVisualStyleBackColor = true;
+            this.ReflectionButton.Click += new System.EventHandler(this.ReflectionButton_Click);
             // 
             // TransposeLeft
             // 
@@ -393,38 +394,38 @@
             this.TransposeRight.UseVisualStyleBackColor = true;
             this.TransposeRight.Click += new System.EventHandler(this.TransposeRight_Click);
             // 
-            // button12
+            // RotationButton
             // 
-            this.button12.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button12.Location = new System.Drawing.Point(958, 651);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(120, 30);
-            this.button12.TabIndex = 29;
-            this.button12.Text = "Rotation";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.RotationButton.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RotationButton.Location = new System.Drawing.Point(958, 651);
+            this.RotationButton.Name = "RotationButton";
+            this.RotationButton.Size = new System.Drawing.Size(120, 30);
+            this.RotationButton.TabIndex = 29;
+            this.RotationButton.Text = "Rotation";
+            this.RotationButton.UseVisualStyleBackColor = true;
+            this.RotationButton.Click += new System.EventHandler(this.RotationButton_Click);
             // 
-            // button13
+            // EnlargementButton
             // 
-            this.button13.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button13.Location = new System.Drawing.Point(958, 687);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(120, 30);
-            this.button13.TabIndex = 30;
-            this.button13.Text = "Enlargement";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.EnlargementButton.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.EnlargementButton.Location = new System.Drawing.Point(958, 687);
+            this.EnlargementButton.Name = "EnlargementButton";
+            this.EnlargementButton.Size = new System.Drawing.Size(120, 30);
+            this.EnlargementButton.TabIndex = 30;
+            this.EnlargementButton.Text = "Enlargement";
+            this.EnlargementButton.UseVisualStyleBackColor = true;
+            this.EnlargementButton.Click += new System.EventHandler(this.EnlargementButton_Click);
             // 
-            // button14
+            // ShearingButton
             // 
-            this.button14.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button14.Location = new System.Drawing.Point(958, 579);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(120, 30);
-            this.button14.TabIndex = 31;
-            this.button14.Text = "Shearing";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.ShearingButton.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ShearingButton.Location = new System.Drawing.Point(958, 579);
+            this.ShearingButton.Name = "ShearingButton";
+            this.ShearingButton.Size = new System.Drawing.Size(120, 30);
+            this.ShearingButton.TabIndex = 31;
+            this.ShearingButton.Text = "Shearing";
+            this.ShearingButton.UseVisualStyleBackColor = true;
+            this.ShearingButton.Click += new System.EventHandler(this.ShearingButton_Click);
             // 
             // fTimer
             // 
@@ -861,6 +862,11 @@
             this.vTextBox.Text = "1";
             this.vTextBox.TextChanged += new System.EventHandler(this.vTextBox_TextChanged);
             // 
+            // AnimateTimer
+            // 
+            this.AnimateTimer.Interval = 10;
+            this.AnimateTimer.Tick += new System.EventHandler(this.AnimateTimer_Tick);
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -908,12 +914,12 @@
             this.Controls.Add(this.detA);
             this.Controls.Add(this.FunctionList);
             this.Controls.Add(this.AddButton);
-            this.Controls.Add(this.button14);
-            this.Controls.Add(this.button13);
-            this.Controls.Add(this.button12);
+            this.Controls.Add(this.ShearingButton);
+            this.Controls.Add(this.EnlargementButton);
+            this.Controls.Add(this.RotationButton);
             this.Controls.Add(this.TransposeRight);
             this.Controls.Add(this.TransposeLeft);
-            this.Controls.Add(this.button9);
+            this.Controls.Add(this.ReflectionButton);
             this.Controls.Add(this.InverseRight);
             this.Controls.Add(this.InverseLeft);
             this.Controls.Add(this.ApplyMatrixButton);
@@ -973,12 +979,12 @@
         private Button ApplyMatrixButton;
         private Button InverseLeft;
         private Button InverseRight;
-        private Button button9;
+        private Button ReflectionButton;
         private Button TransposeLeft;
         private Button TransposeRight;
-        private Button button12;
-        private Button button13;
-        private Button button14;
+        private Button RotationButton;
+        private Button EnlargementButton;
+        private Button ShearingButton;
         private System.Windows.Forms.Timer fTimer;
         private Button AddButton;
         private ListBox FunctionList;
@@ -1023,5 +1029,6 @@
         private TextBox LOfInvPointsTextBox;
         private Label vLabel;
         private TextBox vTextBox;
+        private System.Windows.Forms.Timer AnimateTimer;
     }
 }

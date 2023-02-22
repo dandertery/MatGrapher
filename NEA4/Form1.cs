@@ -27,6 +27,12 @@ namespace NEA4
         private double fBounds;
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
+        private bool ShearX = true;
+        private string animationType = null;
+        private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
+        private Matrix EndAniMatrix;
+        private double aniPitch;
+        private int steps;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
         private Variable k;
@@ -1415,11 +1421,17 @@ namespace NEA4
         private void TransposeLeft_Click(object sender, EventArgs e)
         {
             lMat = OnTransposeClick(lMat);
+            string temp = c1.Text;
+            c1.Text = b1.Text;
+            b1.Text = temp;
         }
 
         private void TransposeRight_Click(object sender, EventArgs e)
         {
-            rMat = OnTransposeClick(lMat);
+            rMat = OnTransposeClick(rMat);
+            string temp = c2.Text;
+            c2.Text = b2.Text;
+            b2.Text = temp;
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
@@ -1564,7 +1576,41 @@ namespace NEA4
 
         private void AnimateButton_Click(object sender, EventArgs e)
         {
-            string type = rMat.GetStringType();
+            if(MatrixList.Items.Count == 0)
+            {
+                EndAniMatrix = rMat;
+                animationType = rMat.GetStringType();
+                steps = 100;
+                
+                if (animationType == "rotation")
+                {
+
+                }
+                else if (animationType == "reflection")
+                {
+
+                }
+                else if (animationType == "stretchlargement")
+                {
+
+                }
+                else if (animationType == "shear")
+                {
+                    if(EndAniMatrix.Get("b") == 0)
+                    {
+                        aniPitch = (EndAniMatrix.Get("c") - 1) / steps;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+                AnimateTimer.Start();
+
+
+            }
+            
         }
         private void Form1_Load_1(object sender, EventArgs e)
         {
@@ -1612,23 +1658,59 @@ namespace NEA4
             
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void ReflectionButton_Click(object sender, EventArgs e)
         {
+            V.value = 0.785;
+            vTextBox.Text = 0.785.ToString();
+            a2.Text = "cos(2V)";
+            b2.Text = "sin(2V)";
+            c2.Text = "sin(2V)";
+            d2.Text = "-cos(2V)";
+        }
+
+        private void RotationButton_Click(object sender, EventArgs e)
+        {
+            V.value = 1.57;
+            vTextBox.Text = 3.ToString();
+            a2.Text = "cos(V)";
+            b2.Text = "-sin(V)";
+            c2.Text = "sin(V)";
+            d2.Text = "cos(V)";
+        }
+
+        private void EnlargementButton_Click(object sender, EventArgs e)
+        {
+            V.value = 2;
+            vTextBox.Text = 2.ToString();
+            a2.Text = "V";
+            b2.Text = "0";
+            c2.Text = "0";
+            d2.Text = "V";
 
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void ShearingButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
+            if(ShearX)
+            {
+                ShearX = !ShearX;
+                V.value = 3;
+                vTextBox.Text = 3.ToString();
+                a2.Text = "1";
+                b2.Text = "V";
+                c2.Text = "0";
+                d2.Text = "1";
+            }
+            else
+            {
+                ShearX = !ShearX;
+                V.value = 3;
+                vTextBox.Text = 3.ToString();
+                a2.Text = "1";
+                b2.Text = "0";
+                c2.Text = "V";
+                d2.Text = "1";
+            }
 
         }
 
@@ -1761,7 +1843,41 @@ namespace NEA4
             TextboxChanged(d2, "d", rMat);
 
         }
-        
+
+        private void AnimateTimer_Tick(object sender, EventArgs e)
+        {
+            if (animationType == "rotation")
+            {
+
+            }
+            else if (animationType == "reflection")
+            {
+
+            }
+            else if (animationType == "stretchlargement")
+            {
+
+            }
+            else if (animationType == "shear")
+            {
+                if (EndAniMatrix.Get("b") == 0)
+                {
+                    EndAniMatrix.requestChange("c", (EndAniMatrix.Get("c") + aniPitch).ToString());
+                }
+                else
+                {
+
+                }
+            }
+            steps--;
+            if(steps == 0)
+            {
+                AnimateTimer.Enabled = false;
+            }
+            ms.Enqueue(EndAniMatrix);
+            UpdateFunctions();
+        }
+
         //private double ProcessRPN(string input, double xInput)
         //{
         //    Stack variableStack = new Stack();

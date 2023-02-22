@@ -59,7 +59,7 @@
                     return "reflection";
                 }
             }
-            else if (b == 0 && c == 0)
+            if (b == 0 && c == 0)
             {
                 return "stretchlargement";
             }
