@@ -37,8 +37,8 @@ namespace NEA4
         private Matrix lMat = new Matrix(-4, 3, 1, -2);
         private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);    
-        private Stack<Function> fs = new Stack<Function>();
-        private Queue<Matrix> ms = new Queue<Matrix>();
+        private Stack<Function> fs = new Stack<Function>(); // Stack of functions
+        private Queue<Matrix> ms = new Queue<Matrix>(); //FIFO structure for matrix transformations
 
 
         struct Coordinate
@@ -63,27 +63,23 @@ namespace NEA4
             public int breakpoints;
             public List<ObservablePoint[]> fSections;
             public string name;
-            public double yMin;
-            public double yMax;
-            public double xMin;
-            public double xMax;
         }
         public MatGrapher()
-        {          
+        {
+            InitializeComponent();
             bounds = 10;
             pitch = 0.1;
             V.letter = "V";
-            fBounds = bounds / pitch;
-            InitializeComponent();
+            fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null;
-            checkMatrixTimer.Start();
+            checkMatrixTimer.Start(); //Clock for updating displayed matrix values
             InitialiseKPQ();          
             DefineUnitSquare();
             UpdateFunctions();
            
         }
 
-        private void InitialiseKPQ()
+        private void InitialiseKPQ() //Initialising variables for use in function definition
         {
             k = new Variable();
             k.letter = "K";
@@ -179,13 +175,8 @@ namespace NEA4
 
             }
         }
-        private  Function ToFunction(NamedCoordArray input)
+        private  Function ToFunction(NamedCoordArray input) //creates Function datatype from coordinates and their function name
         {
-            double yMin = 0;//ONLY NEEDED FOR DEBUGGING
-            double yMax = 0;
-            double xMin = 0;
-            double xMax = 0;
-
             Function function;
             function.breakpoints = 0;
             function.name = "y = " + input.name;
@@ -197,7 +188,8 @@ namespace NEA4
             int listIndexer = 0;
             bool previousNaN = false;
             Coordinate[] coordinates = input.coordinateArray;
-            for (int i = 0; i < (coordinates.Length); i++)
+
+            for (int i = 0; i < (coordinates.Length); i++) //removing undefined coordinates and creating an array of number to  represent consecutive coordinate sequence lengths
             {
 
                 if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
@@ -210,44 +202,23 @@ namespace NEA4
                     {
                         function.breakpoints++;
                         listIndexer++;
-                        tempLengthList.Add(0);
+                        tempLengthList.Add(0); //Creates new
 
                     }
                     previousNaN = true;
                 }
                 else
                 {
-                    if (coordinates[i].y < yMin) //ONLY NEEDED FOR DEBUGGING
-                    {
-                        yMin = coordinates[i].y;
-                    }
-                    if (coordinates[i].y > yMax)
-                    {
-                        yMax = coordinates[i].y;
-                    }
-                    if (coordinates[i].x < xMin)
-                    {
-                        xMin = coordinates[i].x;
-                    }
-                    if (coordinates[i].x > xMax)
-                    {
-                        xMax = coordinates[i].x;
-                    }
-
-
                     tempLengthList[listIndexer]++;
                     previousNaN = false;
                 }
             }
 
-            function.yMin = yMin; //ONLY NEEDED FOR DEBUGGING
-            function.yMax = yMax;
-            function.xMin = xMin;
-            function.xMax = xMax;
+
 
             for (int i = 0; i < tempLengthList.Count; i++)
             {
-                if (!(tempLengthList[i] > 0))
+                if (!(tempLengthList[i] > 0)) //removes empty sequence length counters
                 {
                     tempLengthList.Remove(i);
                     function.breakpoints--;
@@ -257,7 +228,7 @@ namespace NEA4
             List<int> arrayLengths = tempLengthList;
 
 
-            Coordinate[][] CoordinatesArrays = new Coordinate[function.breakpoints + 1][];
+            Coordinate[][] CoordinatesArrays = new Coordinate[function.breakpoints + 1][]; //array of coordinate arrays
 
             CoordinatesArrays[0] = new Coordinate[arrayLengths[0]];
             CoordinatesArrays[0][0] = coordinates[0];
@@ -271,7 +242,7 @@ namespace NEA4
                 {
                     CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
                 }
-                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 2) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 2)))
+                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 2) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 2))) //checks for consecutive x coordinates, seperated by pitch
                 {
                     CoordinatesArrays[i][c] = coordinates[c]; //here
                     c++;
@@ -292,15 +263,16 @@ namespace NEA4
 
             for (int i = 0; i < (function.breakpoints + 1); i++)
             {
-                function.fSections.Add(ValuesArrays[i]);
+                function.fSections.Add(ValuesArrays[i]); // creating each function 'sectionn'
             }
             return function;
         }
         private NamedCoordArray ProcessInput(string input)
         {
             Parsing TreeInput = new Parsing(input);
+            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
+            
             pitch = 0.1;
-
             fBounds = bounds / pitch;
             Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
 
@@ -333,12 +305,11 @@ namespace NEA4
             for (int i = 0; i < (fBounds * 2); i++)
             {
                 coordinates[i].x = lMat.checkForBinaryError(xValue, 6);
-                TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
                 xTemp.value = coordinates[i].x;
                 xTemp.letter = "x";
                 variableArray[0] = xTemp;
 
-                coordinates[i].y = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
+                coordinates[i].y = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
                 xValue = xValue + pitch;
             }
             NamedCoordArray output = new NamedCoordArray();
@@ -398,7 +369,7 @@ namespace NEA4
 
         }
 
-        private double ProcessTree(TreeNode inputTree, List<Variable> varinputs)
+        private double ProcessTree(TreeNode inputTree, List<Variable> varinputs) //recursiv, top down
         {
             
             int value;
@@ -559,16 +530,13 @@ namespace NEA4
         {
             //unit Square
 
+            pitch = 0.1;
+            fBounds = bounds / pitch;
 
-            
             int implementedMemory = 64;
             ObservablePoint[] displayUnitSquare = new ObservablePoint[1];
             Stack<Function> fscopy = new Stack<Function>(fsinput);
             int bpcount = 0;
-            double ymax = 0;
-            double ymin = 0;
-            double xmax = 0;
-            double xmin = 0;
 
             for (int i = 0; i < fscopy.Count; i++)
             {
@@ -577,12 +545,7 @@ namespace NEA4
 
             }
             //bpcount--;
-            
-            ymax = bounds;
-            ymin = -bounds;
 
-            xmax = bounds;
-            xmin = -bounds;
             if (bpcount < implementedMemory)
             {
                 ObservablePoint[][] displayLines = new ObservablePoint[implementedMemory][];
@@ -606,18 +569,19 @@ namespace NEA4
                 
                 if(unitSquareDisplay)
                 {
-                    displayUnitSquare = UnitSquare;
+                    displayUnitSquare = new ObservablePoint[UnitSquare.Length];
                     for (int i = 0; i < UnitSquare.Length; i++)
                     {
-                        displayUnitSquare[i] = ApplyToObservablePoint(UnitSquare[i], QueueMatrix);
+                        displayUnitSquare[i] = UnitSquare[i];
                     }
+                    for (int i = 0; i < UnitSquare.Length; i++)
+                    {
+                        displayUnitSquare[i] = ApplyToObservablePoint(displayUnitSquare[i], QueueMatrix);
+                    }
+                    displayUnitSquare = CutFunctionToBounds(displayUnitSquare)[0];
                 }
                 
-                if (ymax == ymin) //empty case
-                {
-                    pitch = 0.1;
-                    fBounds = bounds / pitch;                                
-                }
+                
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
                 double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
 
@@ -1472,7 +1436,7 @@ namespace NEA4
         {
 
         }
-        private ObservablePoint[] OPListToArray(List<ObservablePoint> input)
+        private ObservablePoint[] OPListToArray(List<ObservablePoint> input) // List To Array converter for Observable Point Lists/Arrays
         {
             ObservablePoint[] output = new ObservablePoint[input.Count];
             for (int i = 0; i < input.Count; i++)
@@ -1524,6 +1488,8 @@ namespace NEA4
             try
             {
                 bounds = double.Parse(BoundsTextBox.Text);
+                pitch = bounds / 100;
+                fBounds = bounds / pitch;
                 UpdateFunctions();
             }
             catch (Exception)
