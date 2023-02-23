@@ -25,6 +25,8 @@ namespace NEA4
         private double pitch;
         private double bounds;
         private double fBounds;
+        private double renderBounds;
+        private double renderFBounds;
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool ShearX = true;
@@ -32,6 +34,7 @@ namespace NEA4
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
         private Matrix AniMatrix;
         private double aniPitch;
+        private double aniPitch2;
         private int steps;
         private string[] functionArray = { "cos", "sin", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
@@ -96,6 +99,7 @@ namespace NEA4
             q = new Variable();
             q.letter = "Q";
             q.value = double.Parse(qTextbox.Text);
+            
         }
 
         private void DefineUnitSquare()
@@ -280,7 +284,9 @@ namespace NEA4
             
             pitch = 0.1;
             fBounds = bounds / pitch;
-            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(fBounds * 2)];
+            renderBounds = bounds * 10;
+            renderFBounds = renderBounds / pitch;
+            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(renderFBounds * 2)];
 
 
             List<Variable> variableArray = new List<Variable>();
@@ -306,9 +312,9 @@ namespace NEA4
             PI.value = Math.PI;
             variableArray.Add(E);
             variableArray.Add(PI);
-            double xValue = -bounds;
+            double xValue = -renderBounds;
 
-            for (int i = 0; i < (fBounds * 2); i++)
+            for (int i = 0; i < (renderFBounds * 2); i++)
             {
                 coordinates[i].x = lMat.checkForBinaryError(xValue, 6);
                 xTemp.value = coordinates[i].x;
@@ -1586,7 +1592,8 @@ namespace NEA4
                 
                 if (animationType == "rotation")
                 {
-
+                    aniPitch = V.value / steps;
+                    V.value = 0;
                 }
                 else if (animationType == "reflection")
                 {
@@ -1594,7 +1601,8 @@ namespace NEA4
                 }
                 else if (animationType == "stretchlargement")
                 {
-
+                    aniPitch = ((rMat.Get("a") - 1) / steps);
+                    aniPitch2 = ((rMat.Get("d") - 1) / steps);
                 }
                 else if (animationType == "shear")
                 {
@@ -1673,7 +1681,7 @@ namespace NEA4
         private void RotationButton_Click(object sender, EventArgs e)
         {
             V.value = 1.57;
-            vTextBox.Text = 3.ToString();
+            vTextBox.Text = 1.57.ToString();
             a2.Text = "cos(V)";
             b2.Text = "-sin(V)";
             c2.Text = "sin(V)";
@@ -1850,7 +1858,13 @@ namespace NEA4
         {
             if (animationType == "rotation")
             {
-
+               
+                V.value = V.value + aniPitch;
+                vTextBox.Text = V.value.ToString();
+                AniMatrix.requestChange("a", (Math.Cos(V.value).ToString()));
+                AniMatrix.requestChange("b", (Math.Sin(V.value).ToString()));
+                AniMatrix.requestChange("c", ((Math.Sin(V.value)*-1).ToString()));
+                AniMatrix.requestChange("d", (Math.Cos(V.value).ToString()));
             }
             else if (animationType == "reflection")
             {
@@ -1858,7 +1872,8 @@ namespace NEA4
             }
             else if (animationType == "stretchlargement")
             {
-
+                AniMatrix.requestChange("a", (AniMatrix.Get("a") + aniPitch).ToString());
+                AniMatrix.requestChange("d", (AniMatrix.Get("d") + aniPitch2).ToString());
             }
             else if (animationType == "shear")
             {
