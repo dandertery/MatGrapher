@@ -864,7 +864,7 @@
             // 
             // AnimateTimer
             // 
-            this.AnimateTimer.Interval = 10;
+            this.AnimateTimer.Interval = 1;
             this.AnimateTimer.Tick += new System.EventHandler(this.AnimateTimer_Tick);
             // 
             // MatGrapher

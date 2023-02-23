@@ -1588,7 +1588,7 @@ namespace NEA4
                 AniMatrix = StartAniMatrix;
                 
                 animationType = rMat.GetStringType();
-                steps = 100;
+                steps = 200;
                 
                 if (animationType == "rotation")
                 {
