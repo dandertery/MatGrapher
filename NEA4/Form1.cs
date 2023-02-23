@@ -30,6 +30,7 @@ namespace NEA4
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool ShearX = true;
+        private bool isAnimating;
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
         private Matrix AniMatrix;
@@ -1283,7 +1284,7 @@ namespace NEA4
             CheckMatrixValue(c2, "c", rMat);
             CheckMatrixValue(d2, "d", rMat);
 
-            if (rMat.GetStringType() == "unknown")
+            if (rMat.GetStringType() == "unknown" || isAnimating)
             {
                 AnimateButton.Enabled = false;
             }
@@ -1582,13 +1583,14 @@ namespace NEA4
 
         private void AnimateButton_Click(object sender, EventArgs e)
         {
+            AnimateButton.Enabled = false;
             if(MatrixList.Items.Count == 0)
             {
 
                 AniMatrix = StartAniMatrix;
                 
                 animationType = rMat.GetStringType();
-                steps = 200;
+                steps = 100;
                 
                 if (animationType == "rotation")
                 {
@@ -1615,7 +1617,7 @@ namespace NEA4
                         aniPitch = (rMat.Get("b") / steps);
                     }
                 }
-
+                isAnimating = true;
                 AnimateTimer.Start();
 
 
@@ -1746,14 +1748,22 @@ namespace NEA4
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void InvariantLinesButton_Click(object sender, EventArgs e)
         {
 
+            UpdateQueueMatrix();
+            string InvLine1 = QueueMatrix.GetInvLine1();
+            string InvLine2 = QueueMatrix.GetInvLine2();
+            FunctionList.Items.Add(InvLine1);
+            FunctionList.Items.Add(InvLine2);
+            UpdateFunctions();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void LinesOfInvariantPointsButton_Click(object sender, EventArgs e)
         {
-
+            UpdateQueueMatrix();
+            string InvPointLine = QueueMatrix.GetInvPointLine();
+            FunctionList.Items.Add(InvPointLine);
         }
 
         private void cosButton_Click(object sender, EventArgs e)
@@ -1841,16 +1851,24 @@ namespace NEA4
 
         private void vTextBox_TextChanged(object sender, EventArgs e)
         {
-            V.value = Double.Parse(vTextBox.Text);
+            try
+            {
+                V.value = Double.Parse(vTextBox.Text);
 
-            TextboxChanged(a1, "a", lMat);
-            TextboxChanged(b1, "b", lMat);
-            TextboxChanged(c1, "c", lMat);
-            TextboxChanged(d1, "d", lMat);
-            TextboxChanged(a2, "a", rMat);
-            TextboxChanged(b2, "b", rMat);
-            TextboxChanged(c2, "c", rMat);
-            TextboxChanged(d2, "d", rMat);
+                TextboxChanged(a1, "a", lMat);
+                TextboxChanged(b1, "b", lMat);
+                TextboxChanged(c1, "c", lMat);
+                TextboxChanged(d1, "d", lMat);
+                TextboxChanged(a2, "a", rMat);
+                TextboxChanged(b2, "b", rMat);
+                TextboxChanged(c2, "c", rMat);
+                TextboxChanged(d2, "d", rMat);
+            }
+            catch
+            {
+
+            }
+
 
         }
 
@@ -1891,6 +1909,7 @@ namespace NEA4
             if(steps == 0)
             {
                 AnimateTimer.Enabled = false;
+                isAnimating = false;
             }
             rMat = AniMatrix;
             ms = new Queue<Matrix>();

@@ -129,7 +129,7 @@
             this.BitmapButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BitmapButton.Location = new System.Drawing.Point(12, 569);
             this.BitmapButton.Name = "BitmapButton";
-            this.BitmapButton.Size = new System.Drawing.Size(300, 80);
+            this.BitmapButton.Size = new System.Drawing.Size(300, 50);
             this.BitmapButton.TabIndex = 2;
             this.BitmapButton.Text = "Bitmap";
             this.BitmapButton.UseVisualStyleBackColor = true;
@@ -149,9 +149,9 @@
             // GridButton
             // 
             this.GridButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GridButton.Location = new System.Drawing.Point(12, 747);
+            this.GridButton.Location = new System.Drawing.Point(12, 717);
             this.GridButton.Name = "GridButton";
-            this.GridButton.Size = new System.Drawing.Size(300, 52);
+            this.GridButton.Size = new System.Drawing.Size(147, 52);
             this.GridButton.TabIndex = 4;
             this.GridButton.Text = "Grid";
             this.GridButton.UseVisualStyleBackColor = true;
@@ -276,18 +276,18 @@
             // InvariantLinesButton
             // 
             this.InvariantLinesButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InvariantLinesButton.Location = new System.Drawing.Point(9, 805);
+            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 775);
             this.InvariantLinesButton.Name = "InvariantLinesButton";
-            this.InvariantLinesButton.Size = new System.Drawing.Size(300, 40);
+            this.InvariantLinesButton.Size = new System.Drawing.Size(195, 40);
             this.InvariantLinesButton.TabIndex = 18;
             this.InvariantLinesButton.Text = "Invariant Lines";
             this.InvariantLinesButton.UseVisualStyleBackColor = true;
-            this.InvariantLinesButton.Click += new System.EventHandler(this.button1_Click);
+            this.InvariantLinesButton.Click += new System.EventHandler(this.InvariantLinesButton_Click);
             // 
             // EigenvectorsButton
             // 
             this.EigenvectorsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EigenvectorsButton.Location = new System.Drawing.Point(9, 655);
+            this.EigenvectorsButton.Location = new System.Drawing.Point(12, 625);
             this.EigenvectorsButton.Name = "EigenvectorsButton";
             this.EigenvectorsButton.Size = new System.Drawing.Size(300, 40);
             this.EigenvectorsButton.TabIndex = 19;
@@ -298,13 +298,13 @@
             // LinesOfInvariantPointsButton
             // 
             this.LinesOfInvariantPointsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(8, 845);
+            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(213, 775);
             this.LinesOfInvariantPointsButton.Name = "LinesOfInvariantPointsButton";
             this.LinesOfInvariantPointsButton.Size = new System.Drawing.Size(300, 40);
             this.LinesOfInvariantPointsButton.TabIndex = 20;
             this.LinesOfInvariantPointsButton.Text = "Lines of Invariant Points";
             this.LinesOfInvariantPointsButton.UseVisualStyleBackColor = true;
-            this.LinesOfInvariantPointsButton.Click += new System.EventHandler(this.button3_Click);
+            this.LinesOfInvariantPointsButton.Click += new System.EventHandler(this.LinesOfInvariantPointsButton_Click);
             // 
             // SwitchButton
             // 
@@ -686,7 +686,7 @@
             // UnitSquareButton
             // 
             this.UnitSquareButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.UnitSquareButton.Location = new System.Drawing.Point(12, 701);
+            this.UnitSquareButton.Location = new System.Drawing.Point(12, 671);
             this.UnitSquareButton.Name = "UnitSquareButton";
             this.UnitSquareButton.Size = new System.Drawing.Size(147, 40);
             this.UnitSquareButton.TabIndex = 58;
@@ -697,7 +697,7 @@
             // TriangleButton
             // 
             this.TriangleButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TriangleButton.Location = new System.Drawing.Point(165, 701);
+            this.TriangleButton.Location = new System.Drawing.Point(165, 671);
             this.TriangleButton.Name = "TriangleButton";
             this.TriangleButton.Size = new System.Drawing.Size(147, 40);
             this.TriangleButton.TabIndex = 59;
