@@ -22,11 +22,14 @@ namespace NEA4
     public partial class MatGrapher : Form
     {
         private int functionListNumber = 0;
+        private int steps;
         private double pitch;
         private double bounds;
         private double fBounds;
         private double renderBounds;
         private double renderFBounds;
+        private double aniPitch;
+        private double aniPitch2;
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool ShearX = true;
@@ -34,19 +37,17 @@ namespace NEA4
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
         private Matrix AniMatrix;
-        private double aniPitch;
-        private double aniPitch2;
-        private int steps;
-        private string[] functionArray = { "cos", "sin", "ln", "abs" };
-        private string[] operationArray = { "^", "*", "/", "-", "+" };
+        private Matrix lMat = new Matrix(-4, 3, 1, -2);
+        private Matrix rMat = new Matrix(-4, 3, 1, -2);
+        private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);
         private Variable k;
         private Variable q;
         private Variable p;
         private Variable V;
         private ObservablePoint[] UnitSquare = new ObservablePoint[45];
-        private Matrix lMat = new Matrix(-4, 3, 1, -2);
-        private Matrix rMat = new Matrix(-4, 3, 1, -2);
-        private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);    
+        private string[] functionArray = { "cos", "sin", "ln", "abs" };
+        private string[] operationArray = { "^", "*", "/", "-", "+" };
+
         private Stack<Function> fs = new Stack<Function>(); // Stack of functions
         private Queue<Matrix> ms = new Queue<Matrix>(); //FIFO structure for matrix transformations
 
@@ -317,12 +318,12 @@ namespace NEA4
 
             for (int i = 0; i < (renderFBounds * 2); i++)
             {
-                coordinates[i].x = lMat.checkForBinaryError(xValue, 6);
+                coordinates[i].x = checkForBinaryError(xValue, 6);
                 xTemp.value = coordinates[i].x;
                 xTemp.letter = "x";
                 variableArray[0] = xTemp;
 
-                coordinates[i].y = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
+                coordinates[i].y = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
                 xValue = xValue + pitch;
             }
             NamedCoordArray output = new NamedCoordArray();
@@ -1202,7 +1203,7 @@ namespace NEA4
                 variableArray.Add(V);
                 Parsing valueParser = new Parsing(text);
                 TreeNode abstractSyntaxTree = FindRoot(valueParser.GetTree());
-                double value = lMat.checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
+                double value = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
                 return value;
             }
             catch(Exception ex)
@@ -1274,17 +1275,24 @@ namespace NEA4
         }
         private void CheckMatrix()
         {
-            CheckMatrixValue(a1, "a", lMat);
-            CheckMatrixValue(b1, "b", lMat);
-            CheckMatrixValue(c1, "c", lMat);
-            CheckMatrixValue(d1, "d", lMat);
-
-            CheckMatrixValue(a2, "a", rMat);
-            CheckMatrixValue(b2, "b", rMat);
-            CheckMatrixValue(c2, "c", rMat);
-            CheckMatrixValue(d2, "d", rMat);
-
-            if (rMat.GetStringType() == "unknown" || isAnimating)
+            if(lMat.getDet() == 0)
+            {
+                InverseLeft.Enabled = false;
+            }
+            else
+            {
+                InverseLeft.Enabled = true;
+            }
+            if (rMat.getDet() == 0)
+            {
+                InverseRight.Enabled = false;
+            }
+            else
+            {
+                InverseLeft.Enabled = true;
+            }
+            CheckMatrixValues();
+            if (rMat.GetStringType() == "unknown" || rMat.GetStringType() == "reflection" || isAnimating)
             {
                 AnimateButton.Enabled = false;
             }
@@ -1308,6 +1316,19 @@ namespace NEA4
                 InvLine2TextBox.Text = QueueMatrix.GetInvLine2();
                 LOfInvPointsTextBox.Text = QueueMatrix.GetInvPointLine();
             }
+        }
+
+        private void CheckMatrixValues()
+        {
+            CheckMatrixValue(a1, "a", lMat);
+            CheckMatrixValue(b1, "b", lMat);
+            CheckMatrixValue(c1, "c", lMat);
+            CheckMatrixValue(d1, "d", lMat);
+
+            CheckMatrixValue(a2, "a", rMat);
+            CheckMatrixValue(b2, "b", rMat);
+            CheckMatrixValue(c2, "c", rMat);
+            CheckMatrixValue(d2, "d", rMat);
         }
         private string SixFigText(string input)
         {
@@ -1400,6 +1421,25 @@ namespace NEA4
             rMat = lMat;
             lMat = temp;
         }
+        public double checkForBinaryError(double input, int sigFig)
+        {
+            double scalar = Math.Pow(10, sigFig);
+            double scaled = input * scalar;
+            double floor = Math.Floor(scaled);
+            double ceiling = Math.Ceiling(scaled);
+            if (scaled - floor < 0.1)
+            {
+                return floor / scalar;
+            }
+            else if (ceiling - scaled < 0.1)
+            {
+                return ceiling / scalar;
+            }
+            double output = scaled / scalar;
+            return output;
+
+
+        }
 
         private Matrix OnInverseClick(Matrix input)
         {
@@ -1417,12 +1457,22 @@ namespace NEA4
 
         private void InverseLeft_Click(object sender, EventArgs e)
         {
-            lMat = OnInverseClick(lMat);
+            if(lMat.getDet() != 0)
+            {
+                lMat = OnInverseClick(lMat);
+
+            }
+            
         }
 
         private void InverseRight_Click(object sender, EventArgs e)
         {
-            rMat = OnInverseClick(rMat);
+            if (rMat.getDet() != 0)
+            {
+                rMat = OnInverseClick(rMat);
+
+            }
+            
         }
 
         private void TransposeLeft_Click(object sender, EventArgs e)
@@ -1431,6 +1481,7 @@ namespace NEA4
             string temp = c1.Text;
             c1.Text = b1.Text;
             b1.Text = temp;
+            CheckMatrixValues();
         }
 
         private void TransposeRight_Click(object sender, EventArgs e)
@@ -1439,6 +1490,7 @@ namespace NEA4
             string temp = c2.Text;
             c2.Text = b2.Text;
             b2.Text = temp;
+            CheckMatrixValues();
         }
 
         private void ClearButton_Click(object sender, EventArgs e)

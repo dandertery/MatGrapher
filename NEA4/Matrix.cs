@@ -19,7 +19,7 @@
             b = bInput;
             c = cInput;
             d = dInput;
-            determinant = (a*d) - (b*c);
+            determinant = checkForBinaryError((a*d) - (b*c), 6);
             FindInvariantLines();
             FindLinesOfInvariantPoints();
             type = DetermineType();
@@ -121,7 +121,7 @@
                 {
                     d=valueDouble;
                 }
-                determinant = (a * d) - (b * c);
+                determinant = checkForBinaryError((a * d) - (b * c), 6);
                 type = DetermineType();
                 return true;
             }
