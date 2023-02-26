@@ -32,6 +32,7 @@ namespace NEA4
         private double aniPitch2;
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
+        private bool displayTriangle = false;
         private bool ShearX = true;
         private bool isAnimating;
         private string animationType = null;
@@ -1304,7 +1305,10 @@ namespace NEA4
             detA.Text = SixFigText(lMat.getDet().ToString());
             detB.Text = SixFigText(rMat.getDet().ToString());
 
-            if(MatrixList.Items.Count == 0)
+
+
+
+            if (MatrixList.Items.Count == 0)
             {
                 InvLine1TextBox.Text = "";
                 InvLine2TextBox.Text = "";
@@ -1315,6 +1319,12 @@ namespace NEA4
                 InvLine1TextBox.Text = QueueMatrix.GetInvLine1();
                 InvLine2TextBox.Text = QueueMatrix.GetInvLine2();
                 LOfInvPointsTextBox.Text = QueueMatrix.GetInvPointLine();
+                EigenValue1TextBox.Text = QueueMatrix.GetEigenValue1().ToString();
+                EigenValue2TextBox.Text = QueueMatrix.GetEigenValue2().ToString();
+                EV1A.Text = QueueMatrix.GetEV1A().ToString();
+                EV1B.Text = QueueMatrix.GetEV1B().ToString();
+                EV2A.Text = QueueMatrix.GetEV2A().ToString();
+                EV2B.Text = QueueMatrix.GetEV2B().ToString();
             }
         }
 
@@ -1967,6 +1977,11 @@ namespace NEA4
             ms = new Queue<Matrix>();
             ms.Enqueue(AniMatrix);
             UpdateFunctions();
+        }
+
+        private void TriangleButton_Click(object sender, EventArgs e)
+        {
+            displayTriangle = !displayTriangle;
         }
 
         //private double ProcessRPN(string input, double xInput)

@@ -6,7 +6,12 @@
         private double b;
         private double c;
         private double d;
-
+        private double Eigenvalue1;
+        private double Eigenvalue2;
+        private double EV1A;
+        private double EV1B;
+        private double EV2A;
+        private double EV2B;
         private string invLine1;
         private string invLine2;
         private string invPointLine;
@@ -22,6 +27,7 @@
             determinant = checkForBinaryError((a*d) - (b*c), 6);
             FindInvariantLines();
             FindLinesOfInvariantPoints();
+            FindEigenvectors();
             type = DetermineType();
         }
 
@@ -44,6 +50,30 @@
         public string GetInvPointLine()
         {
             return invPointLine;
+        }
+        public double GetEigenValue1()
+        {
+            return Eigenvalue1;
+        }
+        public double GetEigenValue2()
+        {
+            return Eigenvalue2;
+        }
+        public double GetEV1A()
+        {
+            return EV1A;
+        }
+        public double GetEV1B()
+        {
+            return EV1B;
+        }
+        public double GetEV2A()
+        {
+            return EV2A;
+        }
+        public double GetEV2B()
+        {
+            return EV2B;
         }
 
         public string DetermineType()
@@ -207,11 +237,36 @@
 
         private void FindEigenvalues()
         {
-
+            double temp = SolveQuadratic(1, -a - d, (a * d) - (b * c), true);
+            if(temp != double.NaN && temp != double.PositiveInfinity && temp != double.NegativeInfinity)
+            {
+                Eigenvalue1 = temp;
+            }
+            double temp2 = SolveQuadratic(1, -a - d, (a * d) - (b * c), false);
+            if(temp2 != double.NaN && temp2 != double.PositiveInfinity && temp2 != double.NegativeInfinity)
+            {
+                Eigenvalue2 = temp2;
+            }
+            
         }
         private void FindEigenvectors()
         {
-            FindEigenvalues();
+            FindEigenvalues();           
+            if(b!= 0)
+            {
+                if(Eigenvalue1 != double.NaN &&  Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
+                {
+                    EV1A = 1;
+                    EV2A = (-a + Eigenvalue1) / b;
+                }
+                if (Eigenvalue1 != double.NaN && Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
+                {
+                    EV2A = 1;
+                    EV2B = (-a + Eigenvalue2) / b;
+                }
+                
+                
+            }
 
 
         }

@@ -32,7 +32,6 @@
             this.cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             this.RPNTextBox = new System.Windows.Forms.TextBox();
             this.BitmapButton = new System.Windows.Forms.Button();
-            this.FunctionButton = new System.Windows.Forms.Button();
             this.GridButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RPNInputLabel = new System.Windows.Forms.Label();
@@ -105,6 +104,16 @@
             this.vLabel = new System.Windows.Forms.Label();
             this.vTextBox = new System.Windows.Forms.TextBox();
             this.AnimateTimer = new System.Windows.Forms.Timer(this.components);
+            this.EV1A = new System.Windows.Forms.TextBox();
+            this.EigenVectorLabel1 = new System.Windows.Forms.Label();
+            this.EV1B = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.EV2A = new System.Windows.Forms.TextBox();
+            this.EV2B = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.EigenValue1TextBox = new System.Windows.Forms.TextBox();
+            this.EigenValue2TextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -135,21 +144,10 @@
             this.BitmapButton.UseVisualStyleBackColor = true;
             this.BitmapButton.Click += new System.EventHandler(this.BitmapButton_Click);
             // 
-            // FunctionButton
-            // 
-            this.FunctionButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FunctionButton.Location = new System.Drawing.Point(12, 922);
-            this.FunctionButton.Name = "FunctionButton";
-            this.FunctionButton.Size = new System.Drawing.Size(300, 80);
-            this.FunctionButton.TabIndex = 3;
-            this.FunctionButton.Text = "Function";
-            this.FunctionButton.UseVisualStyleBackColor = true;
-            this.FunctionButton.Click += new System.EventHandler(this.FunctionButton_Click);
-            // 
             // GridButton
             // 
             this.GridButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GridButton.Location = new System.Drawing.Point(12, 717);
+            this.GridButton.Location = new System.Drawing.Point(12, 671);
             this.GridButton.Name = "GridButton";
             this.GridButton.Size = new System.Drawing.Size(147, 52);
             this.GridButton.TabIndex = 4;
@@ -276,9 +274,9 @@
             // InvariantLinesButton
             // 
             this.InvariantLinesButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 775);
+            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 729);
             this.InvariantLinesButton.Name = "InvariantLinesButton";
-            this.InvariantLinesButton.Size = new System.Drawing.Size(195, 40);
+            this.InvariantLinesButton.Size = new System.Drawing.Size(177, 40);
             this.InvariantLinesButton.TabIndex = 18;
             this.InvariantLinesButton.Text = "Invariant Lines";
             this.InvariantLinesButton.UseVisualStyleBackColor = true;
@@ -287,9 +285,9 @@
             // EigenvectorsButton
             // 
             this.EigenvectorsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EigenvectorsButton.Location = new System.Drawing.Point(12, 625);
+            this.EigenvectorsButton.Location = new System.Drawing.Point(165, 671);
             this.EigenvectorsButton.Name = "EigenvectorsButton";
-            this.EigenvectorsButton.Size = new System.Drawing.Size(300, 40);
+            this.EigenvectorsButton.Size = new System.Drawing.Size(147, 40);
             this.EigenvectorsButton.TabIndex = 19;
             this.EigenvectorsButton.Text = "Eigenvectors";
             this.EigenvectorsButton.UseVisualStyleBackColor = true;
@@ -298,7 +296,7 @@
             // LinesOfInvariantPointsButton
             // 
             this.LinesOfInvariantPointsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(213, 775);
+            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(12, 775);
             this.LinesOfInvariantPointsButton.Name = "LinesOfInvariantPointsButton";
             this.LinesOfInvariantPointsButton.Size = new System.Drawing.Size(300, 40);
             this.LinesOfInvariantPointsButton.TabIndex = 20;
@@ -686,7 +684,7 @@
             // UnitSquareButton
             // 
             this.UnitSquareButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.UnitSquareButton.Location = new System.Drawing.Point(12, 671);
+            this.UnitSquareButton.Location = new System.Drawing.Point(12, 625);
             this.UnitSquareButton.Name = "UnitSquareButton";
             this.UnitSquareButton.Size = new System.Drawing.Size(147, 40);
             this.UnitSquareButton.TabIndex = 58;
@@ -697,12 +695,13 @@
             // TriangleButton
             // 
             this.TriangleButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TriangleButton.Location = new System.Drawing.Point(165, 671);
+            this.TriangleButton.Location = new System.Drawing.Point(165, 625);
             this.TriangleButton.Name = "TriangleButton";
             this.TriangleButton.Size = new System.Drawing.Size(147, 40);
             this.TriangleButton.TabIndex = 59;
             this.TriangleButton.Text = "Triangle";
             this.TriangleButton.UseVisualStyleBackColor = true;
+            this.TriangleButton.Click += new System.EventHandler(this.TriangleButton_Click);
             // 
             // AnimateButton
             // 
@@ -797,7 +796,7 @@
             // LinesOf
             // 
             this.LinesOf.AutoSize = true;
-            this.LinesOf.Location = new System.Drawing.Point(1057, 808);
+            this.LinesOf.Location = new System.Drawing.Point(1084, 796);
             this.LinesOf.Name = "LinesOf";
             this.LinesOf.Size = new System.Drawing.Size(54, 15);
             this.LinesOf.TabIndex = 70;
@@ -806,7 +805,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1057, 840);
+            this.label8.Location = new System.Drawing.Point(1084, 828);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(54, 15);
             this.label8.TabIndex = 71;
@@ -815,7 +814,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1056, 779);
+            this.label7.Location = new System.Drawing.Point(1083, 771);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(78, 15);
             this.label7.TabIndex = 72;
@@ -823,21 +822,21 @@
             // 
             // InvLine1TextBox
             // 
-            this.InvLine1TextBox.Location = new System.Drawing.Point(1127, 805);
+            this.InvLine1TextBox.Location = new System.Drawing.Point(1165, 797);
             this.InvLine1TextBox.Name = "InvLine1TextBox";
             this.InvLine1TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine1TextBox.TabIndex = 73;
             // 
             // InvLine2TextBox
             // 
-            this.InvLine2TextBox.Location = new System.Drawing.Point(1127, 835);
+            this.InvLine2TextBox.Location = new System.Drawing.Point(1165, 825);
             this.InvLine2TextBox.Name = "InvLine2TextBox";
             this.InvLine2TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine2TextBox.TabIndex = 74;
             // 
             // LOfInvPointsTextBox
             // 
-            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(1138, 776);
+            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(1165, 768);
             this.LOfInvPointsTextBox.Name = "LOfInvPointsTextBox";
             this.LOfInvPointsTextBox.Size = new System.Drawing.Size(100, 23);
             this.LOfInvPointsTextBox.TabIndex = 75;
@@ -846,7 +845,7 @@
             // 
             this.vLabel.AutoSize = true;
             this.vLabel.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.vLabel.Location = new System.Drawing.Point(660, 801);
+            this.vLabel.Location = new System.Drawing.Point(646, 833);
             this.vLabel.Name = "vLabel";
             this.vLabel.Size = new System.Drawing.Size(34, 38);
             this.vLabel.TabIndex = 77;
@@ -855,7 +854,7 @@
             // vTextBox
             // 
             this.vTextBox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.vTextBox.Location = new System.Drawing.Point(700, 793);
+            this.vTextBox.Location = new System.Drawing.Point(686, 825);
             this.vTextBox.Name = "vTextBox";
             this.vTextBox.Size = new System.Drawing.Size(100, 52);
             this.vTextBox.TabIndex = 76;
@@ -867,11 +866,99 @@
             this.AnimateTimer.Interval = 1;
             this.AnimateTimer.Tick += new System.EventHandler(this.AnimateTimer_Tick);
             // 
+            // EV1A
+            // 
+            this.EV1A.Location = new System.Drawing.Point(998, 764);
+            this.EV1A.Name = "EV1A";
+            this.EV1A.Size = new System.Drawing.Size(33, 23);
+            this.EV1A.TabIndex = 78;
+            // 
+            // EigenVectorLabel1
+            // 
+            this.EigenVectorLabel1.AutoSize = true;
+            this.EigenVectorLabel1.Location = new System.Drawing.Point(917, 776);
+            this.EigenVectorLabel1.Name = "EigenVectorLabel1";
+            this.EigenVectorLabel1.Size = new System.Drawing.Size(75, 15);
+            this.EigenVectorLabel1.TabIndex = 79;
+            this.EigenVectorLabel1.Text = "Eigenvector1";
+            // 
+            // EV1B
+            // 
+            this.EV1B.Location = new System.Drawing.Point(998, 793);
+            this.EV1B.Name = "EV1B";
+            this.EV1B.Size = new System.Drawing.Size(33, 23);
+            this.EV1B.TabIndex = 80;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(917, 845);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(75, 15);
+            this.label9.TabIndex = 81;
+            this.label9.Text = "Eigenvector2";
+            // 
+            // EV2A
+            // 
+            this.EV2A.Location = new System.Drawing.Point(998, 828);
+            this.EV2A.Name = "EV2A";
+            this.EV2A.Size = new System.Drawing.Size(33, 23);
+            this.EV2A.TabIndex = 82;
+            // 
+            // EV2B
+            // 
+            this.EV2B.Location = new System.Drawing.Point(998, 857);
+            this.EV2B.Name = "EV2B";
+            this.EV2B.Size = new System.Drawing.Size(33, 23);
+            this.EV2B.TabIndex = 83;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(803, 776);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 15);
+            this.label10.TabIndex = 84;
+            this.label10.Text = "Eigenvalue1";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(806, 845);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(70, 15);
+            this.label11.TabIndex = 85;
+            this.label11.Text = "Eigenvalue2";
+            // 
+            // EigenValue1TextBox
+            // 
+            this.EigenValue1TextBox.Location = new System.Drawing.Point(878, 773);
+            this.EigenValue1TextBox.Name = "EigenValue1TextBox";
+            this.EigenValue1TextBox.Size = new System.Drawing.Size(33, 23);
+            this.EigenValue1TextBox.TabIndex = 86;
+            // 
+            // EigenValue2TextBox
+            // 
+            this.EigenValue2TextBox.Location = new System.Drawing.Point(878, 845);
+            this.EigenValue2TextBox.Name = "EigenValue2TextBox";
+            this.EigenValue2TextBox.Size = new System.Drawing.Size(33, 23);
+            this.EigenValue2TextBox.TabIndex = 87;
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 881);
+            this.Controls.Add(this.EigenValue2TextBox);
+            this.Controls.Add(this.EigenValue1TextBox);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.EV2B);
+            this.Controls.Add(this.EV2A);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.EV1B);
+            this.Controls.Add(this.EigenVectorLabel1);
+            this.Controls.Add(this.EV1A);
             this.Controls.Add(this.vLabel);
             this.Controls.Add(this.vTextBox);
             this.Controls.Add(this.LOfInvPointsTextBox);
@@ -940,7 +1027,6 @@
             this.Controls.Add(this.a1);
             this.Controls.Add(this.RPNInputLabel);
             this.Controls.Add(this.GridButton);
-            this.Controls.Add(this.FunctionButton);
             this.Controls.Add(this.BitmapButton);
             this.Controls.Add(this.RPNTextBox);
             this.Controls.Add(this.cartesianChart1);
@@ -957,7 +1043,6 @@
         private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
         private TextBox RPNTextBox;
         private Button BitmapButton;
-        private Button FunctionButton;
         private Button GridButton;
         private ContextMenuStrip contextMenuStrip1;
         private Label RPNInputLabel;
@@ -1030,5 +1115,15 @@
         private Label vLabel;
         private TextBox vTextBox;
         private System.Windows.Forms.Timer AnimateTimer;
+        private TextBox EV1A;
+        private Label EigenVectorLabel1;
+        private TextBox EV1B;
+        private Label label9;
+        private TextBox EV2A;
+        private TextBox EV2B;
+        private Label label10;
+        private Label label11;
+        private TextBox EigenValue1TextBox;
+        private TextBox EigenValue2TextBox;
     }
 }
