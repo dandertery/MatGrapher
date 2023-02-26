@@ -1228,7 +1228,7 @@ namespace NEA4
             }
             else if (!inputMatrix.requestChange(letter, value.ToString()) && !ContainsV(textBox.Text))
             {
-                textBox.Text = inputMatrix.Get(letter).ToString();
+                textBox.Text = checkForBinaryError(inputMatrix.Get(letter), 6).ToString();
             }
 
 
@@ -1440,20 +1440,29 @@ namespace NEA4
         }
         public double checkForBinaryError(double input, int sigFig)
         {
-            double scalar = Math.Pow(10, sigFig);
-            double scaled = input * scalar;
-            double floor = Math.Floor(scaled);
-            double ceiling = Math.Ceiling(scaled);
-            if (scaled - floor < 0.1)
+            string counter = input.ToString();
+            if(counter.Length > sigFig)
             {
-                return floor / scalar;
+                double scalar = Math.Pow(10, sigFig);
+                double scaled = input * scalar;
+                double floor = Math.Floor(scaled);
+                double ceiling = Math.Ceiling(scaled);
+                if (scaled - floor < 0.1)
+                {
+                    return floor / scalar;
+                }
+                else if (ceiling - scaled < 0.1)
+                {
+                    return ceiling / scalar;
+                }
+                double output = scaled / scalar;
+                return output;
             }
-            else if (ceiling - scaled < 0.1)
+            else
             {
-                return ceiling / scalar;
+                return input;
             }
-            double output = scaled / scalar;
-            return output;
+
 
 
         }
@@ -1659,10 +1668,11 @@ namespace NEA4
                 AniMatrix = StartAniMatrix;
                 
                 animationType = rMat.GetStringType();
-                steps = 100;
+                steps = 150;
                 
                 if (animationType == "rotation")
                 {
+                    steps = 100;
                     aniPitch = V.value / steps;
                     V.value = 0;
                 }
