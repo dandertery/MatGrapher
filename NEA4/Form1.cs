@@ -46,7 +46,7 @@ namespace NEA4
         private Variable p;
         private Variable V;
         private ObservablePoint[] UnitSquare = new ObservablePoint[45];
-        private string[] functionArray = { "cos", "sin", "ln", "abs" };
+        private string[] functionArray = { "cos", "sin", "log", "ln", "abs" };
         private string[] operationArray = { "^", "*", "/", "-", "+" };
 
         private Stack<Function> fs = new Stack<Function>(); // Stack of functions
@@ -431,9 +431,11 @@ namespace NEA4
                         return Math.Sin(rightValue);
 
                     case 2:
-                        return Math.Log(rightValue);
+                        return Math.Log10(rightValue);
 
                     case 3:
+                        return Math.Log(rightValue);
+                    case 4:
                         return Math.Abs(rightValue);
 
                 }   
@@ -1124,6 +1126,11 @@ namespace NEA4
 
 
             }
+            else
+            {
+                MessageBox.Show("The number of function sections had exceeded the memory", "Function Memory Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+            }
 
         }
         
@@ -1793,6 +1800,7 @@ namespace NEA4
         private void GridButton_Click(object sender, EventArgs e)
         {
             displayGrid = !displayGrid;
+            UpdateFunctions();
         }
 
         private void FunctionButton_Click(object sender, EventArgs e)
@@ -1850,7 +1858,7 @@ namespace NEA4
 
         private void piButton_Click(object sender, EventArgs e)
         {
-            RPNTextBox.Text = RPNTextBox.Text + "𝜋"; 
+            RPNTextBox.Text = RPNTextBox.Text + "𝜋";
         }
 
         private void eButton_Click(object sender, EventArgs e)
@@ -1982,6 +1990,12 @@ namespace NEA4
         private void TriangleButton_Click(object sender, EventArgs e)
         {
             displayTriangle = !displayTriangle;
+            UpdateFunctions();
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
 
         //private double ProcessRPN(string input, double xInput)

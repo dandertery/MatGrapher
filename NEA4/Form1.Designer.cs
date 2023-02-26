@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
             this.RPNTextBox = new System.Windows.Forms.TextBox();
-            this.BitmapButton = new System.Windows.Forms.Button();
             this.GridButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RPNInputLabel = new System.Windows.Forms.Label();
@@ -114,6 +113,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.EigenValue1TextBox = new System.Windows.Forms.TextBox();
             this.EigenValue2TextBox = new System.Windows.Forms.TextBox();
+            this.RestartButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -133,23 +133,12 @@
             this.RPNTextBox.TabIndex = 1;
             this.RPNTextBox.TextChanged += new System.EventHandler(this.RPNTextBox_TextChanged);
             // 
-            // BitmapButton
-            // 
-            this.BitmapButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BitmapButton.Location = new System.Drawing.Point(12, 569);
-            this.BitmapButton.Name = "BitmapButton";
-            this.BitmapButton.Size = new System.Drawing.Size(300, 50);
-            this.BitmapButton.TabIndex = 2;
-            this.BitmapButton.Text = "Bitmap";
-            this.BitmapButton.UseVisualStyleBackColor = true;
-            this.BitmapButton.Click += new System.EventHandler(this.BitmapButton_Click);
-            // 
             // GridButton
             // 
             this.GridButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GridButton.Location = new System.Drawing.Point(12, 671);
+            this.GridButton.Location = new System.Drawing.Point(12, 569);
             this.GridButton.Name = "GridButton";
-            this.GridButton.Size = new System.Drawing.Size(147, 52);
+            this.GridButton.Size = new System.Drawing.Size(300, 52);
             this.GridButton.TabIndex = 4;
             this.GridButton.Text = "Grid";
             this.GridButton.UseVisualStyleBackColor = true;
@@ -274,7 +263,7 @@
             // InvariantLinesButton
             // 
             this.InvariantLinesButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 729);
+            this.InvariantLinesButton.Location = new System.Drawing.Point(12, 758);
             this.InvariantLinesButton.Name = "InvariantLinesButton";
             this.InvariantLinesButton.Size = new System.Drawing.Size(177, 40);
             this.InvariantLinesButton.TabIndex = 18;
@@ -285,7 +274,7 @@
             // EigenvectorsButton
             // 
             this.EigenvectorsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.EigenvectorsButton.Location = new System.Drawing.Point(165, 671);
+            this.EigenvectorsButton.Location = new System.Drawing.Point(12, 717);
             this.EigenvectorsButton.Name = "EigenvectorsButton";
             this.EigenvectorsButton.Size = new System.Drawing.Size(147, 40);
             this.EigenvectorsButton.TabIndex = 19;
@@ -296,7 +285,7 @@
             // LinesOfInvariantPointsButton
             // 
             this.LinesOfInvariantPointsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(12, 775);
+            this.LinesOfInvariantPointsButton.Location = new System.Drawing.Point(9, 671);
             this.LinesOfInvariantPointsButton.Name = "LinesOfInvariantPointsButton";
             this.LinesOfInvariantPointsButton.Size = new System.Drawing.Size(300, 40);
             this.LinesOfInvariantPointsButton.TabIndex = 20;
@@ -530,7 +519,7 @@
             // piButton
             // 
             this.piButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.piButton.Location = new System.Drawing.Point(649, 462);
+            this.piButton.Location = new System.Drawing.Point(646, 462);
             this.piButton.Name = "piButton";
             this.piButton.Size = new System.Drawing.Size(50, 50);
             this.piButton.TabIndex = 44;
@@ -944,11 +933,22 @@
             this.EigenValue2TextBox.Size = new System.Drawing.Size(33, 23);
             this.EigenValue2TextBox.TabIndex = 87;
             // 
+            // RestartButton
+            // 
+            this.RestartButton.Location = new System.Drawing.Point(1206, 12);
+            this.RestartButton.Name = "RestartButton";
+            this.RestartButton.Size = new System.Drawing.Size(75, 23);
+            this.RestartButton.TabIndex = 88;
+            this.RestartButton.Text = "Restart";
+            this.RestartButton.UseVisualStyleBackColor = true;
+            this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 881);
+            this.Controls.Add(this.RestartButton);
             this.Controls.Add(this.EigenValue2TextBox);
             this.Controls.Add(this.EigenValue1TextBox);
             this.Controls.Add(this.label11);
@@ -1027,7 +1027,6 @@
             this.Controls.Add(this.a1);
             this.Controls.Add(this.RPNInputLabel);
             this.Controls.Add(this.GridButton);
-            this.Controls.Add(this.BitmapButton);
             this.Controls.Add(this.RPNTextBox);
             this.Controls.Add(this.cartesianChart1);
             this.Name = "MatGrapher";
@@ -1042,7 +1041,6 @@
 
         private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
         private TextBox RPNTextBox;
-        private Button BitmapButton;
         private Button GridButton;
         private ContextMenuStrip contextMenuStrip1;
         private Label RPNInputLabel;
@@ -1125,5 +1123,6 @@
         private Label label11;
         private TextBox EigenValue1TextBox;
         private TextBox EigenValue2TextBox;
+        private Button RestartButton;
     }
 }
