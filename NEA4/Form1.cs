@@ -255,7 +255,7 @@ namespace NEA4
                 {
                     CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
                 }
-                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 2) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 2))) //checks for consecutive x coordinates, seperated by pitch
+                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3))) //checks for consecutive x coordinates, seperated by pitch
                 {
                     CoordinatesArrays[i][c] = coordinates[c]; //here
                     c++;
@@ -1226,10 +1226,15 @@ namespace NEA4
             {
 
             }
-            else if (!inputMatrix.requestChange(letter, value.ToString()) && !ContainsV(textBox.Text))
+            else
             {
-                textBox.Text = checkForBinaryError(inputMatrix.Get(letter), 6).ToString();
+                inputMatrix.requestChange(letter, value.ToString());
+                if (!ContainsV(textBox.Text))
+                {
+                    textBox.Text = checkForBinaryError(inputMatrix.Get(letter), 6).ToString();
+                }
             }
+
 
 
 
