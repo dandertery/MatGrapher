@@ -21,25 +21,19 @@ namespace NEA4
 {
     public partial class MatGrapher : Form
     {
-        private int functionListNumber = 0; //counting functions
-
-        
+        private int functionListNumber = 0; //counting functions 
         private double pitch;
         private double bounds;
         private double fBounds;
         private double renderBounds;
         private double renderFBounds;
-
         private double aniPitch;
         private double aniPitch2;
         private int steps;
-
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool displayTriangle = false;
-
-
-        private bool ShearX = true;
+        private bool ShearX = true; //Shear X, or Shear Y
         private bool isAnimating;
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
@@ -47,13 +41,15 @@ namespace NEA4
         private Matrix lMat = new Matrix(-4, 3, 1, -2);
         private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);
-        private Variable k;
-        private Variable q;
+        private Variable k; // kpq for function input use
         private Variable p;
-        private Variable V;
-        private ObservablePoint[] UnitSquare = new ObservablePoint[45];
-        private string[] functionArray = { "cos", "sin", "log", "ln", "abs" };
-        private string[] operationArray = { "^", "*", "/", "-", "+" };
+        private Variable q; 
+
+        private Variable V; // for matrix value input use
+        private ObservablePoint[] UnitSquare = new ObservablePoint[45]; // initialising Unit Square graph construct
+
+        private string[] functionArray = { "cos", "sin", "log", "ln", "abs" }; //to determine nature of parsed function tokens
+        private string[] operationArray = { "^", "*", "/", "-", "+" }; // to determine nature of parsed operation tokens
 
         private Stack<Function> fs = new Stack<Function>(); // Stack of functions
         private Queue<Matrix> ms = new Queue<Matrix>(); //FIFO structure for matrix transformations
@@ -89,7 +85,7 @@ namespace NEA4
             pitch = 0.1;
             V.letter = "V";
             fBounds = bounds / pitch;    
-            cartesianChart1.EasingFunction = null;
+            cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
             InitialiseKPQ();          
             DefineUnitSquare();
@@ -145,46 +141,14 @@ namespace NEA4
             UnitSquare[b] = new ObservablePoint(0, 0);
         }
 
-        private double abs(double v) //absolute
-        {
-            return Math.Abs(v);
-        }
-        private double cos(double v) 
-        {
-            return Math.Cos(v);
-        }
-        private double sin(double v) 
-        {
-            return Math.Sin(v);
-        }
-        private double add(double v, double u)
-        {
-            return v + u;
-        }
-        private double sub(double v, double u)
-        {
-            return v - u;
-        }
-        private double mult(double v, double u)
-        {
-            return v * u;
-        }
-        private double div(double v, double u)
-        {
-            return v / u;
-        }
-        private double power(double v, double u ) //v^u
-        {
-            return Math.Pow(v,u);
-        }
-        private void UpdateFunctions()
+        private void UpdateFunctions() //called upon changes
         {
             functionListNumber = fs.Count;
             UpdateQueueMatrix();
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
             {
-                try
+                try //prevents a crash whilst function is still being typed out by user
                 {
                     fs.Push(ToFunction(ApplyMatrix(ProcessInput(FunctionList.Items[i].ToString().Substring(4)), QueueMatrix)));
                 }
