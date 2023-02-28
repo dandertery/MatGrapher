@@ -148,7 +148,7 @@ namespace NEA4
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
             {
-                try //prevents a crash whilst function is still being typed out by user
+                try //try catch prevents crashes, and whilst function is still being typed out by user
                 {
                     fs.Push(ToFunction(ApplyMatrix(ProcessInput(FunctionList.Items[i].ToString().Substring(4)), QueueMatrix)));
                 }
@@ -161,6 +161,58 @@ namespace NEA4
             DisplayFunctions(fs);
 
 
+        }
+        private NamedCoordArray ProcessInput(string input)
+        {
+            Parsing TreeInput = new Parsing(input);
+            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
+
+            pitch = 0.1;
+            fBounds = bounds / pitch;
+            renderBounds = bounds * 10;
+            renderFBounds = renderBounds / pitch;
+            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(renderFBounds * 2)];
+
+
+            List<Variable> variableArray = new List<Variable>();
+            Variable xTemp = new Variable();
+            xTemp.value = 0;
+            xTemp.letter = "x";
+            variableArray.Add(xTemp);
+            KPQ();
+            Variable[] kpqArray = new Variable[3];
+            kpqArray[0] = k;
+            kpqArray[1] = p;
+            kpqArray[2] = q;
+            for (int i = 0; i < kpqArray.Length; i++)
+            {
+                variableArray.Add(kpqArray[i]);
+            }
+
+            Variable E = new Variable();
+            Variable PI = new Variable();
+            E.letter = "e";
+            E.value = Math.E;
+            PI.letter = "𝜋";
+            PI.value = Math.PI;
+            variableArray.Add(E);
+            variableArray.Add(PI);
+            double xValue = -renderBounds;
+
+            for (int i = 0; i < (renderFBounds * 2); i++)
+            {
+                coordinates[i].x = checkForBinaryError(xValue, 6);
+                xTemp.value = coordinates[i].x;
+                xTemp.letter = "x";
+                variableArray[0] = xTemp;
+
+                coordinates[i].y = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
+                xValue = xValue + pitch;
+            }
+            NamedCoordArray output = new NamedCoordArray();
+            output.coordinateArray = coordinates;
+            output.name = input;
+            return output;
         }
         private  Function ToFunction(NamedCoordArray input) //creates Function datatype from coordinates and their function name
         {
@@ -179,7 +231,7 @@ namespace NEA4
             for (int i = 0; i < (coordinates.Length); i++) //removing undefined coordinates and creating an array of number to  represent consecutive coordinate sequence lengths
             {
 
-                if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity)
+                if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity) //checks if coordinate is undefined
                 {
 
                     
@@ -189,7 +241,7 @@ namespace NEA4
                     {
                         function.breakpoints++;
                         listIndexer++;
-                        tempLengthList.Add(0); //Creates new
+                        tempLengthList.Add(0); // creating new list array for contiguous coordinates to be added to
 
                     }
                     previousNaN = true;
@@ -254,58 +306,7 @@ namespace NEA4
             }
             return function;
         }
-        private NamedCoordArray ProcessInput(string input)
-        {
-            Parsing TreeInput = new Parsing(input);
-            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
-            
-            pitch = 0.1;
-            fBounds = bounds / pitch;
-            renderBounds = bounds * 10;
-            renderFBounds = renderBounds / pitch;
-            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(renderFBounds * 2)];
-
-
-            List<Variable> variableArray = new List<Variable>();
-            Variable xTemp = new Variable();
-            xTemp.value = 0;
-            xTemp.letter = "x";
-            variableArray.Add(xTemp);
-            KPQ();
-            Variable[] kpqArray = new Variable[3];
-            kpqArray[0] = k;
-            kpqArray[1] = p;
-            kpqArray[2] = q;
-            for (int i = 0; i < kpqArray.Length; i++)
-            {
-                variableArray.Add(kpqArray[i]);
-            }
-
-            Variable E = new Variable();
-            Variable PI = new Variable();
-            E.letter = "e";
-            E.value = Math.E;
-            PI.letter = "𝜋";
-            PI.value = Math.PI;
-            variableArray.Add(E);
-            variableArray.Add(PI);
-            double xValue = -renderBounds;
-
-            for (int i = 0; i < (renderFBounds * 2); i++)
-            {
-                coordinates[i].x = checkForBinaryError(xValue, 6);
-                xTemp.value = coordinates[i].x;
-                xTemp.letter = "x";
-                variableArray[0] = xTemp;
-
-                coordinates[i].y = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
-                xValue = xValue + pitch;
-            }
-            NamedCoordArray output = new NamedCoordArray();
-            output.coordinateArray = coordinates;
-            output.name = input;
-            return output;
-        }
+        
         private void AddButton_Click(object sender, EventArgs e)
         {
             
@@ -317,11 +318,6 @@ namespace NEA4
             }
             
         }
-        private void Animate()
-        {
-
-        }
-
 
         private void KPQ()
         {
@@ -358,7 +354,7 @@ namespace NEA4
 
         }
 
-        private double ProcessTree(TreeNode inputTree, List<Variable> varinputs) //recursiv, top down
+        private double ProcessTree(TreeNode inputTree, List<Variable> varinputs) //recursive, top down
         {
             
             int value;
@@ -1102,7 +1098,7 @@ namespace NEA4
             }
             else
             {
-                MessageBox.Show("The number of function sections had exceeded the memory", "Function Memory Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("The number of function sections has exceeded the memory", "Function Memory Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
             }
 
@@ -1262,7 +1258,7 @@ namespace NEA4
         }
         private void CheckMatrix()
         {
-            if(lMat.getDet() == 0)
+            if(lMat.getDet() == 0) //if determinant is 0 a matrix has no inverse
             {
                 InverseLeft.Enabled = false;
             }
@@ -1279,7 +1275,7 @@ namespace NEA4
                 InverseLeft.Enabled = true;
             }
             CheckMatrixValues();
-            if (rMat.GetStringType() == "unknown" || rMat.GetStringType() == "reflection" || isAnimating)
+            if (rMat.GetStringType() == "unknown" || rMat.GetStringType() == "reflection" || isAnimating) //reflection cannot be animated
             {
                 AnimateButton.Enabled = false;
             }
@@ -1582,11 +1578,7 @@ namespace NEA4
             {
                 if (RPNTextBox.Text != "")
                 {
-
                     string RPNinput = RPNTextBox.Text;
-
-
-                    //Function function = ToFunction(ProcessInput(RPNinput));
                     if (FunctionList.Items.Count < functionListNumber + 1)
                     {
                         FunctionList.Items.Add("y = " + RPNinput);
@@ -1594,9 +1586,7 @@ namespace NEA4
                     else
                     {
                         FunctionList.Items[functionListNumber] = ("y = " + RPNinput);
-                    }
-
-                    
+                    }                  
                     UpdateFunctions();
                 }
             }
@@ -1613,7 +1603,6 @@ namespace NEA4
             {
                 string matrixName = MatrixList.SelectedItem.ToString();
                 MatrixList.Items.Remove(MatrixList.SelectedItem);
-
                 Queue<Matrix> queueTemp = new Queue<Matrix>();
                 for (int i = 0; i < ms.Count; i++)
                 {
@@ -1681,7 +1670,12 @@ namespace NEA4
 
 
             }
-            
+            else
+            {
+                MessageBox.Show( "Please empty the Matrix List to animate", "Animation cannot be shown", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
         }
         private void Form1_Load_1(object sender, EventArgs e)
         {
