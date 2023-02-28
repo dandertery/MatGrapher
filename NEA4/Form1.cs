@@ -21,18 +21,24 @@ namespace NEA4
 {
     public partial class MatGrapher : Form
     {
-        private int functionListNumber = 0;
-        private int steps;
+        private int functionListNumber = 0; //counting functions
+
+        
         private double pitch;
         private double bounds;
         private double fBounds;
         private double renderBounds;
         private double renderFBounds;
+
         private double aniPitch;
         private double aniPitch2;
+        private int steps;
+
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool displayTriangle = false;
+
+
         private bool ShearX = true;
         private bool isAnimating;
         private string animationType = null;
@@ -173,6 +179,7 @@ namespace NEA4
         }
         private void UpdateFunctions()
         {
+            functionListNumber = fs.Count;
             UpdateQueueMatrix();
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
