@@ -40,7 +40,7 @@ namespace NEA4
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
             greatestDepth = GreatestDepth(tokenArray);
             Tree = Parser(tokenArray);
-            Debug.WriteLine("Breakpoint");
+            
         }
 
         public TreeNode GetTree()

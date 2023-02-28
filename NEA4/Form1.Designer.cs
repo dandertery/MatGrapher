@@ -736,7 +736,7 @@
             // ClearMatrix
             // 
             this.ClearMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ClearMatrix.Location = new System.Drawing.Point(1339, 701);
+            this.ClearMatrix.Location = new System.Drawing.Point(829, 833);
             this.ClearMatrix.Name = "ClearMatrix";
             this.ClearMatrix.Size = new System.Drawing.Size(92, 32);
             this.ClearMatrix.TabIndex = 66;
@@ -747,7 +747,7 @@
             // RemoveMatrix
             // 
             this.RemoveMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RemoveMatrix.Location = new System.Drawing.Point(1340, 663);
+            this.RemoveMatrix.Location = new System.Drawing.Point(927, 833);
             this.RemoveMatrix.Name = "RemoveMatrix";
             this.RemoveMatrix.Size = new System.Drawing.Size(92, 32);
             this.RemoveMatrix.TabIndex = 65;

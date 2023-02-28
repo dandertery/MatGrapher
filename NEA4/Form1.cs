@@ -173,20 +173,23 @@ namespace NEA4
         }
         private void UpdateFunctions()
         {
-            try
+            UpdateQueueMatrix();
+            fs = new Stack<Function>();
+            for (int i = 0; i < FunctionList.Items.Count; i++)
             {
-                UpdateQueueMatrix();
-                fs = new Stack<Function>();
-                for (int i = 0; i < FunctionList.Items.Count; i++)
-                {                
+                try
+                {
                     fs.Push(ToFunction(ApplyMatrix(ProcessInput(FunctionList.Items[i].ToString().Substring(4)), QueueMatrix)));
                 }
-                DisplayFunctions(fs);
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
+
+                }
 
             }
+            DisplayFunctions(fs);
+
+
         }
         private  Function ToFunction(NamedCoordArray input) //creates Function datatype from coordinates and their function name
         {
@@ -1412,6 +1415,7 @@ namespace NEA4
                     fs.Push(stackTemp.Pop());
                 }
             }
+            functionListNumber--;
             UpdateFunctions();
         }
         private TreeNode FindRoot(TreeNode input)
@@ -1841,6 +1845,7 @@ namespace NEA4
             string InvLine2 = QueueMatrix.GetInvLine2();
             FunctionList.Items.Add(InvLine1);
             FunctionList.Items.Add(InvLine2);
+            functionListNumber = functionListNumber + 2;
             UpdateFunctions();
         }
 
@@ -1849,6 +1854,8 @@ namespace NEA4
             UpdateQueueMatrix();
             string InvPointLine = QueueMatrix.GetInvPointLine();
             FunctionList.Items.Add(InvPointLine);
+            functionListNumber++;
+            UpdateFunctions();
         }
 
         private void cosButton_Click(object sender, EventArgs e)
@@ -2037,8 +2044,7 @@ namespace NEA4
         //                    temp = (double)variableStack.Pop();
         //                    variableStack.Push(abs(temp));
         //                    break;
-        //                case "c":
-        //                    temp = (double)variableStack.Pop();
+        //                case "c":+;
         //                    variableStack.Push(cos(temp));
         //                    break;
         //                case "s":
@@ -2066,6 +2072,7 @@ namespace NEA4
         //                    variableStack.Push(mult(temp, temp2));
         //                    break;
         //                case "/":
+
         //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
         //                    temp2 = (double)variableStack.Pop();
         //                    variableStack.Push(div(temp2, temp));
