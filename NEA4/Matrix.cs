@@ -8,10 +8,10 @@
         private double d;
         private double Eigenvalue1;
         private double Eigenvalue2;
-        private double EV1A;
-        private double EV1B;
-        private double EV2A;
-        private double EV2B;
+        private double EV1A; //Top Eigenvector 1 value
+        private double EV1B; //Bottom Eigenvector 1 value
+        private double EV2A; //Top Eigenvector 2 value
+        private double EV2B; //Bottom Eigenvector 2 value
         private string invLine1;
         private string invLine2;
         private string invPointLine;
@@ -78,7 +78,7 @@
 
         public string DetermineType()
         {
-            if (Math.Pow(a, 2) + Math.Pow(b, 2) > 0.99 && Math.Pow(a, 2) + Math.Pow(b, 2) < 1.01)
+            if (checkForBinaryError(Math.Pow(a, 2) + Math.Pow(b, 2), 2) == 1) //(sin^2 x + cos^2 x = 1)
             {
                 if (a == d && b == -c)
                 {
@@ -257,7 +257,7 @@
                 if(Eigenvalue1 != double.NaN &&  Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
                 {
                     EV1A = 1;
-                    EV2A = (-a + Eigenvalue1) / b;
+                    EV2B = (-a + Eigenvalue1) / b;
                 }
                 if (Eigenvalue1 != double.NaN && Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
                 {

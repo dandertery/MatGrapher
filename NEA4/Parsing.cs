@@ -538,34 +538,6 @@ namespace NEA4
             }
             return output;
         }
-
-        //private Token[] AddOrder(Token[] input)
-        //{
-        //    for (int i = 0; i < input.Length; i++)
-        //    {
-        //        for (int z = 0; z < charOperationArray.Length; z++)
-        //        {
-        //            string check = string.Empty + charOperationArray[z];
-        //            if((string)input[i].contents == check)
-        //            {
-        //                input[i].order = orderOperationArray[z];
-        //            }
-        //        }
-        //    }
-        //    return input;
-        //}
-        //private int getOperationIndex(char input)
-        //{
-        //    for (int i = 0; i < charOperationArray.Length; i++)
-        //    {
-        //        if (input == charOperationArray[i])
-        //        {
-        //            return i;
-        //        }
-
-        //    }
-        //    return -1;
-        //}
     }
 
     public class TreeNode

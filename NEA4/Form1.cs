@@ -89,7 +89,7 @@ namespace NEA4
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
             InitialiseKPQ();          
             DefineUnitSquare();
-            UpdateFunctions();
+            UpdateFunctions(); //called upon every relevant change
            
         }
 
@@ -141,14 +141,14 @@ namespace NEA4
             UnitSquare[b] = new ObservablePoint(0, 0);
         }
 
-        private void UpdateFunctions() //called upon changes
+        private void UpdateFunctions() 
         {
             functionListNumber = fs.Count;
             UpdateQueueMatrix();
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
             {
-                try //try catch prevents crashes, and whilst function is still being typed out by user
+                try 
                 {
                     fs.Push(ToFunction(ApplyMatrix(ProcessInput(FunctionList.Items[i].ToString().Substring(4)), QueueMatrix)));
                 }
@@ -1993,78 +1993,5 @@ namespace NEA4
         {
             Application.Restart();
         }
-
-        //private double ProcessRPN(string input, double xInput)
-        //{
-        //    Stack variableStack = new Stack();
-
-        //    foreach (char c in input)
-        //    {
-        //        if ((int)c == 120)
-        //        {
-        //            variableStack.Push(xInput);
-        //        }
-        //        else if ((int)c > 47 && (int)c < 58) // 0 - 9
-        //        {
-        //            variableStack.Push((double)(c));
-        //        }
-        //        else // if((int)c > 96 && (int)c <= 122
-        //        {
-        //            double temp;
-        //            double temp2;
-        //            switch (c.ToString())
-        //            {
-        //                case "a":
-        //                    temp = (double)variableStack.Pop();
-        //                    variableStack.Push(abs(temp));
-        //                    break;
-        //                case "c":+;
-        //                    variableStack.Push(cos(temp));
-        //                    break;
-        //                case "s":
-        //                    temp = (double)variableStack.Pop();
-        //                    variableStack.Push(sin(temp));
-        //                    break;
-        //                case "^":
-        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-        //                    temp2 = (double)variableStack.Pop();
-        //                    variableStack.Push(power(temp2, temp));
-        //                    break;
-        //                case "+":
-        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-        //                    temp2 = (double)variableStack.Pop();
-        //                    variableStack.Push(add(temp, temp2));
-        //                    break;
-        //                case "-":
-        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-        //                    temp2 = (double)variableStack.Pop();
-        //                    variableStack.Push(sub(temp2, temp));
-        //                    break;
-        //                case "*":
-        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-        //                    temp2 = (double)variableStack.Pop();
-        //                    variableStack.Push(mult(temp, temp2));
-        //                    break;
-        //                case "/":
-
-        //                    temp = (double)variableStack.Pop(); // NEED TO check theres enough variables (2)
-        //                    temp2 = (double)variableStack.Pop();
-        //                    variableStack.Push(div(temp2, temp));
-        //                    break;
-        //                case "p":
-        //                    variableStack.Push(Math.PI);
-        //                    break;
-        //                case "e":
-        //                    variableStack.Push(Math.E);
-        //                    break;
-
-        //            }
-        //        }
-
-        //    }
-
-        //    return (double)variableStack.Pop();
-
-        //}
     }
 }
