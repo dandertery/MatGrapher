@@ -1284,6 +1284,14 @@ namespace NEA4
                 AnimateButton.Enabled = true;
             }
 
+            if(rMat.GetStringType() == "rotation")
+            {
+                if(a2.Text != "cos(V)" || b2.Text != "-sin(V)" || c2.Text != "sin(V)" || d2.Text != "cos(V)")
+                {
+                    AnimateButton.Enabled = false; 
+                }
+            }
+
             detA.Text = SixFigText(lMat.getDet().ToString());
             detB.Text = SixFigText(rMat.getDet().ToString());
 
@@ -1643,6 +1651,7 @@ namespace NEA4
                 {
                     steps = 100;
                     aniPitch = V.value / steps;
+                                                       
                     V.value = 0;
                 }
                 else if (animationType == "reflection")
@@ -1651,10 +1660,10 @@ namespace NEA4
                 }
                 else if (animationType == "stretchlargement")
                 {
-                    aniPitch = ((rMat.Get("a") - 1) / steps);
-                    aniPitch2 = ((rMat.Get("d") - 1) / steps);
+                    aniPitch = ((rMat.Get("a") - 1) / steps); //stretch animation in x
+                    aniPitch2 = ((rMat.Get("d") - 1) / steps); //stretch animation in y
                 }
-                else if (animationType == "shear")
+                else if (animationType == "shear") //determining shear nature
                 {
                     if(rMat.Get("b") == 0)
                     {

@@ -78,7 +78,7 @@
 
         public string DetermineType()
         {
-            if (Math.Pow(a, 2) + Math.Pow(b, 2) == 1)
+            if (Math.Pow(a, 2) + Math.Pow(b, 2) > 0.99 && Math.Pow(a, 2) + Math.Pow(b, 2) < 1.01)
             {
                 if (a == d && b == -c)
                 {
