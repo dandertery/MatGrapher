@@ -1513,10 +1513,7 @@ namespace NEA4
             Remove();
         }
 
-        private void cartesianChart1_Load(object sender, EventArgs e)
-        {
 
-        }
         private ObservablePoint[] OPListToArray(List<ObservablePoint> input) // List To Array converter for Observable Point Lists/Arrays
         {
             ObservablePoint[] output = new ObservablePoint[input.Count];
@@ -1691,20 +1688,13 @@ namespace NEA4
 
         }
 
-        private void kRadio_CheckedChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void kTextBox_TextChanged(object sender, EventArgs e)
         {
             UpdateFunctions();
         }
 
-        private void RPNInputLabel_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void pTextbox_TextChanged(object sender, EventArgs e)
         {
@@ -1722,15 +1712,7 @@ namespace NEA4
         {
             UpdateFunctions();
         }
-        private void pRadio_CheckedChanged(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void qRadio_CheckedChanged(object sender, EventArgs e)
-        {
-            
-        }
 
         private void ReflectionButton_Click(object sender, EventArgs e)
         {
@@ -1796,20 +1778,7 @@ namespace NEA4
             UpdateFunctions();
         }
 
-        private void FunctionButton_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void BitmapButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void InvariantLinesButton_Click(object sender, EventArgs e)
         {
@@ -1837,20 +1806,7 @@ namespace NEA4
             RPNTextBox.Text = RPNTextBox.Text + "cos()";
         }
 
-        private void button7_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void piButton_Click(object sender, EventArgs e)
         {
@@ -1862,40 +1818,9 @@ namespace NEA4
             RPNTextBox.Text = RPNTextBox.Text + "e";
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button20_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void sinButton_Click(object sender, EventArgs e)
         {
@@ -1904,10 +1829,7 @@ namespace NEA4
 
 
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
 
-        }
 
         private void UnitSquareButton_Click(object sender, EventArgs e)
         {
