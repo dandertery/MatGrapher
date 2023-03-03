@@ -36,10 +36,7 @@ namespace NEA4
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
         public Parsing(string userInput)
         {
-            if(userInput == "1+1+1+1")
-            {
-                Debug.WriteLine("a");
-            }
+
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
             greatestDepth = GreatestDepth(tokenArray);

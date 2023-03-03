@@ -82,7 +82,7 @@ namespace NEA4
         {
             InitializeComponent();
             bounds = 10;
-            pitch = 0.1;
+            pitch = 0.05;
             V.letter = "V";
             fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
@@ -167,7 +167,7 @@ namespace NEA4
             Parsing TreeInput = new Parsing(input);
             TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
 
-            pitch = 0.1;
+            pitch = 0.05;
             fBounds = bounds / pitch;
             renderBounds = bounds * 10;
             renderFBounds = renderBounds / pitch;
@@ -1196,7 +1196,7 @@ namespace NEA4
         private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
         {
             double value = ParseV(textBox.Text);
-            if (value == double.NegativeInfinity || CheckForFloatingPoint(textBox.Text) || (textBox.Text == SixFigText(inputMatrix.Get(letter).ToString())))
+            if (value == double.NegativeInfinity || CheckForFloatingPoint(textBox.Text) || (textBox.Text == FigText(inputMatrix.Get(letter).ToString(), 6)))
             {
 
             }
@@ -1253,9 +1253,9 @@ namespace NEA4
         {
             if (!CheckForFloatingPoint(textBox.Text))
             {
-                if(SixFigText(ParseV(textBox.Text).ToString()) != SixFigText(inputMatrix.Get(letter).ToString()))
+                if(FigText(ParseV(textBox.Text).ToString(), 6) != FigText(inputMatrix.Get(letter).ToString(), 6))
                 {
-                    textBox.Text = SixFigText(inputMatrix.Get(letter).ToString());
+                    textBox.Text = ErrorRounder(Double.Parse(FigText(inputMatrix.Get(letter).ToString(), 5)), 2).ToString();
                 }
                 
             }
@@ -1296,8 +1296,9 @@ namespace NEA4
                 }
             }
 
-            detA.Text = SixFigText(lMat.getDet().ToString());
-            detB.Text = SixFigText(rMat.getDet().ToString());
+            detA.Text = ErrorRounder(Double.Parse(FigText(lMat.getDet().ToString(), 5)), 2).ToString();
+
+            detB.Text = ErrorRounder(Double.Parse(FigText(rMat.getDet().ToString(), 5)), 2).ToString();
 
 
 
@@ -1334,16 +1335,17 @@ namespace NEA4
             CheckMatrixValue(c2, "c", rMat);
             CheckMatrixValue(d2, "d", rMat);
         }
-        private string SixFigText(string input)
+        private string FigText(string input, int sigFig)
         {
             bool foundPoint = false;
-            int z = 6;
+            int z = sigFig;
             int index = input.Length - 1;
             for (int i = 0; i < input.Length; i++)
             {
                 if(input[i] == '.')
                 {
                     foundPoint = true;
+
                     
                 }
                 if(foundPoint)
@@ -1428,38 +1430,96 @@ namespace NEA4
         }
         public double checkForBinaryError(double input, int sigFig)
         {
+            string counter = input.ToString();
+            if (counter.Length > sigFig)
+            {
+                double scalar = Math.Pow(10, sigFig);
+                double scaled = input * scalar;
+                double floor = Math.Floor(scaled);
+                double ceiling = Math.Ceiling(scaled);
+                if (scaled - floor < 0.1)
+                {
+                    return floor / scalar;
+                }
+                else if (ceiling - scaled < 0.1)
+                {
+                    return ceiling / scalar;
+                }
+                double output = scaled / scalar;
+                return output;
+            }
+            else
+            {
+                return input;
+            }
+
+
+        }
+        public double ErrorRounder(double input, int sigFig)
+        {
             double tempDouble = input;
             string counter = input.ToString();
             if(counter.Length > sigFig)
             {
-                //double scalar = Math.Pow(10, sigFig);
-                //double scaled = input * scalar;
-                //double floor = Math.Floor(scaled);
-                //double ceiling = Math.Ceiling(scaled);
-                //if (scaled - floor < 0.1)
-                //{
-                //    return floor / scalar;
-                //}
-                //else if (ceiling - scaled < 0.1)
-                //{
-                //    return ceiling / scalar;
-                //}
-                //double output = scaled / scalar;
+
                 double scalar = Math.Pow(10, sigFig);
                 double check = 1 / scalar;
                 double floor = Math.Floor(tempDouble);
                 double ceiling = Math.Ceiling(tempDouble);
                 if(tempDouble - floor < check)
                 {
+                    bool oneCondition = false;
 
+                    bool zeroCondition = true;
+                    int i = counter.Length - 1;
+                    while (counter[i].ToString() != ".")
+                    {
+                        if(i == counter.Length - 1)
+                        {
+                            if(counter[i].ToString() == "1")
+                            {
+                                oneCondition = true;
+                            }
+                            
+                        }
+                        else
+                        {
+                            if(counter[i].ToString() != "0")
+                            {
+                                zeroCondition = false;
+                            }
+                        }
+                        i--;
+                    }
+                    if(zeroCondition && !oneCondition)
+                    {
+                        return floor;
+                    }
                 }
                 else if (ceiling - tempDouble < check)
                 {
+
                     
 
+                    bool nineCondition = true;
+                    int i = counter.Length - 1;
+                    while (counter[i].ToString() != ".")
+                    {
+                        if (counter[i].ToString() != "9")
+                        {
+                            nineCondition = false;
+                        }
+
+
+                        i--;
+                    }
+                    if(nineCondition)
+                    {
+                        return ceiling;
+                    }
                 }
 
-                return output;
+                return input;
             }
             else
             {
@@ -1585,7 +1645,7 @@ namespace NEA4
             try
             {
                 bounds = double.Parse(BoundsTextBox.Text);
-                pitch = bounds / 100;
+                pitch = bounds / 200;
                 fBounds = bounds / pitch;
                 UpdateFunctions();
             }

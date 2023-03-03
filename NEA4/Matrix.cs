@@ -324,6 +324,105 @@
             string output = input.Remove(index + 1);
             return output;
         }
+ private string FigText(string input, int sigFig)
+        {
+            bool foundPoint = false;
+            int z = sigFig;
+            int index = input.Length - 1;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if(input[i] == '.')
+                {
+                    foundPoint = true;
+
+                    
+                }
+                if(foundPoint)
+                {
+                    z--;
+                }
+                if(z == 0)
+                {
+                    index = i;
+                }
+            }
+            string output = input.Remove(index + 1);
+            return output;
+        }
+        public double ErrorRounder(double input, int sigFig)
+        {
+            double tempDouble = input;
+            string counter = input.ToString();
+            if (counter.Length > sigFig)
+            {
+
+                double scalar = Math.Pow(10, sigFig);
+                double check = 1 / scalar;
+                double floor = Math.Floor(tempDouble);
+                double ceiling = Math.Ceiling(tempDouble);
+                if (tempDouble - floor < check)
+                {
+                    bool oneCondition = false;
+
+                    bool zeroCondition = true;
+                    int i = counter.Length - 1;
+                    while (counter[i].ToString() != ".")
+                    {
+                        if (i == counter.Length - 1)
+                        {
+                            if (counter[i].ToString() == "1")
+                            {
+                                oneCondition = true;
+                            }
+
+                        }
+                        else
+                        {
+                            if (counter[i].ToString() != "0")
+                            {
+                                zeroCondition = false;
+                            }
+                        }
+                        i--;
+                    }
+                    if (zeroCondition && !oneCondition)
+                    {
+                        return floor;
+                    }
+                }
+                else if (ceiling - tempDouble < check)
+                {
+
+
+
+                    bool nineCondition = true;
+                    int i = counter.Length - 1;
+                    while (counter[i].ToString() != ".")
+                    {
+                        if (counter[i].ToString() != "9")
+                        {
+                            nineCondition = false;
+                        }
+
+
+                        i--;
+                    }
+                    if (nineCondition)
+                    {
+                        return ceiling;
+                    }
+                }
+
+                return input;
+            }
+            else
+            {
+                return input;
+            }
+
+
+
+        }
 
 
     }
