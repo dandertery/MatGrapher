@@ -36,6 +36,10 @@ namespace NEA4
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
         public Parsing(string userInput)
         {
+            if(userInput == "1+1+1+1")
+            {
+                Debug.WriteLine("a");
+            }
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
             greatestDepth = GreatestDepth(tokenArray);
@@ -103,7 +107,7 @@ namespace NEA4
                 else if (Char.IsLetter(input[i]) )
                 {
 
-                    if (Char.IsUpper(input[i]) || input[i] == 'x' || input[i] == 'π') //treat as variable
+                    if (Char.IsUpper(input[i]) || input[i] == 'x' || input[i] == 'π' || input[i] == 'e') //treat as variable
                     {
                         if (stringtoken != null)
                         {
@@ -370,11 +374,11 @@ namespace NEA4
                         Token treeNodeInsert = new Token();
                         treeNodeInsert.tree = Parser(recursiveInput);
                         treeNodeInsert.type = "tree";
-                        treeNodeInsert.bracketDepth = storedBracketDepth + 1;
+                        treeNodeInsert.bracketDepth = storedBracketDepth - 1;
                         inputList.Insert(i, treeNodeInsert); //inserting expression back as tree
-                        
-                        localGreatestDepth = GreatestDepth(ListToArray(inputList)); //List depth updated to be less deep if the expression parsed was the single deepest expression
-                        
+
+                        //localGreatestDepth = GreatestDepth(ListToArray(inputList)); //List depth updated to be less deep if the expression parsed was the single deepest expression
+                        return Parser(ListToArray(inputList));
                     }
                 }
             }
@@ -456,6 +460,7 @@ namespace NEA4
                         //removing expressions now in the operation tree
                         inputList.RemoveAt(i + 1);
                         inputList.RemoveAt(i - 1);
+                        i = 0;
                         
                     }
                 }

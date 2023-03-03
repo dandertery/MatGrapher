@@ -274,17 +274,21 @@ namespace NEA4
             int c = 1;
 
             Matrix InverseQueueMatrix = QueueMatrix.Inverse(QueueMatrix);
-
+            int f = 1;
             for (int i = 0; i < (function.breakpoints + 1); i++)
             {
+                bool startOfSection = true;
                 if (i > 0)
                 {
                     CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
+                    f = 0;
                 }
-                while (c < Convert.ToInt32(coordinates.Length) && (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3))) //checks for consecutive x coordinates, seperated by pitch
+                while (c < Convert.ToInt32(coordinates.Length) &&(startOfSection || (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3)))) //checks for consecutive x coordinates, seperated by pitch
                 {
-                    CoordinatesArrays[i][c] = coordinates[c]; //here
+                    startOfSection = false;
+                    CoordinatesArrays[i][f] = coordinates[c]; //here
                     c++;
+                    f++;
                 }
 
 
@@ -1424,22 +1428,37 @@ namespace NEA4
         }
         public double checkForBinaryError(double input, int sigFig)
         {
+            double tempDouble = input;
             string counter = input.ToString();
             if(counter.Length > sigFig)
             {
+                //double scalar = Math.Pow(10, sigFig);
+                //double scaled = input * scalar;
+                //double floor = Math.Floor(scaled);
+                //double ceiling = Math.Ceiling(scaled);
+                //if (scaled - floor < 0.1)
+                //{
+                //    return floor / scalar;
+                //}
+                //else if (ceiling - scaled < 0.1)
+                //{
+                //    return ceiling / scalar;
+                //}
+                //double output = scaled / scalar;
                 double scalar = Math.Pow(10, sigFig);
-                double scaled = input * scalar;
-                double floor = Math.Floor(scaled);
-                double ceiling = Math.Ceiling(scaled);
-                if (scaled - floor < 0.1)
+                double check = 1 / scalar;
+                double floor = Math.Floor(tempDouble);
+                double ceiling = Math.Ceiling(tempDouble);
+                if(tempDouble - floor < check)
                 {
-                    return floor / scalar;
+
                 }
-                else if (ceiling - scaled < 0.1)
+                else if (ceiling - tempDouble < check)
                 {
-                    return ceiling / scalar;
+                    
+
                 }
-                double output = scaled / scalar;
+
                 return output;
             }
             else
@@ -1651,6 +1670,8 @@ namespace NEA4
             ms = new Queue<Matrix>();
             UpdateFunctions();
         }
+
+        
 
         private void AnimateButton_Click(object sender, EventArgs e)
         {
