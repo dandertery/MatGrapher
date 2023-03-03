@@ -257,7 +257,7 @@
                 if(Eigenvalue1 != double.NaN &&  Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
                 {
                     EV1A = 1;
-                    EV2B = (-a + Eigenvalue1) / b;
+                    EV1B = (-a + Eigenvalue1) / b;
                 }
                 if (Eigenvalue1 != double.NaN && Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
                 {

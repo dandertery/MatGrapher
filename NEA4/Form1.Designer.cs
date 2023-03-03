@@ -521,7 +521,7 @@
             this.piButton.Name = "piButton";
             this.piButton.Size = new System.Drawing.Size(50, 50);
             this.piButton.TabIndex = 44;
-            this.piButton.Text = "𝜋";
+            this.piButton.Text = "π";
             this.piButton.UseVisualStyleBackColor = true;
             this.piButton.Click += new System.EventHandler(this.piButton_Click);
             // 

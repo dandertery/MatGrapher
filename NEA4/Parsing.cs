@@ -60,6 +60,7 @@ namespace NEA4
             {
                 input = input.Substring(1);
             }
+
             string stringtoken = string.Empty;
             string lasttokenname = string.Empty;
 
@@ -99,10 +100,10 @@ namespace NEA4
                     lasttokenname = "bracket";
                 }
 
-                else if (Char.IsLetter(input[i]))
+                else if (Char.IsLetter(input[i]) )
                 {
 
-                    if (Char.IsUpper(input[i]) || input[i] == 'x') //treat as variable
+                    if (Char.IsUpper(input[i]) || input[i] == 'x' || input[i] == 'π') //treat as variable
                     {
                         if (stringtoken != null)
                         {
@@ -111,7 +112,7 @@ namespace NEA4
 
                         }
                         lasttokenname = "variable";
-                        stringtoken = string.Empty + input[i];
+                        stringtoken = string.Empty + input[i].ToString();
                         characterLexed[i] = true;
 
                     }

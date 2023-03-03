@@ -193,7 +193,7 @@ namespace NEA4
             Variable PI = new Variable();
             E.letter = "e";
             E.value = Math.E;
-            PI.letter = "𝜋";
+            PI.letter = "π";
             PI.value = Math.PI;
             variableArray.Add(E);
             variableArray.Add(PI);
@@ -1588,29 +1588,29 @@ namespace NEA4
                         functionListNumber = 1;
                     }
                     string RPNinput = RPNTextBox.Text;
-                    if (FunctionList.Items.Count < functionListNumber)
+                    bool update = true;
+                    try
                     {
-                        FunctionList.Items.Add("y = " + RPNinput);
-                        UpdateFunctions();
+                        Parsing test = new Parsing(RPNinput);
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        bool update = true;
-                        try
-                        {
-                            Parsing test = new Parsing(RPNinput);
-                        }
-                        catch(Exception ex)
-                        {
-                            update = false;
-                        }
+                        update = false;
+                    }
 
-                        if(update)
+                    if (update)
+                    {
+                        if (FunctionList.Items.Count < functionListNumber)
+                        {
+                            FunctionList.Items.Add("y = " + RPNinput);
+
+                        }
+                        else
                         {
                             FunctionList.Items[functionListNumber - 1] = ("y = " + RPNinput);
                         }
                         
-                    }                  
+                    }
                     UpdateFunctions();
                 }
             }
@@ -1829,7 +1829,7 @@ namespace NEA4
 
         private void piButton_Click(object sender, EventArgs e)
         {
-            RPNTextBox.Text = RPNTextBox.Text + "𝜋";
+            RPNTextBox.Text = RPNTextBox.Text + "π";
         }
 
         private void eButton_Click(object sender, EventArgs e)
