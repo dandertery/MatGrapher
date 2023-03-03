@@ -143,7 +143,7 @@ namespace NEA4
 
         private void UpdateFunctions() 
         {
-            functionListNumber = fs.Count;
+            functionListNumber = FunctionList.Items.Count;
             UpdateQueueMatrix();
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
@@ -1390,7 +1390,7 @@ namespace NEA4
                     fs.Push(stackTemp.Pop());
                 }
             }
-            functionListNumber--;
+            
             UpdateFunctions();
         }
         private TreeNode FindRoot(TreeNode input)
@@ -1914,6 +1914,11 @@ namespace NEA4
         private void RestartButton_Click(object sender, EventArgs e)
         {
             Application.Restart();
+        }
+
+        private void cartesianChart1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

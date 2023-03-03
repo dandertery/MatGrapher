@@ -56,14 +56,14 @@ namespace NEA4
 
             bool[] characterLexed = new bool[input.Length];
 
-            while (Char.IsWhiteSpace(input[0]))
+            while (Char.IsWhiteSpace(input[0])) //Take away starting blankspace
             {
                 input = input.Substring(1);
             }
             string stringtoken = string.Empty;
             string lasttokenname = string.Empty;
 
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length; i++)  
             {
                 if (Char.IsDigit(input[i])) // IF DIGIT
                 {
@@ -198,18 +198,7 @@ namespace NEA4
 
         }
 
-        private int GreatestDepth(Token[] input)
-        {
-            int localGreatestDepth = 0;
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (input[i].bracketDepth > localGreatestDepth)
-                {
-                    localGreatestDepth = input[i].bracketDepth;
-                }
-            }
-            return localGreatestDepth;
-        }
+
 
         private Token[] ImplicitMultiplication(Token[] input)
         {
@@ -246,7 +235,31 @@ namespace NEA4
 
 
         }
-        
+        private Token[] ImplicitNegative(Token[] input)
+        {
+            List<Token> inputList = ArrayToList(input);
+            Token zero = new Token();
+            zero.type = "number";
+            zero.contents = "0";
+            for (int i = 0; i < inputList.Count; i++)
+            {
+                if (inputList[i].contents == "-")
+                {
+                    if (i == 0)
+                    {
+                        inputList.Insert(0, zero);
+                    }
+                    else if (inputList[i-1].contents == "(")
+                    {
+                        inputList.Insert(i, zero);
+                    }
+                }
+            }
+
+            Token[] output = ListToArray(inputList);
+            return output;
+        }
+
         private Token[] BracketDepth(Token[] input)
         {
             bool[] processedBracket = new bool[input.Length];
@@ -306,7 +319,18 @@ namespace NEA4
 
             return ListToArray(tempList);
         }
-        
+        private int GreatestDepth(Token[] input)
+        {
+            int localGreatestDepth = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i].bracketDepth > localGreatestDepth)
+                {
+                    localGreatestDepth = input[i].bracketDepth;
+                }
+            }
+            return localGreatestDepth;
+        }
         private TreeNode[] Parser(Token[] input) //BODMAS - BRACKETS, INDICES, DIVISION, MULTIPLICATION, ADDITION, SUBTRACTION  // should be recursive
         {
             int localGreatestDepth = GreatestDepth(input);
@@ -315,14 +339,14 @@ namespace NEA4
             
             TreeNode[] treeNodeArray = new TreeNode[inputList.Count];
             bool noBrackets = true;
-            for (int i = 0; i < inputList.Count; i++)
+            for (int i = 0; i < inputList.Count; i++) //checking if expression has only one bracket level (no brackets)
             {
                 if(inputList[i].bracketDepth != localGreatestDepth)
                 {
                     noBrackets = false;
                 }
             }
-            if(!noBrackets)
+            if(!noBrackets) //recursing to deepest bracketed expression
             {
                 for (int i = 0; i < inputList.Count; i++)
                 {
@@ -332,23 +356,23 @@ namespace NEA4
                         List<Token> temp = new List<Token>();
                         int storedBracketDepth = localGreatestDepth;
                         int z = i;
-                        while (z < inputList.Count && inputList[z].bracketDepth == localGreatestDepth)
+                        while (z < inputList.Count && inputList[z].bracketDepth == localGreatestDepth) //adding expression to temp list
                         {
                             temp.Add(inputList[z]);
                             z++;
                         }
-                        for (int l = 0; l < (z-i); l++)
+                        for (int l = 0; l < (z-i); l++)//removing expression of consecutive tokens with same bracket depth
                         {
                             inputList.RemoveAt(i);
                         }
-                        Token[] recursiveInput = ListToArray(temp);
+                        Token[] recursiveInput = ListToArray(temp); //Parsing expression
                         Token treeNodeInsert = new Token();
                         treeNodeInsert.tree = Parser(recursiveInput);
                         treeNodeInsert.type = "tree";
                         treeNodeInsert.bracketDepth = storedBracketDepth + 1;
-                        inputList.Insert(i, treeNodeInsert);
+                        inputList.Insert(i, treeNodeInsert); //inserting expression back as tree
                         
-                        localGreatestDepth = GreatestDepth(ListToArray(inputList));
+                        localGreatestDepth = GreatestDepth(ListToArray(inputList)); //List depth updated to be less deep if the expression parsed was the single deepest expression
                         
                     }
                 }
@@ -361,27 +385,20 @@ namespace NEA4
 
                     int index = FindRoot(inputList[i + 1].tree);
 
-                    inputList[i + 1].tree[index].SetParent(inputList[i + 1].tree[index], functionAsParent);
-                    //treeNode[] concatenatedArray = new treeNode[inputList[i + 1].tree.Length + 1];
-                    //for (int q = 0; q < inputList[i + 1].tree.Length; q++)
-                    //{
-                    //    concatenatedArray[i] = inputList[i + 1].tree[q];
-                    //}
-                    //concatenatedArray[concatenatedArray.Length - 1] = functionAsParent;
-                    //treeNodeInsert.tree = concatenatedArray;
+                    inputList[i + 1].tree[index].SetParent(inputList[i + 1].tree[index], functionAsParent); //updates functionAsParent to give it the child node
                     TreeNode[] root = new TreeNode[1];
                     root[0] =  functionAsParent;
 
                     Token treeNodeInsert = new Token();
                     treeNodeInsert.type = "tree";
                     treeNodeInsert.tree = root;
-                    inputList[i] = treeNodeInsert;
-                    inputList.RemoveAt(i + 1);
+                    inputList[i] = treeNodeInsert; //function is given its child node
+                    inputList.RemoveAt(i + 1); //removing child node(and its tree)
 
                 }
             }
             bool noOperation = true;
-            foreach (char operationChar in charOperationArray)
+            foreach (char operationChar in charOperationArray) //checking for each possible operation
             {
                 string operation = string.Empty + operationChar;
                 for (int i = 0; i < inputList.Count; i++)
@@ -392,6 +409,7 @@ namespace NEA4
                         List<TreeNode> leftList = new List<TreeNode>();
                         List<TreeNode> rightList = new List<TreeNode>();
                         TreeNode parentNode = new TreeNode(inputList[i], null, null);
+                        //assigning left expression to the operation tree
                         if(inputList[i-1].type == "tree")
                         {
                             int index = FindRoot(inputList[i - 1].tree);
@@ -409,7 +427,7 @@ namespace NEA4
                             leftList.Add(leftChild);
                             
                         }
-
+                        //assigning right expression to the operation tree
                         if (inputList[i + 1].type == "tree")
                         {
                             int index = FindRoot(inputList[i + 1].tree);
@@ -426,26 +444,15 @@ namespace NEA4
                             rightList.Add(rightChild);
                         }
 
-                        //treeNode[] treeNodeArrayInsert = new treeNode[leftList.Count+rightList.Count+1];
-                        //int k = 0;
-                        //for (int w = 0; w < leftList.Count; w++)
-                        //{
-                        //    treeNodeArrayInsert[k] = leftList[w];
-                        //    k++;
-                        //}
-                        //for (int w = 0; w < rightList.Count; w++)
-                        //{
-                        //    treeNodeArrayInsert[k] = rightList[w];
-                        //    k++;
-                        //}
-                        //treeNodeArrayInsert[treeNodeArrayInsert.Length - 1] = parentNode;
                         TreeNode[] treeNodeArrayInsert = new TreeNode[1];
                         treeNodeArrayInsert[0] = parentNode;
-
+                        //creating operation tree token
                         Token treeNodeToken = new Token();
                         treeNodeToken.type = "tree";
                         treeNodeToken.tree = treeNodeArrayInsert;
                         inputList[i] = treeNodeToken;
+
+                        //removing expressions now in the operation tree
                         inputList.RemoveAt(i + 1);
                         inputList.RemoveAt(i - 1);
                         
@@ -457,7 +464,7 @@ namespace NEA4
                 throw new Exception("number of tokens does not match number of token types");
             }
 
-            if (noOperation)
+            if (noOperation) //in case of single value / variable
             {
                 TreeNode singleparentNode = new TreeNode(inputList[0], null, null);
                 TreeNode[] singleNodeArrayInsert = new TreeNode[1];
@@ -494,30 +501,7 @@ namespace NEA4
             return index;
         }
 
-        private Token[] ImplicitNegative(Token[] input)
-        {
-            List<Token> inputList = ArrayToList(input);
-            Token zero = new Token();
-            zero.type = "number";
-            zero.contents = "0";
-            for (int i = 0; i < inputList.Count; i++)
-            {
-                if(inputList[i].contents == "-" )
-                {
-                    if(i == 0)
-                    {
-                        inputList.Insert(0, zero);
-                    }
-                    else if (inputList[i-1].contents == "(" )
-                    {
-                        inputList.Insert(i, zero);
-                    }
-                }
-            }
-
-            Token[] output = ListToArray(inputList);
-            return output;
-        }
+       
         
         private Token[] ListToArray(List<Token> input)
         {
@@ -564,8 +548,6 @@ namespace NEA4
             {
                 parent.rightChild = this;
             }
-            
-
         }
 
         public void SetParent(TreeNode input, TreeNode inputParent)
@@ -580,11 +562,5 @@ namespace NEA4
                 parent.rightChild = this;
             }
         }
-
-
-
-
     }
-
-
 }

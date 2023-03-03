@@ -122,7 +122,7 @@
             this.cartesianChart1.Name = "cartesianChart1";
             this.cartesianChart1.Size = new System.Drawing.Size(550, 550);
             this.cartesianChart1.TabIndex = 0;
-            //this.cartesianChart1.Load += new System.EventHandler(this.cartesianChart1_Load);
+            this.cartesianChart1.Load += new System.EventHandler(this.cartesianChart1_Load);
             // 
             // RPNTextBox
             // 
@@ -158,7 +158,6 @@
             this.RPNInputLabel.Size = new System.Drawing.Size(68, 46);
             this.RPNInputLabel.TabIndex = 6;
             this.RPNInputLabel.Text = "y =";
-            //this.RPNInputLabel.Click += new System.EventHandler(this.RPNInputLabel_Click);
             // 
             // a1
             // 
@@ -280,7 +279,6 @@
             this.EigenvectorsButton.TabIndex = 19;
             this.EigenvectorsButton.Text = "Eigenvectors";
             this.EigenvectorsButton.UseVisualStyleBackColor = true;
-            //this.EigenvectorsButton.Click += new System.EventHandler(this.button2_Click);
             // 
             // LinesOfInvariantPointsButton
             // 
@@ -547,7 +545,6 @@
             this.button4.TabIndex = 47;
             this.button4.Text = ")";
             this.button4.UseVisualStyleBackColor = true;
-            //this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -558,7 +555,6 @@
             this.button5.TabIndex = 46;
             this.button5.Text = "(";
             this.button5.UseVisualStyleBackColor = true;
-            //this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button7
             // 
@@ -569,7 +565,6 @@
             this.button7.TabIndex = 49;
             this.button7.Text = "-";
             this.button7.UseVisualStyleBackColor = true;
-            //this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -580,7 +575,6 @@
             this.button8.TabIndex = 48;
             this.button8.Text = "+";
             this.button8.UseVisualStyleBackColor = true;
-            //this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button10
             // 
@@ -591,7 +585,6 @@
             this.button10.TabIndex = 51;
             this.button10.Text = "/";
             this.button10.UseVisualStyleBackColor = true;
-            //this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button11
             // 
@@ -602,7 +595,6 @@
             this.button11.TabIndex = 50;
             this.button11.Text = "*";
             this.button11.UseVisualStyleBackColor = true;
-            //this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // absButton
             // 
@@ -613,7 +605,6 @@
             this.absButton.TabIndex = 53;
             this.absButton.Text = "abs";
             this.absButton.UseVisualStyleBackColor = true;
-            //this.absButton.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
             // 
@@ -624,7 +615,6 @@
             this.button16.TabIndex = 52;
             this.button16.Text = "^";
             this.button16.UseVisualStyleBackColor = true;
-            //this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // sinButton
             // 
@@ -657,7 +647,6 @@
             this.button19.TabIndex = 56;
             this.button19.Text = "ln";
             this.button19.UseVisualStyleBackColor = true;
-            //this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // button20
             // 
@@ -668,7 +657,6 @@
             this.button20.TabIndex = 57;
             this.button20.Text = "log";
             this.button20.UseVisualStyleBackColor = true;
-            //this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // UnitSquareButton
             // 
