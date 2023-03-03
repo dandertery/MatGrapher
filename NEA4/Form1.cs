@@ -143,7 +143,7 @@ namespace NEA4
 
         private void UpdateFunctions() 
         {
-            functionListNumber = FunctionList.Items.Count;
+            
             UpdateQueueMatrix();
             fs = new Stack<Function>();
             for (int i = 0; i < FunctionList.Items.Count; i++)
@@ -1583,14 +1583,33 @@ namespace NEA4
             {
                 if (RPNTextBox.Text != "")
                 {
+                    if(functionListNumber == 0)
+                    {
+                        functionListNumber = 1;
+                    }
                     string RPNinput = RPNTextBox.Text;
-                    if (FunctionList.Items.Count < functionListNumber + 1)
+                    if (FunctionList.Items.Count < functionListNumber)
                     {
                         FunctionList.Items.Add("y = " + RPNinput);
+                        UpdateFunctions();
                     }
                     else
                     {
-                        FunctionList.Items[functionListNumber] = ("y = " + RPNinput);
+                        bool update = true;
+                        try
+                        {
+                            Parsing test = new Parsing(RPNinput);
+                        }
+                        catch(Exception ex)
+                        {
+                            update = false;
+                        }
+
+                        if(update)
+                        {
+                            FunctionList.Items[functionListNumber - 1] = ("y = " + RPNinput);
+                        }
+                        
                     }                  
                     UpdateFunctions();
                 }
