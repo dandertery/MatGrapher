@@ -813,7 +813,7 @@
             this.DegreesRadiansButton.Name = "DegreesRadiansButton";
             this.DegreesRadiansButton.Size = new System.Drawing.Size(100, 23);
             this.DegreesRadiansButton.TabIndex = 91;
-            this.DegreesRadiansButton.Text = "Degrees";
+            this.DegreesRadiansButton.Text = "Radians";
             this.DegreesRadiansButton.UseVisualStyleBackColor = true;
             this.DegreesRadiansButton.Click += new System.EventHandler(this.DegreesRadiansButton_Click);
             // 

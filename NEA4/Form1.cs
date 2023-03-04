@@ -1754,15 +1754,7 @@ namespace NEA4
                 if (animationType == "rotation")
                 {
                     steps = 100;
-                    if (useDegrees)
-                    {
-                        aniPitch = V.value / steps;
-                    }
-                    else
-                    {
-                        aniPitch = V.value / steps;
-                    }
-                    
+                    aniPitch = V.value / steps;                  
                                                        
                     V.value = 0;
                 }
@@ -1981,7 +1973,7 @@ namespace NEA4
             {
                 if(useDegrees)
                 {
-                    V.value = ((Double.Parse(vTextBox.Text))*Math.PI) / 180;
+                    V.value = DegreesToRadians(Double.Parse(vTextBox.Text));
                 }
                 else
                 {
@@ -2012,11 +2004,15 @@ namespace NEA4
             {
                
                 V.value = V.value + aniPitch;
-                vTextBox.Text = V.value.ToString();
+                
                 if (useDegrees)
                 {
                     vTextBox.Text = RadiansToDegrees(V.value).ToString();
 
+                }
+                else
+                {
+                    vTextBox.Text = V.value.ToString();
                 }
                 AniMatrix.requestChange("a", (Math.Cos(V.value).ToString()));
                 AniMatrix.requestChange("b", (Math.Sin(V.value).ToString()));
@@ -2088,6 +2084,22 @@ namespace NEA4
             else
             {
                 DegreesRadiansButton.Text = "Degrees";
+            }
+            if(vTextBox.Text == "90")
+            {
+                vTextBox.Text = "1.57";
+            }
+            else if(vTextBox.Text == "1.57")
+            {
+                vTextBox.Text = "90";
+            }
+            else if(useDegrees)
+            {
+                vTextBox.Text = RadiansToDegrees(Double.Parse(vTextBox.Text)).ToString();
+            }
+            else
+            {
+                vTextBox.Text = DegreesToRadians(Double.Parse(vTextBox.Text)).ToString();
             }
         }
     }
