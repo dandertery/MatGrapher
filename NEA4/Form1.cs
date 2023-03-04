@@ -1754,7 +1754,15 @@ namespace NEA4
                 if (animationType == "rotation")
                 {
                     steps = 100;
-                    aniPitch = V.value / steps;
+                    if (useDegrees)
+                    {
+                        aniPitch = V.value / steps;
+                    }
+                    else
+                    {
+                        aniPitch = V.value / steps;
+                    }
+                    
                                                        
                     V.value = 0;
                 }
@@ -1819,12 +1827,28 @@ namespace NEA4
         {
             UpdateFunctions();
         }
-
+        private double RadiansToDegrees(double input)
+        {
+            return (input * 180) / Math.PI;
+        }
+        private double DegreesToRadians(double input)
+        {
+            return (input * Math.PI) / 180;
+        }
 
         private void ReflectionButton_Click(object sender, EventArgs e)
         {
             V.value = 0.785;
-            vTextBox.Text = 0.785.ToString();
+            
+            if (useDegrees)
+            {
+                vTextBox.Text = RadiansToDegrees(0.785).ToString();
+            }
+            else
+            {
+                vTextBox.Text = 0.785.ToString();
+            }
+            
             a2.Text = "cos(2V)";
             b2.Text = "sin(2V)";
             c2.Text = "sin(2V)";
@@ -1834,7 +1858,14 @@ namespace NEA4
         private void RotationButton_Click(object sender, EventArgs e)
         {
             V.value = 1.57;
-            vTextBox.Text = 1.57.ToString();
+            if (useDegrees)
+            {
+                vTextBox.Text = RadiansToDegrees(1.57).ToString();
+            }
+            else
+            {
+                vTextBox.Text = 1.57.ToString();
+            }
             a2.Text = "cos(V)";
             b2.Text = "-sin(V)";
             c2.Text = "sin(V)";
@@ -1948,7 +1979,15 @@ namespace NEA4
         {
             try
             {
-                V.value = Double.Parse(vTextBox.Text);
+                if(useDegrees)
+                {
+                    V.value = ((Double.Parse(vTextBox.Text))*Math.PI) / 180;
+                }
+                else
+                {
+                    V.value = Double.Parse(vTextBox.Text);
+                }
+                
 
                 TextboxChanged(a1, "a", lMat);
                 TextboxChanged(b1, "b", lMat);
@@ -1974,6 +2013,11 @@ namespace NEA4
                
                 V.value = V.value + aniPitch;
                 vTextBox.Text = V.value.ToString();
+                if (useDegrees)
+                {
+                    vTextBox.Text = RadiansToDegrees(V.value).ToString();
+
+                }
                 AniMatrix.requestChange("a", (Math.Cos(V.value).ToString()));
                 AniMatrix.requestChange("b", (Math.Sin(V.value).ToString()));
                 AniMatrix.requestChange("c", ((Math.Sin(V.value)*-1).ToString()));
@@ -2035,13 +2079,15 @@ namespace NEA4
 
         private void DegreesRadiansButton_Click(object sender, EventArgs e)
         {
-            if(DegreesRadiansButton.Text == "Degrees")
+            useDegrees = !useDegrees;
+            if (DegreesRadiansButton.Text == "Degrees")
             {
+                
                 DegreesRadiansButton.Text = "Radians";
             }
             else
             {
-                DegreesRadiansButton.Text == "Degrees";
+                DegreesRadiansButton.Text = "Degrees";
             }
         }
     }
