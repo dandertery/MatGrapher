@@ -1308,6 +1308,12 @@ namespace NEA4
                 InvLine1TextBox.Text = "";
                 InvLine2TextBox.Text = "";
                 LOfInvPointsTextBox.Text = "";
+                EigenValue1TextBox.Text = "";
+                EigenValue2TextBox.Text = "";
+                EV1A.Text = "";
+                EV1B.Text = "";
+                EV2A.Text = "";
+                EV2B.Text = "";
             }
             else
             {

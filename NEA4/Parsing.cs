@@ -36,9 +36,12 @@ namespace NEA4
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
         public Parsing(string userInput)
         {
-
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
+            if(ContainsFunction(tokenArray))
+            {
+                tokenArray = FunctionFix(tokenArray);
+            }
             greatestDepth = GreatestDepth(tokenArray);
             Tree = Parser(tokenArray);
             
@@ -48,7 +51,85 @@ namespace NEA4
         {
             return Tree[0];
         }
+        private bool ContainsFunction(Token[] input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if(input[i].type == "function")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private Token[] FunctionFix(Token[] input)
+        {
+            List<Token> result = ArrayToList(input);
+            int depthCompare = GreatestDepth(input);
 
+            Token plus = new Token();
+            plus.bracketDepth = depthCompare;
+            plus.type = "operation";
+            plus.contents = "+";
+            Token zero = new Token();
+            zero.bracketDepth = depthCompare;
+            zero.type = "number";
+            zero.contents = "0";
+            while (depthCompare > -1)
+            {
+
+                bool onlyFunction = true;
+
+                for (int w = 0; w < result.Count; w++)
+                {
+                    if (result[w].type != "function" && result[w].bracketDepth == depthCompare)
+                    {
+                        onlyFunction = false;
+                    }
+                    
+                }
+                if (onlyFunction)
+                {
+                    zero.bracketDepth = depthCompare;
+                    plus.bracketDepth = depthCompare;
+                    bool depthFound = false;
+                    bool inserted = false;
+                    for (int i = 0; i < result.Count; i++)
+                    {
+                        if(!depthFound)
+                        {
+                            if (result[i].bracketDepth == depthCompare)
+                            {
+                                depthFound = true;
+                            }
+                        }
+                        else if(result[i].bracketDepth == depthCompare - 1)
+                        {
+                            result.Insert(i + 1, zero);
+                            result.Insert(i + 1, plus);
+                            depthFound = false;
+                            inserted = true;
+                        }
+
+                        
+
+                    }
+                    if (!inserted)
+                    {
+                        result.Add(plus);
+                        result.Add(zero);
+                        
+                    }
+
+                }
+
+                depthCompare--;
+            }
+                
+            
+            return ListToArray(result);
+
+        }
         private Token[] Lexer(string input) //Each token is added to the token list when the next character is about to be lexed. No use for characterLexed currently, but useful if multiple passes are needed for more complex handling
         {
             List<Token> tokens = new List<Token>();
