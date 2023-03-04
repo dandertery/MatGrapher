@@ -35,6 +35,7 @@ namespace NEA4
         private bool displayTriangle = false;
         private bool ShearX = true; //Shear X, or Shear Y
         private bool isAnimating;
+        private bool useDegrees = false;
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
         private Matrix AniMatrix;
@@ -1260,7 +1261,7 @@ namespace NEA4
                 
             }
         }
-        private void CheckMatrix()
+        private void CheckMatrix() //called many times per second on timer
         {
             if(lMat.getDet() == 0) //if determinant is 0 a matrix has no inverse
             {
@@ -1300,7 +1301,7 @@ namespace NEA4
 
             detB.Text = ErrorRounder(Double.Parse(FigText(rMat.getDet().ToString(), 5)), 2).ToString();
 
-
+            QueueMatrixLabel.Text = "(" + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("a").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("b").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("c").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("d").ToString(), 4)), 2) + ")";
 
 
             if (MatrixList.Items.Count == 0)
@@ -1478,7 +1479,7 @@ namespace NEA4
 
                     bool zeroCondition = true;
                     int i = counter.Length - 1;
-                    while (counter[i].ToString() != ".")
+                    while (i > -1 && counter[i].ToString() != "." )
                     {
                         if(i == counter.Length - 1)
                         {
@@ -2025,6 +2026,23 @@ namespace NEA4
         private void cartesianChart1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void CopyButton_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(QueueMatrixLabel.Text);
+        }
+
+        private void DegreesRadiansButton_Click(object sender, EventArgs e)
+        {
+            if(DegreesRadiansButton.Text == "Degrees")
+            {
+                DegreesRadiansButton.Text = "Radians";
+            }
+            else
+            {
+                DegreesRadiansButton.Text == "Degrees";
+            }
         }
     }
 }

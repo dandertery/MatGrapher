@@ -70,8 +70,6 @@
             this.pTextbox = new System.Windows.Forms.TextBox();
             this.qTextbox = new System.Windows.Forms.TextBox();
             this.piButton = new System.Windows.Forms.Button();
-            this.sinButton = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
             this.UnitSquareButton = new System.Windows.Forms.Button();
             this.TriangleButton = new System.Windows.Forms.Button();
             this.AnimateButton = new System.Windows.Forms.Button();
@@ -103,6 +101,9 @@
             this.EigenValue1TextBox = new System.Windows.Forms.TextBox();
             this.EigenValue2TextBox = new System.Windows.Forms.TextBox();
             this.RestartButton = new System.Windows.Forms.Button();
+            this.CopyButton = new System.Windows.Forms.Button();
+            this.QueueMatrixLabel = new System.Windows.Forms.Label();
+            this.DegreesRadiansButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -514,27 +515,6 @@
             this.piButton.UseVisualStyleBackColor = true;
             this.piButton.Click += new System.EventHandler(this.piButton_Click);
             // 
-            // sinButton
-            // 
-            this.sinButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sinButton.Location = new System.Drawing.Point(1368, 12);
-            this.sinButton.Name = "sinButton";
-            this.sinButton.Size = new System.Drawing.Size(64, 50);
-            this.sinButton.TabIndex = 54;
-            this.sinButton.Text = "sin";
-            this.sinButton.UseVisualStyleBackColor = true;
-            this.sinButton.Click += new System.EventHandler(this.sinButton_Click);
-            // 
-            // button19
-            // 
-            this.button19.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button19.Location = new System.Drawing.Point(1311, 12);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(50, 50);
-            this.button19.TabIndex = 56;
-            this.button19.Text = "ln";
-            this.button19.UseVisualStyleBackColor = true;
-            // 
             // UnitSquareButton
             // 
             this.UnitSquareButton.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -808,11 +788,43 @@
             this.RestartButton.UseVisualStyleBackColor = true;
             this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
             // 
+            // CopyButton
+            // 
+            this.CopyButton.Location = new System.Drawing.Point(1181, 826);
+            this.CopyButton.Name = "CopyButton";
+            this.CopyButton.Size = new System.Drawing.Size(75, 23);
+            this.CopyButton.TabIndex = 89;
+            this.CopyButton.Text = "Copy";
+            this.CopyButton.UseVisualStyleBackColor = true;
+            this.CopyButton.Click += new System.EventHandler(this.CopyButton_Click);
+            // 
+            // QueueMatrixLabel
+            // 
+            this.QueueMatrixLabel.AutoSize = true;
+            this.QueueMatrixLabel.Location = new System.Drawing.Point(995, 830);
+            this.QueueMatrixLabel.Name = "QueueMatrixLabel";
+            this.QueueMatrixLabel.Size = new System.Drawing.Size(48, 15);
+            this.QueueMatrixLabel.TabIndex = 90;
+            this.QueueMatrixLabel.Text = "(1,0,0,1)";
+            // 
+            // DegreesRadiansButton
+            // 
+            this.DegreesRadiansButton.Location = new System.Drawing.Point(683, 716);
+            this.DegreesRadiansButton.Name = "DegreesRadiansButton";
+            this.DegreesRadiansButton.Size = new System.Drawing.Size(100, 23);
+            this.DegreesRadiansButton.TabIndex = 91;
+            this.DegreesRadiansButton.Text = "Degrees";
+            this.DegreesRadiansButton.UseVisualStyleBackColor = true;
+            this.DegreesRadiansButton.Click += new System.EventHandler(this.DegreesRadiansButton_Click);
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1284, 881);
+            this.ClientSize = new System.Drawing.Size(1292, 881);
+            this.Controls.Add(this.DegreesRadiansButton);
+            this.Controls.Add(this.QueueMatrixLabel);
+            this.Controls.Add(this.CopyButton);
             this.Controls.Add(this.RestartButton);
             this.Controls.Add(this.EigenValue2TextBox);
             this.Controls.Add(this.EigenValue1TextBox);
@@ -843,8 +855,6 @@
             this.Controls.Add(this.AnimateButton);
             this.Controls.Add(this.TriangleButton);
             this.Controls.Add(this.UnitSquareButton);
-            this.Controls.Add(this.button19);
-            this.Controls.Add(this.sinButton);
             this.Controls.Add(this.piButton);
             this.Controls.Add(this.qTextbox);
             this.Controls.Add(this.pTextbox);
@@ -934,8 +944,6 @@
         private TextBox pTextbox;
         private TextBox qTextbox;
         private Button piButton;
-        private Button sinButton;
-        private Button button19;
         private Button UnitSquareButton;
         private Button TriangleButton;
         private Button AnimateButton;
@@ -967,5 +975,8 @@
         private TextBox EigenValue1TextBox;
         private TextBox EigenValue2TextBox;
         private Button RestartButton;
+        private Button CopyButton;
+        private Label QueueMatrixLabel;
+        private Button DegreesRadiansButton;
     }
 }
