@@ -51,7 +51,7 @@ namespace NEA4
         private ObservablePoint[] UnitSquare = new ObservablePoint[45]; // initialising Unit Square graph construct
         private ObservablePoint[] eigenVector1OP = new ObservablePoint[1];
         private ObservablePoint[] eigenVector2OP = new ObservablePoint[1];
-        private ObservablePoint[][] Grid = new ObservablePoint[10][];
+        private ObservablePoint[][] Grid = new ObservablePoint[8][];
         private string[] functionArray = { "cos", "sin", "log", "ln", "abs" }; //to determine nature of parsed function tokens
         private string[] operationArray = { "^", "*", "/", "-", "+" }; // to determine nature of parsed operation tokens
 
@@ -174,30 +174,38 @@ namespace NEA4
         }
         private void DefineGrid()
         {
-            double width = (bounds * 2) / 5;
-            double x = width - bounds;
+            double width = (bounds) / 3;
+            double x = -bounds;
             double y = -bounds;
+            double[] widthArray = new double[] { -width * 2, -width, width, width * 2 };
             for (int i = 0; i < (Grid.Length / 2); i++)
             {
-                Grid[i] = new ObservablePoint[10];
+                Grid[i] = new ObservablePoint[11];
                 for (int z = 0; z < Grid[i].Length; z++)
                 {
                     Grid[i][z] = new ObservablePoint(x, y);
-                    y = y + bounds;
+                    y = y + (bounds / 5);
+                    
                 }
+                x = x + width;
+                y = -bounds;
             }
             x = -bounds;
-            y = width - bounds;
+            y = -bounds;
             
-            for (int i = 5; i < (Grid.Length); i++)
+            for (int i = 4; i < (Grid.Length); i++)
             {
-                Grid[i] = new ObservablePoint[10];
+                Grid[i] = new ObservablePoint[11];
                 for (int z = 0; z < Grid[i].Length; z++)
                 {
                     Grid[i][z] = new ObservablePoint(x, y);
-                    x = x + bounds;
+                    x = x + (bounds / 5);
+                    
                 }
+                y = y + width;
+                x = -bounds;
             }
+            Debug.WriteLine("Br");
         }
 
         private void UpdateFunctions() 
@@ -642,9 +650,10 @@ namespace NEA4
                     eigenVector1OP = CutFunctionToBounds(eigenVector1OP)[0];
                     eigenVector2OP = CutFunctionToBounds(eigenVector2OP)[0];
                 }
+                ObservablePoint[][] displayGridOP = new ObservablePoint[10][];
                 if (displayGrid)
                 {
-                    ObservablePoint[][] displayGridOP = new ObservablePoint[10][];
+                    DefineGrid();
                     for (int b = 0; b < Grid.Length; b++)
                     {
                         for (int i = 0; i < Grid[b].Length; i++)
@@ -726,10 +735,80 @@ namespace NEA4
                     },
                     new LineSeries<ObservablePoint>
                     {
+                        Values = displayGridOP[0],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[1],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[2],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[3],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[4],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[5],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[6],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[7],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[8],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values = displayGridOP[9],
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
                         Values = displayLines[0],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
                     },
                     new LineSeries<ObservablePoint>
                     {
