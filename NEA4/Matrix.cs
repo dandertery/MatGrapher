@@ -41,15 +41,28 @@
         }
         public string GetInvLine1()
         {
-            return invLine1;
+            if(invLine1!=null && invLine1 != "y = NaNx")
+            {
+                return invLine1;
+            }
+            return "error";
+            
         }
         public string GetInvLine2()
         {
-            return invLine2;
+            if (invLine1 != null && invLine1 != "y = NaNx")
+            {
+                return invLine2;
+            }
+            return "error";
         }
         public string GetInvPointLine()
         {
-            return invPointLine;
+            if (invLine1 != null && invLine1 != "y = NaNx")
+            {
+                return invPointLine;
+            }
+            return "error";
         }
         public double GetEigenValue1()
         {

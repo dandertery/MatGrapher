@@ -22,41 +22,52 @@ namespace NEA4
     public partial class MatGrapher : Form
     {
         private int functionListNumber = 0; //counting functions 
+        private int steps; //for animation
         private double pitch;
         private double bounds;
         private double fBounds;
         private double renderBounds;
         private double renderFBounds;
         private double aniPitch;
-        private double aniPitch2;
-        private int steps;
+        private double aniPitch2; // for combined X/Y stretch animations
+        
+
         private bool unitSquareDisplay = false;
         private bool displayGrid = false;
         private bool displayTriangle = false;
         private bool ShearX = true; //Shear X, or Shear Y
-        private bool isAnimating;
+        private bool isAnimating = false;
         private bool useDegrees = false;
         private bool showEigen = false;
+
         private string animationType = null;
-        private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
+
+        private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1); //starts as identity matrix
         private Matrix AniMatrix;
         private Matrix lMat = new Matrix(-4, 3, 1, -2);
         private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);
+
         private Variable k; // kpq for function input use
         private Variable p;
         private Variable q; 
-
         private Variable V; // for matrix value input use
-        private ObservablePoint[] UnitSquare = new ObservablePoint[45]; // initialising Unit Square graph construct
-        private ObservablePoint[] eigenVector1OP = new ObservablePoint[1];
-        private ObservablePoint[] eigenVector2OP = new ObservablePoint[1];
-        private ObservablePoint[][] Grid = new ObservablePoint[8][];
+
+        Variable E = new Variable();
+        Variable PI = new Variable();
+
+        private ObservablePoint[] UnitSquare = new ObservablePoint[45];// initialising graph constructs of the Unit Square, Triangle and Grid
+        private ObservablePoint[] Triangle = new ObservablePoint[4]; //
+        private ObservablePoint[][] Grid = new ObservablePoint[8][]; //
+        private ObservablePoint[] eigenVector1OP = new ObservablePoint[1]; //Eigenvectors to be transformed by the eigenvalues 
+        private ObservablePoint[] eigenVector2OP = new ObservablePoint[1]; //
+        
         private string[] functionArray = { "cos", "sin", "log", "ln", "abs" }; //to determine nature of parsed function tokens
         private string[] operationArray = { "^", "*", "/", "-", "+" }; // to determine nature of parsed operation tokens
 
         private Stack<Function> fs = new Stack<Function>(); // Stack of functions
         private Queue<Matrix> ms = new Queue<Matrix>(); //FIFO structure for matrix transformations
+
 
 
         struct Coordinate
@@ -87,28 +98,32 @@ namespace NEA4
             InitializeComponent();
             bounds = 10;
             pitch = 0.05;
-            V.letter = "V";
+
             fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
-            InitialiseKPQ();          
+            InitialiseVariables();          
             DefineUnitSquare();
             UpdateFunctions(); //called upon every relevant change
+
            
         }
 
-        private void InitialiseKPQ() //Initialising variables for use in function definition
+        private void InitialiseVariables() //Initialising variables for use in function/matrix definition
         {
-            k = new Variable();
             k.letter = "K";
             k.value = double.Parse(kTextbox.Text);
-            p = new Variable();
             p.letter = "P";
             p.value = double.Parse(pTextbox.Text);
-            q = new Variable();
             q.letter = "Q";
             q.value = double.Parse(qTextbox.Text);
-            
+
+            E.letter = "e";
+            E.value = Math.E;
+            PI.letter = "π";
+            PI.value = Math.PI;
+            V.letter = "V";
+
         }
         private void DefineEigenVectors()
         {
@@ -137,6 +152,15 @@ namespace NEA4
                 eigenVector1OP[0] = new ObservablePoint();
                 eigenVector2OP[0] = new ObservablePoint();
             }
+
+        }
+        private void DefineTriangle()
+        {
+
+            Triangle[0] = new ObservablePoint(-4,-5);
+            Triangle[1] = new ObservablePoint(-2,3);
+            Triangle[2] = new ObservablePoint(6,-1);
+            Triangle[3] = new ObservablePoint(-4, -5);
 
         }
         private void DefineUnitSquare()
@@ -175,40 +199,38 @@ namespace NEA4
         private void DefineGrid()
         {
             double width = (bounds) / 3;
-            double x = -bounds;
-            double y = -bounds;
-            double[] widthArray = new double[] { -width * 2, -width, width, width * 2 };
+            double x;
+            double y;
+            double[] widthArray = new double[] { -width * 2, -width, width, width * 2 }; //defining away from each axis
             for (int i = 0; i < (Grid.Length / 2); i++)
             {
-                Grid[i] = new ObservablePoint[11];
+                x = widthArray[i];
+                y = -bounds * 10;
+                Grid[i] = new ObservablePoint[100];
                 for (int z = 0; z < Grid[i].Length; z++)
                 {
                     Grid[i][z] = new ObservablePoint(x, y);
                     y = y + (bounds / 5);
                     
                 }
-                x = x + width;
-                y = -bounds;
-            }
-            x = -bounds;
-            y = -bounds;
-            
+                
+                
+            }           
             for (int i = 4; i < (Grid.Length); i++)
             {
-                Grid[i] = new ObservablePoint[11];
+                x = -bounds * 10;
+                y = widthArray[i-4];
+                Grid[i] = new ObservablePoint[100];
                 for (int z = 0; z < Grid[i].Length; z++)
                 {
                     Grid[i][z] = new ObservablePoint(x, y);
                     x = x + (bounds / 5);
-                    
-                }
-                y = y + width;
-                x = -bounds;
+                   
+                }               
             }
-            Debug.WriteLine("Br");
         }
 
-        private void UpdateFunctions() 
+        private void UpdateFunctions() //called upon relevant changes
         {
             
             UpdateQueueMatrix();
@@ -229,23 +251,13 @@ namespace NEA4
 
 
         }
-        private NamedCoordArray ProcessInput(string input)
+        private List<Variable> DefineVariableArray()
         {
-            Parsing TreeInput = new Parsing(input);
-            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
-
-            pitch = 0.05;
-            fBounds = bounds / pitch;
-            renderBounds = bounds * 10;
-            renderFBounds = renderBounds / pitch;
-            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(renderFBounds * 2)];
-
-
-            List<Variable> variableArray = new List<Variable>();
+            List<Variable> temp = new List<Variable>(); //creating variable array for use in parsing
             Variable xTemp = new Variable();
             xTemp.value = 0;
             xTemp.letter = "x";
-            variableArray.Add(xTemp);
+            temp.Add(xTemp);
             KPQ();
             Variable[] kpqArray = new Variable[3];
             kpqArray[0] = k;
@@ -253,24 +265,36 @@ namespace NEA4
             kpqArray[2] = q;
             for (int i = 0; i < kpqArray.Length; i++)
             {
-                variableArray.Add(kpqArray[i]);
+                temp.Add(kpqArray[i]);
             }
 
-            Variable E = new Variable();
-            Variable PI = new Variable();
-            E.letter = "e";
-            E.value = Math.E;
-            PI.letter = "π";
-            PI.value = Math.PI;
-            variableArray.Add(E);
-            variableArray.Add(PI);
+
+            temp.Add(E);
+            temp.Add(PI);
+            return temp;
+        }
+        private NamedCoordArray ProcessInput(string input) //processing a function
+        {
+            Parsing TreeInput = new Parsing(input);
+            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
+
+            pitch = 0.05; 
+            fBounds = bounds / pitch;
+            renderBounds = bounds * 10;
+            renderFBounds = renderBounds / pitch;
+            Coordinate[] coordinates = new Coordinate[Convert.ToInt32(renderFBounds * 2)];
+
+            Variable xTemp = new Variable();
+            xTemp.value = 0;
+            xTemp.letter = "x";
+
+            List<Variable> variableArray = DefineVariableArray();
             double xValue = -renderBounds;
 
             for (int i = 0; i < (renderFBounds * 2); i++)
             {
                 coordinates[i].x = checkForBinaryError(xValue, 6);
-                xTemp.value = coordinates[i].x;
-                xTemp.letter = "x";
+                xTemp.value = coordinates[i].x; 
                 variableArray[0] = xTemp;
 
                 coordinates[i].y = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6); //calculating f(x) for every x
@@ -308,14 +332,14 @@ namespace NEA4
                     {
                         function.breakpoints++;
                         listIndexer++;
-                        tempLengthList.Add(0); // creating new list array for contiguous coordinates to be added to
+                        tempLengthList.Add(0); // creating new counter in the list to count the coordinates that have to be added in each section
 
                     }
                     previousNaN = true;
                 }
                 else
                 {
-                    tempLengthList[listIndexer]++;
+                    tempLengthList[listIndexer]++; //adding to the counter
                     previousNaN = false;
                 }
             }
@@ -337,7 +361,7 @@ namespace NEA4
             Coordinate[][] CoordinatesArrays = new Coordinate[function.breakpoints + 1][]; //array of coordinate arrays
 
             CoordinatesArrays[0] = new Coordinate[arrayLengths[0]];
-            CoordinatesArrays[0][0] = coordinates[0];
+            CoordinatesArrays[0][0] = coordinates[0]; //adding first coordinate to first section
             int c = 1;
 
             Matrix InverseQueueMatrix = QueueMatrix.Inverse(QueueMatrix);
@@ -373,7 +397,7 @@ namespace NEA4
 
             for (int i = 0; i < (function.breakpoints + 1); i++)
             {
-                function.fSections.Add(ValuesArrays[i]); // creating each function 'sectionn'
+                function.fSections.Add(ValuesArrays[i]); // creating each function 'section'
             }
             return function;
         }
@@ -664,6 +688,16 @@ namespace NEA4
                     }
                     
                 }
+                ObservablePoint[] displayTriangleOP = new ObservablePoint[4];
+                if(displayTriangle)
+                {
+                    DefineTriangle();
+                    displayTriangleOP[0] = ApplyToObservablePoint(Triangle[0], QueueMatrix);
+                    displayTriangleOP[1] = ApplyToObservablePoint(Triangle[1], QueueMatrix);
+                    displayTriangleOP[2] = ApplyToObservablePoint(Triangle[2], QueueMatrix);
+                    displayTriangleOP[3] = ApplyToObservablePoint(Triangle[3], QueueMatrix);
+                    displayTriangleOP = CutFunctionToBounds(displayTriangleOP)[0];
+                }
 
                 
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
@@ -701,7 +735,7 @@ namespace NEA4
 
                 cartesianChart1.Series = new ISeries[]
                 {
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> // point at (bounds, bounds) to display axes up to that point
                     {
                         Values = UpperBoundSet,
                         Fill = null,
@@ -709,7 +743,7 @@ namespace NEA4
 
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 }
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> // point at (-bounds, -bounds) to display axes down to that point
                     {
                         Values =  LowerBoundSet,
                         Fill = null,
@@ -733,7 +767,7 @@ namespace NEA4
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
 
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //Displaying Grid, if enabled
                     {
                         Values = displayGridOP[0],
                         Fill = null,
@@ -803,12 +837,12 @@ namespace NEA4
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //displaying functions that have successfully parsed - 64 slots
                     {
                         Values = displayLines[0],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.DarkGoldenrod) { StrokeThickness = 2 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
                     },
                     new LineSeries<ObservablePoint>
                     {
@@ -1251,7 +1285,7 @@ namespace NEA4
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> // displaying unit square
                     {
                         Values =  displayUnitSquare,
                         Fill = null,
@@ -1259,7 +1293,16 @@ namespace NEA4
                         Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 }
 
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //displaying Triangle
+                    {
+                        Values =  displayTriangleOP,
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Orange) { StrokeThickness = 3 },
+                        LineSmoothness = 0
+
+                    },
+                    new LineSeries<ObservablePoint> //displaying eigenvector 1 not transformed
                     {
                         Values =  eigenVector1OP,
                         Fill = null,
@@ -1268,7 +1311,7 @@ namespace NEA4
                         Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
 
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //displaying eigenvector 2 not transformed
                     {
                         Values =  eigenVector2OP,
                         Fill = null,
@@ -1277,7 +1320,7 @@ namespace NEA4
                         Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
 
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //displaying eigenvector1 transformed
                     {
                         Values =  displayEigenVector1,
                         Fill = null,
@@ -1286,7 +1329,7 @@ namespace NEA4
                         Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
 
                     },
-                    new LineSeries<ObservablePoint>
+                    new LineSeries<ObservablePoint> //displaying eigenvector2 transformed
                     {
                         Values =  displayEigenVector2,
                         Fill = null,
@@ -1317,19 +1360,6 @@ namespace NEA4
                 output[i] = input[i];
             }
             for (int i = index; i < (input.Length-1); i++)
-            {
-                output[i] = input[i + 1];
-            }
-            return output;
-        }
-        private ObservablePoint[] RemoveObservablePoint(ObservablePoint[] input, int index)
-        {
-            ObservablePoint[] output = new ObservablePoint[input.Length - 1];
-            for (int i = 0; i < index; i++)
-            {
-                output[i] = input[i];
-            }
-            for (int i = index; i < (input.Length - 1); i++)
             {
                 output[i] = input[i + 1];
             }
@@ -1389,7 +1419,7 @@ namespace NEA4
             }
             catch(Exception ex)
             {
-                return double.NegativeInfinity;
+                return double.NegativeInfinity; //used to return that the parsing of V was unsuccessful
             }
         }
         private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
@@ -2123,9 +2153,16 @@ namespace NEA4
                 UpdateQueueMatrix();
                 string InvLine1 = QueueMatrix.GetInvLine1();
                 string InvLine2 = QueueMatrix.GetInvLine2();
-                FunctionList.Items.Add(InvLine1);
-                FunctionList.Items.Add(InvLine2);
-                functionListNumber = functionListNumber + 2;
+                if(InvLine1 != "error")
+                {
+                    FunctionList.Items.Add(InvLine1);
+                    functionListNumber++;
+                }
+                if(InvLine2 != "error")
+                {
+                    FunctionList.Items.Add(InvLine2);
+                    functionListNumber++;
+                }
                 UpdateFunctions();
             }
             catch
@@ -2141,8 +2178,12 @@ namespace NEA4
             {
                 UpdateQueueMatrix();
                 string InvPointLine = QueueMatrix.GetInvPointLine();
-                FunctionList.Items.Add(InvPointLine);
-                functionListNumber++;
+                if(InvPointLine != "error")
+                {
+                    FunctionList.Items.Add(InvPointLine);
+                    functionListNumber++;
+                }
+
                 UpdateFunctions();
             }
             catch
@@ -2305,11 +2346,11 @@ namespace NEA4
             {
                 DegreesRadiansButton.Text = "Degrees";
             }
-            if (vTextBox.Text == "90")
+            if (vTextBox.Text == "90" && !useDegrees)
             {
                 vTextBox.Text = "1.57";
             }
-            else if (vTextBox.Text == "1.57")
+            else if (vTextBox.Text == "1.57" && useDegrees)
             {
                 vTextBox.Text = "90";
             }

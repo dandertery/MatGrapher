@@ -36,10 +36,6 @@ namespace NEA4
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
         public Parsing(string userInput)
         {
-            if(userInput == "(0.5)x")
-            {
-                Debug.WriteLine("Breakpoint");
-            }
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
             if(ContainsFunction(tokenArray))
@@ -452,12 +448,12 @@ namespace NEA4
                         {
                             inputList.RemoveAt(i);
                         }
-                        Token[] recursiveInput = ListToArray(temp); //Parsing expression
+                        Token[] recursiveInput = ListToArray(temp); 
                         Token treeNodeInsert = new Token();
                         treeNodeInsert.tree = Parser(recursiveInput);
                         treeNodeInsert.type = "tree";
                         treeNodeInsert.bracketDepth = storedBracketDepth - 1;
-                        inputList.Insert(i, treeNodeInsert); //inserting expression back as tree
+                        inputList.Insert(i, treeNodeInsert); 
 
                         //localGreatestDepth = GreatestDepth(ListToArray(inputList)); //List depth updated to be less deep if the expression parsed was the single deepest expression
                         return Parser(ListToArray(inputList));
@@ -638,7 +634,7 @@ namespace NEA4
             }
         }
 
-        public void SetParent(TreeNode input, TreeNode inputParent)
+        public void SetParent(TreeNode input, TreeNode inputParent) // sets parent for this child node, and sets a child for the parent node
         {
             parent = inputParent;
             if (input.side == "left" && parent != null)
