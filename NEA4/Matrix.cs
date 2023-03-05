@@ -337,7 +337,7 @@
             string output = input.Remove(index + 1);
             return output;
         }
-        public double ErrorRounder(double input, int sigFig)//defined in Matrix aswell for encapsulation purposes
+        private double ErrorRounder(double input, int sigFig)//defined in Matrix aswell for encapsulation purposes
         {
             double tempDouble = input;
             string counter = input.ToString();
