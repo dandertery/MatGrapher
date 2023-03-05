@@ -104,6 +104,8 @@
             this.CopyButton = new System.Windows.Forms.Button();
             this.QueueMatrixLabel = new System.Windows.Forms.Label();
             this.DegreesRadiansButton = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -192,7 +194,7 @@
             // c2
             // 
             this.c2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.c2.Location = new System.Drawing.Point(323, 777);
+            this.c2.Location = new System.Drawing.Point(366, 773);
             this.c2.Name = "c2";
             this.c2.Size = new System.Drawing.Size(150, 39);
             this.c2.TabIndex = 15;
@@ -202,7 +204,7 @@
             // b2
             // 
             this.b2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.b2.Location = new System.Drawing.Point(479, 732);
+            this.b2.Location = new System.Drawing.Point(522, 728);
             this.b2.Name = "b2";
             this.b2.Size = new System.Drawing.Size(150, 39);
             this.b2.TabIndex = 14;
@@ -212,7 +214,7 @@
             // d2
             // 
             this.d2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.d2.Location = new System.Drawing.Point(479, 777);
+            this.d2.Location = new System.Drawing.Point(522, 773);
             this.d2.Name = "d2";
             this.d2.Size = new System.Drawing.Size(150, 39);
             this.d2.TabIndex = 13;
@@ -222,7 +224,7 @@
             // a2
             // 
             this.a2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.a2.Location = new System.Drawing.Point(323, 732);
+            this.a2.Location = new System.Drawing.Point(366, 728);
             this.a2.Name = "a2";
             this.a2.Size = new System.Drawing.Size(150, 39);
             this.a2.TabIndex = 12;
@@ -243,7 +245,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(323, 682);
+            this.label2.Location = new System.Drawing.Point(366, 678);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 46);
             this.label2.TabIndex = 17;
@@ -269,6 +271,7 @@
             this.EigenvectorsButton.TabIndex = 19;
             this.EigenvectorsButton.Text = "Eigenvectors";
             this.EigenvectorsButton.UseVisualStyleBackColor = true;
+            this.EigenvectorsButton.Click += new System.EventHandler(this.EigenvectorsButton_Click);
             // 
             // LinesOfInvariantPointsButton
             // 
@@ -284,7 +287,7 @@
             // SwitchButton
             // 
             this.SwitchButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.SwitchButton.Location = new System.Drawing.Point(803, 604);
+            this.SwitchButton.Location = new System.Drawing.Point(824, 605);
             this.SwitchButton.Name = "SwitchButton";
             this.SwitchButton.Size = new System.Drawing.Size(150, 50);
             this.SwitchButton.TabIndex = 21;
@@ -295,7 +298,7 @@
             // MultiplyRightButton
             // 
             this.MultiplyRightButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.MultiplyRightButton.Location = new System.Drawing.Point(803, 660);
+            this.MultiplyRightButton.Location = new System.Drawing.Point(824, 661);
             this.MultiplyRightButton.Name = "MultiplyRightButton";
             this.MultiplyRightButton.Size = new System.Drawing.Size(150, 50);
             this.MultiplyRightButton.TabIndex = 22;
@@ -306,7 +309,7 @@
             // ApplyMatrixButton
             // 
             this.ApplyMatrixButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ApplyMatrixButton.Location = new System.Drawing.Point(802, 772);
+            this.ApplyMatrixButton.Location = new System.Drawing.Point(823, 773);
             this.ApplyMatrixButton.Name = "ApplyMatrixButton";
             this.ApplyMatrixButton.Size = new System.Drawing.Size(150, 50);
             this.ApplyMatrixButton.TabIndex = 23;
@@ -328,7 +331,7 @@
             // InverseRight
             // 
             this.InverseRight.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.InverseRight.Location = new System.Drawing.Point(323, 629);
+            this.InverseRight.Location = new System.Drawing.Point(366, 629);
             this.InverseRight.Name = "InverseRight";
             this.InverseRight.Size = new System.Drawing.Size(150, 50);
             this.InverseRight.TabIndex = 25;
@@ -361,7 +364,7 @@
             // TransposeRight
             // 
             this.TransposeRight.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TransposeRight.Location = new System.Drawing.Point(479, 629);
+            this.TransposeRight.Location = new System.Drawing.Point(522, 629);
             this.TransposeRight.Name = "TransposeRight";
             this.TransposeRight.Size = new System.Drawing.Size(150, 50);
             this.TransposeRight.TabIndex = 28;
@@ -447,7 +450,7 @@
             // 
             this.detB.AutoSize = true;
             this.detB.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.detB.Location = new System.Drawing.Point(434, 682);
+            this.detB.Location = new System.Drawing.Point(477, 678);
             this.detB.Name = "detB";
             this.detB.Size = new System.Drawing.Size(0, 46);
             this.detB.TabIndex = 35;
@@ -540,7 +543,7 @@
             // AnimateButton
             // 
             this.AnimateButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AnimateButton.Location = new System.Drawing.Point(802, 716);
+            this.AnimateButton.Location = new System.Drawing.Point(823, 717);
             this.AnimateButton.Name = "AnimateButton";
             this.AnimateButton.Size = new System.Drawing.Size(150, 50);
             this.AnimateButton.TabIndex = 60;
@@ -679,7 +682,7 @@
             // 
             this.vLabel.AutoSize = true;
             this.vLabel.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.vLabel.Location = new System.Drawing.Point(643, 753);
+            this.vLabel.Location = new System.Drawing.Point(677, 755);
             this.vLabel.Name = "vLabel";
             this.vLabel.Size = new System.Drawing.Size(34, 38);
             this.vLabel.TabIndex = 77;
@@ -688,7 +691,7 @@
             // vTextBox
             // 
             this.vTextBox.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.vTextBox.Location = new System.Drawing.Point(683, 745);
+            this.vTextBox.Location = new System.Drawing.Point(717, 747);
             this.vTextBox.Name = "vTextBox";
             this.vTextBox.Size = new System.Drawing.Size(100, 52);
             this.vTextBox.TabIndex = 76;
@@ -809,7 +812,7 @@
             // 
             // DegreesRadiansButton
             // 
-            this.DegreesRadiansButton.Location = new System.Drawing.Point(683, 716);
+            this.DegreesRadiansButton.Location = new System.Drawing.Point(717, 718);
             this.DegreesRadiansButton.Name = "DegreesRadiansButton";
             this.DegreesRadiansButton.Size = new System.Drawing.Size(100, 23);
             this.DegreesRadiansButton.TabIndex = 91;
@@ -817,11 +820,31 @@
             this.DegreesRadiansButton.UseVisualStyleBackColor = true;
             this.DegreesRadiansButton.Click += new System.EventHandler(this.DegreesRadiansButton_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(366, 822);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(82, 15);
+            this.label12.TabIndex = 92;
+            this.label12.Text = "MAIN MATRIX";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(9, 819);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(84, 15);
+            this.label13.TabIndex = 93;
+            this.label13.Text = "SPARE MATRIX";
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1292, 881);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.DegreesRadiansButton);
             this.Controls.Add(this.QueueMatrixLabel);
             this.Controls.Add(this.CopyButton);
@@ -978,5 +1001,7 @@
         private Button CopyButton;
         private Label QueueMatrixLabel;
         private Button DegreesRadiansButton;
+        private Label label12;
+        private Label label13;
     }
 }

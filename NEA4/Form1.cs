@@ -36,6 +36,7 @@ namespace NEA4
         private bool ShearX = true; //Shear X, or Shear Y
         private bool isAnimating;
         private bool useDegrees = false;
+        private bool showEigen = false;
         private string animationType = null;
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1);
         private Matrix AniMatrix;
@@ -48,7 +49,9 @@ namespace NEA4
 
         private Variable V; // for matrix value input use
         private ObservablePoint[] UnitSquare = new ObservablePoint[45]; // initialising Unit Square graph construct
-
+        private ObservablePoint[] eigenVector1OP = new ObservablePoint[1];
+        private ObservablePoint[] eigenVector2OP = new ObservablePoint[1];
+        private ObservablePoint[][] Grid = new ObservablePoint[10][];
         private string[] functionArray = { "cos", "sin", "log", "ln", "abs" }; //to determine nature of parsed function tokens
         private string[] operationArray = { "^", "*", "/", "-", "+" }; // to determine nature of parsed operation tokens
 
@@ -107,7 +110,35 @@ namespace NEA4
             q.value = double.Parse(qTextbox.Text);
             
         }
+        private void DefineEigenVectors()
+        {
+            if(showEigen)
+            {
+                try
+                {
+                    eigenVector1OP[0] = new ObservablePoint(QueueMatrix.GetEV1A(), QueueMatrix.GetEV1B());
 
+                }
+                catch (Exception ex)
+                {
+
+                }
+                try
+                {
+                    eigenVector2OP[0] = new ObservablePoint(QueueMatrix.GetEV2A(), QueueMatrix.GetEV2B());
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            else
+            {
+                eigenVector1OP[0] = new ObservablePoint();
+                eigenVector2OP[0] = new ObservablePoint();
+            }
+
+        }
         private void DefineUnitSquare()
         {
             UnitSquare[0] = new ObservablePoint(0, 0);
@@ -140,6 +171,33 @@ namespace NEA4
                 b++;
             }
             UnitSquare[b] = new ObservablePoint(0, 0);
+        }
+        private void DefineGrid()
+        {
+            double width = (bounds * 2) / 5;
+            double x = width - bounds;
+            double y = -bounds;
+            for (int i = 0; i < (Grid.Length / 2); i++)
+            {
+                Grid[i] = new ObservablePoint[10];
+                for (int z = 0; z < Grid[i].Length; z++)
+                {
+                    Grid[i][z] = new ObservablePoint(x, y);
+                    y = y + bounds;
+                }
+            }
+            x = -bounds;
+            y = width - bounds;
+            
+            for (int i = 5; i < (Grid.Length); i++)
+            {
+                Grid[i] = new ObservablePoint[10];
+                for (int z = 0; z < Grid[i].Length; z++)
+                {
+                    Grid[i][z] = new ObservablePoint(x, y);
+                    x = x + bounds;
+                }
+            }
         }
 
         private void UpdateFunctions() 
@@ -362,12 +420,12 @@ namespace NEA4
         private double ProcessTree(TreeNode inputTree, List<Variable> varinputs) //recursive, top down
         {
             
-            int value;
+            double value;
             
             if(inputTree.leftChild == null && inputTree.rightChild == null)
             {
                 
-                if(int.TryParse(inputTree.token.contents, out value))
+                if(Double.TryParse(inputTree.token.contents, out value))
                 {
                     return (double)value;
                 }
@@ -524,7 +582,6 @@ namespace NEA4
 
             pitch = 0.1;
             fBounds = bounds / pitch;
-
             int implementedMemory = 64;
             ObservablePoint[] displayUnitSquare = new ObservablePoint[1];
             Stack<Function> fscopy = new Stack<Function>(fsinput);
@@ -572,7 +629,33 @@ namespace NEA4
                     }
                     displayUnitSquare = CutFunctionToBounds(displayUnitSquare)[0];
                 }
-                
+                ObservablePoint[] displayEigenVector1 = new ObservablePoint[1];
+                ObservablePoint[] displayEigenVector2 = new ObservablePoint[1];
+                if (showEigen)
+                {
+                    DefineEigenVectors();
+                    displayEigenVector1[0] = ApplyToObservablePoint(eigenVector1OP[0], QueueMatrix);
+                    displayEigenVector2[0] = ApplyToObservablePoint(eigenVector2OP[0], QueueMatrix);
+                    displayEigenVector1 = CutFunctionToBounds(displayEigenVector1)[0];
+                    displayEigenVector2 = CutFunctionToBounds(displayEigenVector2)[0];
+
+                    eigenVector1OP = CutFunctionToBounds(eigenVector1OP)[0];
+                    eigenVector2OP = CutFunctionToBounds(eigenVector2OP)[0];
+                }
+                if (displayGrid)
+                {
+                    ObservablePoint[][] displayGridOP = new ObservablePoint[10][];
+                    for (int b = 0; b < Grid.Length; b++)
+                    {
+                        for (int i = 0; i < Grid[b].Length; i++)
+                        {
+                            Grid[b][i] = ApplyToObservablePoint(Grid[b][i], QueueMatrix);
+                        }
+                         displayGridOP[b] = CutFunctionToBounds(Grid[b])[0];
+                    }
+                    
+                }
+
                 
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
                 double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
@@ -623,14 +706,6 @@ namespace NEA4
                         Fill = null,
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 }
-
-                    },
-                    new LineSeries<ObservablePoint>
-                    {
-                        Values =  displayUnitSquare,
-                        Fill = null,
-                        GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 }
 
                     },
                     new LineSeries<ObservablePoint>
@@ -1096,6 +1171,50 @@ namespace NEA4
                         Fill = null,
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values =  displayUnitSquare,
+                        Fill = null,
+                        GeometrySize = 0.1f,
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 3 }
+
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values =  eigenVector1OP,
+                        Fill = null,
+                        GeometryFill = new SolidColorPaint(SKColors.Pink),
+                        GeometryStroke = new SolidColorPaint(SKColors.DeepPink) { StrokeThickness = 4 },
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values =  eigenVector2OP,
+                        Fill = null,
+                        GeometryFill = new SolidColorPaint(SKColors.LightGreen),
+                        GeometryStroke = new SolidColorPaint(SKColors.LightSeaGreen) { StrokeThickness = 4 },
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values =  displayEigenVector1,
+                        Fill = null,
+                        GeometryFill = new SolidColorPaint(SKColors.Red),
+                        GeometryStroke = new SolidColorPaint(SKColors.Crimson) { StrokeThickness = 4 },
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+
+                    },
+                    new LineSeries<ObservablePoint>
+                    {
+                        Values =  displayEigenVector2,
+                        Fill = null,
+                        GeometryFill = new SolidColorPaint(SKColors.Green),
+                        GeometryStroke = new SolidColorPaint(SKColors.DarkGreen) { StrokeThickness = 4 },
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+
                     },
                 }; //64
 
@@ -1866,6 +1985,10 @@ namespace NEA4
 
         private void EnlargementButton_Click(object sender, EventArgs e)
         {
+            if (useDegrees)
+            {
+                DegreesRadiansSwap();
+            }
             V.value = 2;
             vTextBox.Text = 2.ToString();
             a2.Text = "V";
@@ -1877,6 +2000,10 @@ namespace NEA4
 
         private void ShearingButton_Click(object sender, EventArgs e)
         {
+            if(useDegrees)
+            {
+                DegreesRadiansSwap();
+            }
             if(ShearX)
             {
                 ShearX = !ShearX;
@@ -1912,23 +2039,38 @@ namespace NEA4
 
         private void InvariantLinesButton_Click(object sender, EventArgs e)
         {
+            try
+            {
+                UpdateQueueMatrix();
+                string InvLine1 = QueueMatrix.GetInvLine1();
+                string InvLine2 = QueueMatrix.GetInvLine2();
+                FunctionList.Items.Add(InvLine1);
+                FunctionList.Items.Add(InvLine2);
+                functionListNumber = functionListNumber + 2;
+                UpdateFunctions();
+            }
+            catch
+            {
 
-            UpdateQueueMatrix();
-            string InvLine1 = QueueMatrix.GetInvLine1();
-            string InvLine2 = QueueMatrix.GetInvLine2();
-            FunctionList.Items.Add(InvLine1);
-            FunctionList.Items.Add(InvLine2);
-            functionListNumber = functionListNumber + 2;
-            UpdateFunctions();
+            }
+
         }
 
         private void LinesOfInvariantPointsButton_Click(object sender, EventArgs e)
         {
-            UpdateQueueMatrix();
-            string InvPointLine = QueueMatrix.GetInvPointLine();
-            FunctionList.Items.Add(InvPointLine);
-            functionListNumber++;
-            UpdateFunctions();
+            try
+            {
+                UpdateQueueMatrix();
+                string InvPointLine = QueueMatrix.GetInvPointLine();
+                FunctionList.Items.Add(InvPointLine);
+                functionListNumber++;
+                UpdateFunctions();
+            }
+            catch
+            {
+
+            }
+
         }
 
         private void cosButton_Click(object sender, EventArgs e)
@@ -2072,28 +2214,27 @@ namespace NEA4
         {
             Clipboard.SetText(QueueMatrixLabel.Text);
         }
-
-        private void DegreesRadiansButton_Click(object sender, EventArgs e)
+        private void DegreesRadiansSwap()
         {
             useDegrees = !useDegrees;
             if (DegreesRadiansButton.Text == "Degrees")
             {
-                
+
                 DegreesRadiansButton.Text = "Radians";
             }
             else
             {
                 DegreesRadiansButton.Text = "Degrees";
             }
-            if(vTextBox.Text == "90")
+            if (vTextBox.Text == "90")
             {
                 vTextBox.Text = "1.57";
             }
-            else if(vTextBox.Text == "1.57")
+            else if (vTextBox.Text == "1.57")
             {
                 vTextBox.Text = "90";
             }
-            else if(useDegrees)
+            else if (useDegrees)
             {
                 vTextBox.Text = RadiansToDegrees(Double.Parse(vTextBox.Text)).ToString();
             }
@@ -2101,6 +2242,17 @@ namespace NEA4
             {
                 vTextBox.Text = DegreesToRadians(Double.Parse(vTextBox.Text)).ToString();
             }
+        }
+        private void DegreesRadiansButton_Click(object sender, EventArgs e)
+        {
+            DegreesRadiansSwap();
+        }
+
+        private void EigenvectorsButton_Click(object sender, EventArgs e)
+        {
+            showEigen = !showEigen;
+            DefineEigenVectors();
+            UpdateFunctions();
         }
     }
 }

@@ -93,7 +93,7 @@
             {
                 return "stretchlargement";
             }
-            else if ( a == d)
+            else if ( a == d && a == 1)
             {
                 if(b==0 || c==0)
                 {

@@ -36,6 +36,10 @@ namespace NEA4
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
         public Parsing(string userInput)
         {
+            if(userInput == "(0.5)x")
+            {
+                Debug.WriteLine("Breakpoint");
+            }
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
             if(ContainsFunction(tokenArray))
@@ -148,7 +152,7 @@ namespace NEA4
 
             for (int i = 0; i < input.Length; i++)  
             {
-                if (Char.IsDigit(input[i])) // IF DIGIT
+                if (Char.IsDigit(input[i]) || input[i] == '.' || input[i].ToString() == ".") // IF DIGIT
                 {
                     if (lasttokenname != "number")
                     {
