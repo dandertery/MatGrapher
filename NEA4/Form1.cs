@@ -253,11 +253,11 @@ namespace NEA4
         }
         private List<Variable> DefineVariableArray()
         {
-            List<Variable> temp = new List<Variable>(); //creating variable array for use in parsing
-            Variable xTemp = new Variable();
-            xTemp.value = 0;
-            xTemp.letter = "x";
-            temp.Add(xTemp);
+            List<Variable> vArray = new List<Variable>(); //creating variable array for use in parsing
+            Variable x = new Variable();
+            x.value = 0;
+            x.letter = "x";
+            vArray.Add(x);
             KPQ();
             Variable[] kpqArray = new Variable[3];
             kpqArray[0] = k;
@@ -265,13 +265,11 @@ namespace NEA4
             kpqArray[2] = q;
             for (int i = 0; i < kpqArray.Length; i++)
             {
-                temp.Add(kpqArray[i]);
+                vArray.Add(kpqArray[i]);
             }
-
-
-            temp.Add(E);
-            temp.Add(PI);
-            return temp;
+            vArray.Add(E);
+            vArray.Add(PI);
+            return vArray;
         }
         private NamedCoordArray ProcessInput(string input) //processing a function
         {
@@ -414,7 +412,7 @@ namespace NEA4
             
         }
 
-        private void KPQ()
+        private void KPQ() //updating KPQ
         {
             try
             {
@@ -454,7 +452,7 @@ namespace NEA4
             
             double value;
             
-            if(inputTree.leftChild == null && inputTree.rightChild == null)
+            if(inputTree.leftChild == null && inputTree.rightChild == null) //indicating double value / variable
             {
                 
                 if(Double.TryParse(inputTree.token.contents, out value))
@@ -472,7 +470,7 @@ namespace NEA4
                     }
                 }
             }
-            else if (inputTree.leftChild == null)
+            else if (inputTree.leftChild == null) //indicating function
             {
                 double rightValue = ProcessTree(inputTree.rightChild, varinputs);
                 int index = -1;  
@@ -505,7 +503,7 @@ namespace NEA4
 
                 }   
             }
-            else
+            else //indicating operation
             {
                 double leftValue = ProcessTree(inputTree.leftChild, varinputs);
                 double rightValue = ProcessTree(inputTree.rightChild, varinputs);
@@ -541,7 +539,7 @@ namespace NEA4
             
         }
 
-        private NamedCoordArray ApplyMatrix(NamedCoordArray cInput, Matrix input)
+        private NamedCoordArray ApplyMatrix(NamedCoordArray cInput, Matrix input) //applying matrix transformation to each coordinate
         {
             Coordinate[] result = cInput.coordinateArray;
             for (int i = 0; i < cInput.coordinateArray.Length; i++)
@@ -610,11 +608,11 @@ namespace NEA4
         }
         private void DisplayFunctions(Stack<Function> fsinput) //64 functions! (WHY CAN'T I FIX THIS) all rage about this expressed here -> AHHG=GGGHGHGHGHGHHG ahahdhfgfggfgfgfggdf eilfjh\esklfjhhnse\lkj adhhshshdshdh hdidkifhfghgeh ahaujsidfhfidhe aoaoaoaoao
         {
-            //unit Square
+            
 
             pitch = 0.1;
             fBounds = bounds / pitch;
-            int implementedMemory = 64;
+            int implementedMemory = 64; //number of functions allowed
             ObservablePoint[] displayUnitSquare = new ObservablePoint[1];
             Stack<Function> fscopy = new Stack<Function>(fsinput);
             int bpcount = 0;
@@ -625,7 +623,7 @@ namespace NEA4
                 bpcount = bpcount + f.breakpoints+1;
 
             }
-            //bpcount--;
+            
 
             if (bpcount < implementedMemory)
             {
@@ -648,7 +646,7 @@ namespace NEA4
                     }
                 }
                 
-                if(unitSquareDisplay)
+                if(unitSquareDisplay) //Defining / transforming Unit Square
                 {
                     displayUnitSquare = new ObservablePoint[UnitSquare.Length];
                     for (int i = 0; i < UnitSquare.Length; i++)
@@ -663,7 +661,7 @@ namespace NEA4
                 }
                 ObservablePoint[] displayEigenVector1 = new ObservablePoint[1];
                 ObservablePoint[] displayEigenVector2 = new ObservablePoint[1];
-                if (showEigen)
+                if (showEigen) //Defining / transforming Eigenvectors
                 {
                     DefineEigenVectors();
                     displayEigenVector1[0] = ApplyToObservablePoint(eigenVector1OP[0], QueueMatrix);
@@ -674,7 +672,7 @@ namespace NEA4
                     eigenVector1OP = CutFunctionToBounds(eigenVector1OP)[0];
                     eigenVector2OP = CutFunctionToBounds(eigenVector2OP)[0];
                 }
-                ObservablePoint[][] displayGridOP = new ObservablePoint[10][];
+                ObservablePoint[][] displayGridOP = new ObservablePoint[10][]; //Defining / transforming Grid
                 if (displayGrid)
                 {
                     DefineGrid();
@@ -688,7 +686,7 @@ namespace NEA4
                     }
                     
                 }
-                ObservablePoint[] displayTriangleOP = new ObservablePoint[4];
+                ObservablePoint[] displayTriangleOP = new ObservablePoint[4]; //Defining / transforming Triangle
                 if(displayTriangle)
                 {
                     DefineTriangle();
@@ -699,14 +697,12 @@ namespace NEA4
                     displayTriangleOP = CutFunctionToBounds(displayTriangleOP)[0];
                 }
 
-                
+                //defining y and x axes
                 double[] xcoordinates = new double[Convert.ToInt32(fBounds * 2)];
                 double[] ycoordinates = new double[Convert.ToInt32(fBounds * 2)];
-
-
                 double xValue = -bounds;
                 double yValue = -bounds;
-
+             
                 for (int i = 0; i < xcoordinates.Length; i++)
                 {
                     xcoordinates[i] = xValue;
@@ -717,12 +713,12 @@ namespace NEA4
                     ycoordinates[i] = yValue;
                     yValue = yValue + pitch;
                 }
-                ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                ObservablePoint[] XAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)]; 
                 for (int i = 0; i < fBounds * 2; i++)
                 {
                     XAxis[i] = new ObservablePoint(xcoordinates[i], 0);
                 }
-                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)];
+                ObservablePoint[] YAxis = new ObservablePoint[Convert.ToInt32(fBounds * 2)]; 
                 for (int i = 0; i < fBounds * 2; i++)
                 {
                     YAxis[i] = new ObservablePoint(0, ycoordinates[i]);
@@ -733,7 +729,7 @@ namespace NEA4
                 LowerBoundSet[0] = new ObservablePoint(-bounds, -bounds);
                 //unit Square
 
-                cartesianChart1.Series = new ISeries[]
+                cartesianChart1.Series = new ISeries[] //64 function section 'LineSeries' + others due to limitations of LiveCharts
                 {
                     new LineSeries<ObservablePoint> // point at (bounds, bounds) to display axes up to that point
                     {
@@ -1425,7 +1421,7 @@ namespace NEA4
         private void TextboxChanged(TextBox textBox, string letter, Matrix inputMatrix)
         {
             double value = ParseV(textBox.Text);
-            if (value == double.NegativeInfinity || CheckForFloatingPoint(textBox.Text) || (textBox.Text == FigText(inputMatrix.Get(letter).ToString(), 6)))
+            if (value == double.NegativeInfinity || CheckForFloatingPoint(textBox.Text) || (textBox.Text == TruncateText(inputMatrix.Get(letter).ToString(), 6)))
             {
 
             }
@@ -1455,7 +1451,7 @@ namespace NEA4
             }
             return false;
         }
-        private void MultiplyRightButton_Click(object sender, EventArgs e)
+        private void MultiplyRightButton_Click(object sender, EventArgs e) //multiply the main and reserve matrices, store result in the main matrix
         {
             rMat = rMat.Multiplication(lMat, rMat);
         }
@@ -1482,9 +1478,9 @@ namespace NEA4
         {
             if (!CheckForFloatingPoint(textBox.Text))
             {
-                if(FigText(ParseV(textBox.Text).ToString(), 6) != FigText(inputMatrix.Get(letter).ToString(), 6))
+                if(TruncateText(ParseV(textBox.Text).ToString(), 6) != TruncateText(inputMatrix.Get(letter).ToString(), 6))
                 {
-                    textBox.Text = ErrorRounder(Double.Parse(FigText(inputMatrix.Get(letter).ToString(), 5)), 2).ToString();
+                    textBox.Text = ErrorRounder(Double.Parse(TruncateText(inputMatrix.Get(letter).ToString(), 5)), 2).ToString();
                 }
                 
             }
@@ -1525,11 +1521,11 @@ namespace NEA4
                 }
             }
 
-            detA.Text = ErrorRounder(Double.Parse(FigText(lMat.getDet().ToString(), 5)), 2).ToString();
+            detA.Text = ErrorRounder(Double.Parse(TruncateText(lMat.getDet().ToString(), 5)), 2).ToString();
 
-            detB.Text = ErrorRounder(Double.Parse(FigText(rMat.getDet().ToString(), 5)), 2).ToString();
+            detB.Text = ErrorRounder(Double.Parse(TruncateText(rMat.getDet().ToString(), 5)), 2).ToString();
 
-            QueueMatrixLabel.Text = "(" + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("a").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("b").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("c").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(FigText(QueueMatrix.Get("d").ToString(), 4)), 2) + ")";
+            QueueMatrixLabel.Text = "(" + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("a").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("b").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("c").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("d").ToString(), 4)), 2) + ")";
 
 
             if (MatrixList.Items.Count == 0)
@@ -1570,7 +1566,7 @@ namespace NEA4
             CheckMatrixValue(c2, "c", rMat);
             CheckMatrixValue(d2, "d", rMat);
         }
-        private string FigText(string input, int sigFig)
+        private string TruncateText(string input, int sigFig) //truncating values for display
         {
             bool foundPoint = false;
             int z = sigFig;
@@ -1599,42 +1595,22 @@ namespace NEA4
         {
 
         }
-        private void Clear()
+        private void Clear() //clearing function stack
         {
             FunctionList.Items.Clear();
-            fs = new Stack<Function>();
             UpdateFunctions();
         }
 
-        private void Remove()
+        private void Remove() //removing function
         {
             if (FunctionList.SelectedItems.Count == 1)
-            {
-                string functionName = FunctionList.SelectedItem.ToString();
+            { 
                 FunctionList.Items.Remove(FunctionList.SelectedItem);
-
-                Stack<Function> stackTemp = new Stack<Function>();
-                for (int i = 0; i < fs.Count; i++)
-                {
-                    Function f = fs.Pop();
-                    if (f.name == functionName) //could improve by only removing one of a function, but why would someone input two of a function?
-                    {
-
-                    }
-                    else
-                    {
-                        stackTemp.Push(f);
-                    }
-                }
-                for (int i = 0; i < stackTemp.Count; i++)
-                {
-                    fs.Push(stackTemp.Pop());
-                }
             }
             
             UpdateFunctions();
         }
-        private TreeNode FindRoot(TreeNode input)
+        private TreeNode FindRoot(TreeNode input) //Finding root of tree produced by Parser. Prevents a possible erroneous output from Parsing
         {
             TreeNode output = input;
             if(input.leftChild == null && input.rightChild == null)
@@ -1663,7 +1639,7 @@ namespace NEA4
             rMat = lMat;
             lMat = temp;
         }
-        public double checkForBinaryError(double input, int sigFig)
+        public double checkForBinaryError(double input, int sigFig) //checks for minute differences by scaling numbers up
         {
             string counter = input.ToString();
             if (counter.Length > sigFig)
@@ -1690,7 +1666,7 @@ namespace NEA4
 
 
         }
-        public double ErrorRounder(double input, int sigFig)
+        public double ErrorRounder(double input, int sigFig) //More aggressive rounder than checkForBinaryError(), checks for repeated 9s or 0's
         {
             double tempDouble = input;
             string counter = input.ToString();
@@ -1837,25 +1813,6 @@ namespace NEA4
             }
             return output;
         }
-        private Variable[] ListToArray(List<Variable> input)
-        {
-            Variable[] output = new Variable[input.Count];
-            for (int i = 0; i < input.Count; i++)
-            {
-                output[i] = input[i];
-            }
-            return output;
-        }
-
-        private List<Variable> ArrayToList(Variable[] input)
-        {
-            List<Variable> output = new List<Variable>();
-            for (int i = 0; i < input.Length; i++)
-            {
-                output.Add(input[i]);
-            }
-            return output;
-        }
         private void ApplyMatrixButton_Click(object sender, EventArgs e)
         {
             ms.Enqueue(rMat);
@@ -1981,8 +1938,8 @@ namespace NEA4
                 
                 if (animationType == "rotation")
                 {
-                    steps = 100;
-                    aniPitch = V.value / steps;                  
+                    steps = 100; //less steps to make rotation faster relative to other animations
+                    aniPitch = V.value / steps;  //V taken as radians or degrees           
                                                        
                     V.value = 0;
                 }
@@ -2058,7 +2015,7 @@ namespace NEA4
 
         private void ReflectionButton_Click(object sender, EventArgs e)
         {
-            V.value = 0.785;
+            V.value = 0.785; // default value will reflection in y=x
             
             if (useDegrees)
             {
@@ -2077,7 +2034,7 @@ namespace NEA4
 
         private void RotationButton_Click(object sender, EventArgs e)
         {
-            V.value = 1.57;
+            V.value = 1.57; //default value in radians will rotate by 90 degrees
             if (useDegrees)
             {
                 vTextBox.Text = RadiansToDegrees(1.57).ToString();
@@ -2146,7 +2103,7 @@ namespace NEA4
 
 
 
-        private void InvariantLinesButton_Click(object sender, EventArgs e)
+        private void InvariantLinesButton_Click(object sender, EventArgs e) //adds invariant lines to function list
         {
             try
             {
@@ -2172,7 +2129,7 @@ namespace NEA4
 
         }
 
-        private void LinesOfInvariantPointsButton_Click(object sender, EventArgs e)
+        private void LinesOfInvariantPointsButton_Click(object sender, EventArgs e)//adds the line of invariant points to function list
         {
             try
             {
@@ -2265,7 +2222,7 @@ namespace NEA4
             if (animationType == "rotation")
             {
                
-                V.value = V.value + aniPitch;
+                V.value = V.value + aniPitch; //updating V
                 
                 if (useDegrees)
                 {
@@ -2303,13 +2260,13 @@ namespace NEA4
             }
             steps--;
 
-            if(steps == 0)
+            if(steps == 0) //ending the animation
             {
                 AnimateTimer.Enabled = false;
                 isAnimating = false;
             }
-            rMat = AniMatrix;
-            ms = new Queue<Matrix>();
+            rMat = AniMatrix; 
+            ms = new Queue<Matrix>(); //clearing and added updated matrix transformation
             ms.Enqueue(AniMatrix);
             UpdateFunctions();
         }
@@ -2346,7 +2303,7 @@ namespace NEA4
             {
                 DegreesRadiansButton.Text = "Degrees";
             }
-            if (vTextBox.Text == "90" && !useDegrees)
+            if (vTextBox.Text == "90" && !useDegrees) //accurate swap of default rotation values
             {
                 vTextBox.Text = "1.57";
             }

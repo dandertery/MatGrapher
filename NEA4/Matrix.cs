@@ -89,7 +89,7 @@
             return EV2B;
         }
 
-        public string DetermineType()
+        public string DetermineType() //determine type of matrix transformation for animation
         {
             if (checkForBinaryError(Math.Pow(a, 2) + Math.Pow(b, 2), 2) == 1) //(sin^2 x + cos^2 x = 1)
             {
@@ -177,7 +177,7 @@
 
         }
 
-        public Matrix Inverse(Matrix inputMat) //MAKE FRONT END THE DET CANNOT BE 0 WHEN REQUESTING AN INVERSE
+        public Matrix Inverse(Matrix inputMat) 
         {
             double ia = inputMat.a;
             double ib = inputMat.b;
@@ -192,7 +192,7 @@
             return output;
         }
 
-        public double checkForBinaryError(double input, int sigFig)
+        public double checkForBinaryError(double input, int sigFig) //defined in Matrix aswell for encapsulation purposes
         {
             double scalar = Math.Pow(10,sigFig);
             double scaled = input * scalar;
@@ -337,32 +337,7 @@
             string output = input.Remove(index + 1);
             return output;
         }
- private string FigText(string input, int sigFig)
-        {
-            bool foundPoint = false;
-            int z = sigFig;
-            int index = input.Length - 1;
-            for (int i = 0; i < input.Length; i++)
-            {
-                if(input[i] == '.')
-                {
-                    foundPoint = true;
-
-                    
-                }
-                if(foundPoint)
-                {
-                    z--;
-                }
-                if(z == 0)
-                {
-                    index = i;
-                }
-            }
-            string output = input.Remove(index + 1);
-            return output;
-        }
-        public double ErrorRounder(double input, int sigFig)
+        public double ErrorRounder(double input, int sigFig)//defined in Matrix aswell for encapsulation purposes
         {
             double tempDouble = input;
             string counter = input.ToString();
