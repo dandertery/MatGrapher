@@ -1485,9 +1485,25 @@ namespace NEA4
                 
             }
         }
+        private void NegativeZero(TextBox textBox)
+        {
+            if(textBox.Text == "-0")
+            {
+                textBox.Text = "0";
+            }
+        }
         private void CheckMatrix() //called many times per second on timer
         {
-            if(lMat.getDet() == 0) //if determinant is 0 a matrix has no inverse
+            NegativeZero(a1);
+            NegativeZero(b1);
+            NegativeZero(c1);
+            NegativeZero(d1);
+            NegativeZero(a2);
+            NegativeZero(b2);
+            NegativeZero(c2);
+            NegativeZero(d2);
+
+            if (lMat.getDet() == 0) //if determinant is 0 a matrix has no inverse
             {
                 InverseLeft.Enabled = false;
             }
@@ -1668,6 +1684,7 @@ namespace NEA4
         }
         public double ErrorRounder(double input, int sigFig) //More aggressive rounder than checkForBinaryError(), checks for repeated 9s or 0's
         {
+            
             double tempDouble = input;
             string counter = input.ToString();
             if(counter.Length > sigFig)
@@ -1815,7 +1832,7 @@ namespace NEA4
         }
         private void ApplyMatrixButton_Click(object sender, EventArgs e)
         {
-            ms.Enqueue(rMat);
+            ms.Enqueue(new Matrix(rMat.Get("a"), rMat.Get("b"), rMat.Get("c"), rMat.Get("d")));
 
             MatrixList.Items.Add(rMat.getName());
             UpdateFunctions();
@@ -2249,13 +2266,14 @@ namespace NEA4
             }
             else if (animationType == "shear")
             {
-                if (AniMatrix.Get("b") == 0)
+                if (AniMatrix.Get("b") != 0)
                 {
-                    AniMatrix.requestChange("c", (AniMatrix.Get("c") + aniPitch).ToString());
+                    
+                    AniMatrix.requestChange("b", (AniMatrix.Get("b") + aniPitch).ToString());
                 }
                 else
                 {
-                    AniMatrix.requestChange("b", (AniMatrix.Get("b") + aniPitch).ToString());
+                    AniMatrix.requestChange("c", (AniMatrix.Get("c") + aniPitch).ToString());
                 }
             }
             steps--;
