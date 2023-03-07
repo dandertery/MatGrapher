@@ -132,6 +132,7 @@
             this.GridButton.Name = "GridButton";
             this.GridButton.Size = new System.Drawing.Size(119, 42);
             this.GridButton.TabIndex = 4;
+            this.GridButton.TabStop = false;
             this.GridButton.Text = "Grid";
             this.GridButton.UseVisualStyleBackColor = true;
             this.GridButton.Click += new System.EventHandler(this.GridButton_Click);
@@ -157,7 +158,7 @@
             this.a1.Location = new System.Drawing.Point(9, 732);
             this.a1.Name = "a1";
             this.a1.Size = new System.Drawing.Size(150, 39);
-            this.a1.TabIndex = 8;
+            this.a1.TabIndex = 6;
             this.a1.Text = "1";
             this.a1.TextChanged += new System.EventHandler(this.a1_TextChanged);
             // 
@@ -177,7 +178,7 @@
             this.b1.Location = new System.Drawing.Point(167, 732);
             this.b1.Name = "b1";
             this.b1.Size = new System.Drawing.Size(150, 39);
-            this.b1.TabIndex = 10;
+            this.b1.TabIndex = 7;
             this.b1.Text = "0";
             this.b1.TextChanged += new System.EventHandler(this.b1_TextChanged);
             // 
@@ -187,7 +188,7 @@
             this.c1.Location = new System.Drawing.Point(9, 777);
             this.c1.Name = "c1";
             this.c1.Size = new System.Drawing.Size(150, 39);
-            this.c1.TabIndex = 11;
+            this.c1.TabIndex = 8;
             this.c1.Text = "0";
             this.c1.TextChanged += new System.EventHandler(this.c1_TextChanged);
             // 
@@ -197,7 +198,7 @@
             this.c2.Location = new System.Drawing.Point(366, 773);
             this.c2.Name = "c2";
             this.c2.Size = new System.Drawing.Size(150, 39);
-            this.c2.TabIndex = 15;
+            this.c2.TabIndex = 12;
             this.c2.Text = "0";
             this.c2.TextChanged += new System.EventHandler(this.c2_TextChanged);
             // 
@@ -207,7 +208,7 @@
             this.b2.Location = new System.Drawing.Point(522, 728);
             this.b2.Name = "b2";
             this.b2.Size = new System.Drawing.Size(150, 39);
-            this.b2.TabIndex = 14;
+            this.b2.TabIndex = 11;
             this.b2.Text = "0";
             this.b2.TextChanged += new System.EventHandler(this.b2_TextChanged);
             // 
@@ -227,7 +228,7 @@
             this.a2.Location = new System.Drawing.Point(366, 728);
             this.a2.Name = "a2";
             this.a2.Size = new System.Drawing.Size(150, 39);
-            this.a2.TabIndex = 12;
+            this.a2.TabIndex = 10;
             this.a2.Text = "1";
             this.a2.TextChanged += new System.EventHandler(this.a2_TextChanged);
             // 
@@ -248,7 +249,7 @@
             this.label2.Location = new System.Drawing.Point(366, 678);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 46);
-            this.label2.TabIndex = 17;
+            this.label2.TabIndex = 0;
             this.label2.Text = "det = ";
             // 
             // InvariantLinesButton
@@ -258,6 +259,7 @@
             this.InvariantLinesButton.Name = "InvariantLinesButton";
             this.InvariantLinesButton.Size = new System.Drawing.Size(175, 40);
             this.InvariantLinesButton.TabIndex = 18;
+            this.InvariantLinesButton.TabStop = false;
             this.InvariantLinesButton.Text = "Invariant Lines";
             this.InvariantLinesButton.UseVisualStyleBackColor = true;
             this.InvariantLinesButton.Click += new System.EventHandler(this.InvariantLinesButton_Click);
@@ -269,6 +271,7 @@
             this.EigenvectorsButton.Name = "EigenvectorsButton";
             this.EigenvectorsButton.Size = new System.Drawing.Size(300, 40);
             this.EigenvectorsButton.TabIndex = 19;
+            this.EigenvectorsButton.TabStop = false;
             this.EigenvectorsButton.Text = "Eigenvectors";
             this.EigenvectorsButton.UseVisualStyleBackColor = true;
             this.EigenvectorsButton.Click += new System.EventHandler(this.EigenvectorsButton_Click);
@@ -280,6 +283,7 @@
             this.LinesOfInvariantPointsButton.Name = "LinesOfInvariantPointsButton";
             this.LinesOfInvariantPointsButton.Size = new System.Drawing.Size(300, 40);
             this.LinesOfInvariantPointsButton.TabIndex = 20;
+            this.LinesOfInvariantPointsButton.TabStop = false;
             this.LinesOfInvariantPointsButton.Text = "Lines of Invariant Points";
             this.LinesOfInvariantPointsButton.UseVisualStyleBackColor = true;
             this.LinesOfInvariantPointsButton.Click += new System.EventHandler(this.LinesOfInvariantPointsButton_Click);
@@ -291,6 +295,7 @@
             this.SwitchButton.Name = "SwitchButton";
             this.SwitchButton.Size = new System.Drawing.Size(150, 50);
             this.SwitchButton.TabIndex = 21;
+            this.SwitchButton.TabStop = false;
             this.SwitchButton.Text = "Switch";
             this.SwitchButton.UseVisualStyleBackColor = true;
             this.SwitchButton.Click += new System.EventHandler(this.SwitchButton_Click);
@@ -302,6 +307,7 @@
             this.MultiplyRightButton.Name = "MultiplyRightButton";
             this.MultiplyRightButton.Size = new System.Drawing.Size(150, 50);
             this.MultiplyRightButton.TabIndex = 22;
+            this.MultiplyRightButton.TabStop = false;
             this.MultiplyRightButton.Text = "Multiply";
             this.MultiplyRightButton.UseVisualStyleBackColor = true;
             this.MultiplyRightButton.Click += new System.EventHandler(this.MultiplyRightButton_Click);
@@ -313,6 +319,7 @@
             this.ApplyMatrixButton.Name = "ApplyMatrixButton";
             this.ApplyMatrixButton.Size = new System.Drawing.Size(150, 50);
             this.ApplyMatrixButton.TabIndex = 23;
+            this.ApplyMatrixButton.TabStop = false;
             this.ApplyMatrixButton.Text = "Apply";
             this.ApplyMatrixButton.UseVisualStyleBackColor = true;
             this.ApplyMatrixButton.Click += new System.EventHandler(this.ApplyMatrixButton_Click);
@@ -324,6 +331,7 @@
             this.InverseLeft.Name = "InverseLeft";
             this.InverseLeft.Size = new System.Drawing.Size(150, 50);
             this.InverseLeft.TabIndex = 24;
+            this.InverseLeft.TabStop = false;
             this.InverseLeft.Text = "Inverse";
             this.InverseLeft.UseVisualStyleBackColor = true;
             this.InverseLeft.Click += new System.EventHandler(this.InverseLeft_Click);
@@ -335,6 +343,7 @@
             this.InverseRight.Name = "InverseRight";
             this.InverseRight.Size = new System.Drawing.Size(150, 50);
             this.InverseRight.TabIndex = 25;
+            this.InverseRight.TabStop = false;
             this.InverseRight.Text = "Inverse";
             this.InverseRight.UseVisualStyleBackColor = true;
             this.InverseRight.Click += new System.EventHandler(this.InverseRight_Click);
@@ -346,6 +355,7 @@
             this.ReflectionButton.Name = "ReflectionButton";
             this.ReflectionButton.Size = new System.Drawing.Size(120, 30);
             this.ReflectionButton.TabIndex = 26;
+            this.ReflectionButton.TabStop = false;
             this.ReflectionButton.Text = "Reflection";
             this.ReflectionButton.UseVisualStyleBackColor = true;
             this.ReflectionButton.Click += new System.EventHandler(this.ReflectionButton_Click);
@@ -357,6 +367,7 @@
             this.TransposeLeft.Name = "TransposeLeft";
             this.TransposeLeft.Size = new System.Drawing.Size(150, 50);
             this.TransposeLeft.TabIndex = 27;
+            this.TransposeLeft.TabStop = false;
             this.TransposeLeft.Text = "Transpose";
             this.TransposeLeft.UseVisualStyleBackColor = true;
             this.TransposeLeft.Click += new System.EventHandler(this.TransposeLeft_Click);
@@ -368,6 +379,7 @@
             this.TransposeRight.Name = "TransposeRight";
             this.TransposeRight.Size = new System.Drawing.Size(150, 50);
             this.TransposeRight.TabIndex = 28;
+            this.TransposeRight.TabStop = false;
             this.TransposeRight.Text = "Transpose";
             this.TransposeRight.UseVisualStyleBackColor = true;
             this.TransposeRight.Click += new System.EventHandler(this.TransposeRight_Click);
@@ -379,6 +391,7 @@
             this.RotationButton.Name = "RotationButton";
             this.RotationButton.Size = new System.Drawing.Size(120, 30);
             this.RotationButton.TabIndex = 29;
+            this.RotationButton.TabStop = false;
             this.RotationButton.Text = "Rotation";
             this.RotationButton.UseVisualStyleBackColor = true;
             this.RotationButton.Click += new System.EventHandler(this.RotationButton_Click);
@@ -390,6 +403,7 @@
             this.EnlargementButton.Name = "EnlargementButton";
             this.EnlargementButton.Size = new System.Drawing.Size(120, 30);
             this.EnlargementButton.TabIndex = 30;
+            this.EnlargementButton.TabStop = false;
             this.EnlargementButton.Text = "Enlargement";
             this.EnlargementButton.UseVisualStyleBackColor = true;
             this.EnlargementButton.Click += new System.EventHandler(this.EnlargementButton_Click);
@@ -401,6 +415,7 @@
             this.ShearingButton.Name = "ShearingButton";
             this.ShearingButton.Size = new System.Drawing.Size(120, 30);
             this.ShearingButton.TabIndex = 31;
+            this.ShearingButton.TabStop = false;
             this.ShearingButton.Text = "Shearing";
             this.ShearingButton.UseVisualStyleBackColor = true;
             this.ShearingButton.Click += new System.EventHandler(this.ShearingButton_Click);
@@ -417,6 +432,7 @@
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(240, 75);
             this.AddButton.TabIndex = 32;
+            this.AddButton.TabStop = false;
             this.AddButton.Text = "Add";
             this.AddButton.UseVisualStyleBackColor = true;
             this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
@@ -462,6 +478,7 @@
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(240, 75);
             this.RemoveButton.TabIndex = 36;
+            this.RemoveButton.TabStop = false;
             this.RemoveButton.Text = "Remove";
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
@@ -473,6 +490,7 @@
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(240, 75);
             this.ClearButton.TabIndex = 37;
+            this.ClearButton.TabStop = false;
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
@@ -483,7 +501,7 @@
             this.kTextbox.Location = new System.Drawing.Point(927, 333);
             this.kTextbox.Name = "kTextbox";
             this.kTextbox.Size = new System.Drawing.Size(100, 52);
-            this.kTextbox.TabIndex = 41;
+            this.kTextbox.TabIndex = 3;
             this.kTextbox.Text = "1";
             this.kTextbox.TextChanged += new System.EventHandler(this.kTextBox_TextChanged);
             // 
@@ -493,7 +511,7 @@
             this.pTextbox.Location = new System.Drawing.Point(1056, 333);
             this.pTextbox.Name = "pTextbox";
             this.pTextbox.Size = new System.Drawing.Size(100, 52);
-            this.pTextbox.TabIndex = 42;
+            this.pTextbox.TabIndex = 4;
             this.pTextbox.Text = "1";
             this.pTextbox.TextChanged += new System.EventHandler(this.pTextbox_TextChanged);
             // 
@@ -503,7 +521,7 @@
             this.qTextbox.Location = new System.Drawing.Point(1181, 333);
             this.qTextbox.Name = "qTextbox";
             this.qTextbox.Size = new System.Drawing.Size(100, 52);
-            this.qTextbox.TabIndex = 43;
+            this.qTextbox.TabIndex = 5;
             this.qTextbox.Text = "1";
             this.qTextbox.TextChanged += new System.EventHandler(this.qTextbox_TextChanged);
             // 
@@ -514,6 +532,7 @@
             this.piButton.Name = "piButton";
             this.piButton.Size = new System.Drawing.Size(50, 50);
             this.piButton.TabIndex = 44;
+            this.piButton.TabStop = false;
             this.piButton.Text = "π";
             this.piButton.UseVisualStyleBackColor = true;
             this.piButton.Click += new System.EventHandler(this.piButton_Click);
@@ -525,6 +544,7 @@
             this.UnitSquareButton.Name = "UnitSquareButton";
             this.UnitSquareButton.Size = new System.Drawing.Size(147, 40);
             this.UnitSquareButton.TabIndex = 58;
+            this.UnitSquareButton.TabStop = false;
             this.UnitSquareButton.Text = "Unit Square";
             this.UnitSquareButton.UseVisualStyleBackColor = true;
             this.UnitSquareButton.Click += new System.EventHandler(this.UnitSquareButton_Click);
@@ -536,6 +556,7 @@
             this.TriangleButton.Name = "TriangleButton";
             this.TriangleButton.Size = new System.Drawing.Size(147, 40);
             this.TriangleButton.TabIndex = 59;
+            this.TriangleButton.TabStop = false;
             this.TriangleButton.Text = "Triangle";
             this.TriangleButton.UseVisualStyleBackColor = true;
             this.TriangleButton.Click += new System.EventHandler(this.TriangleButton_Click);
@@ -547,6 +568,7 @@
             this.AnimateButton.Name = "AnimateButton";
             this.AnimateButton.Size = new System.Drawing.Size(150, 50);
             this.AnimateButton.TabIndex = 60;
+            this.AnimateButton.TabStop = false;
             this.AnimateButton.Text = "Animate";
             this.AnimateButton.UseVisualStyleBackColor = true;
             this.AnimateButton.Click += new System.EventHandler(this.AnimateButton_Click);
@@ -567,7 +589,7 @@
             this.BoundsTextBox.Location = new System.Drawing.Point(787, 333);
             this.BoundsTextBox.Name = "BoundsTextBox";
             this.BoundsTextBox.Size = new System.Drawing.Size(108, 52);
-            this.BoundsTextBox.TabIndex = 63;
+            this.BoundsTextBox.TabIndex = 2;
             this.BoundsTextBox.Text = "10";
             this.BoundsTextBox.TextChanged += new System.EventHandler(this.BoundsTextBox_TextChanged);
             // 
@@ -588,6 +610,7 @@
             this.ClearMatrix.Name = "ClearMatrix";
             this.ClearMatrix.Size = new System.Drawing.Size(92, 32);
             this.ClearMatrix.TabIndex = 66;
+            this.ClearMatrix.TabStop = false;
             this.ClearMatrix.Text = "Clear";
             this.ClearMatrix.UseVisualStyleBackColor = true;
             this.ClearMatrix.Click += new System.EventHandler(this.ClearMatrix_Click);
@@ -599,6 +622,7 @@
             this.RemoveMatrix.Name = "RemoveMatrix";
             this.RemoveMatrix.Size = new System.Drawing.Size(92, 32);
             this.RemoveMatrix.TabIndex = 65;
+            this.RemoveMatrix.TabStop = false;
             this.RemoveMatrix.Text = "Remove";
             this.RemoveMatrix.UseVisualStyleBackColor = true;
             this.RemoveMatrix.Click += new System.EventHandler(this.RemoveMatrix_Click);
@@ -663,6 +687,7 @@
             this.InvLine1TextBox.Name = "InvLine1TextBox";
             this.InvLine1TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine1TextBox.TabIndex = 73;
+            this.InvLine1TextBox.TabStop = false;
             // 
             // InvLine2TextBox
             // 
@@ -670,6 +695,7 @@
             this.InvLine2TextBox.Name = "InvLine2TextBox";
             this.InvLine2TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine2TextBox.TabIndex = 74;
+            this.InvLine2TextBox.TabStop = false;
             // 
             // LOfInvPointsTextBox
             // 
@@ -677,6 +703,7 @@
             this.LOfInvPointsTextBox.Name = "LOfInvPointsTextBox";
             this.LOfInvPointsTextBox.Size = new System.Drawing.Size(100, 23);
             this.LOfInvPointsTextBox.TabIndex = 75;
+            this.LOfInvPointsTextBox.TabStop = false;
             // 
             // vLabel
             // 
@@ -694,7 +721,7 @@
             this.vTextBox.Location = new System.Drawing.Point(717, 747);
             this.vTextBox.Name = "vTextBox";
             this.vTextBox.Size = new System.Drawing.Size(100, 52);
-            this.vTextBox.TabIndex = 76;
+            this.vTextBox.TabIndex = 14;
             this.vTextBox.Text = "1";
             this.vTextBox.TextChanged += new System.EventHandler(this.vTextBox_TextChanged);
             // 
@@ -709,6 +736,7 @@
             this.EV1A.Name = "EV1A";
             this.EV1A.Size = new System.Drawing.Size(33, 23);
             this.EV1A.TabIndex = 78;
+            this.EV1A.TabStop = false;
             // 
             // EigenVectorLabel1
             // 
@@ -725,6 +753,7 @@
             this.EV1B.Name = "EV1B";
             this.EV1B.Size = new System.Drawing.Size(33, 23);
             this.EV1B.TabIndex = 80;
+            this.EV1B.TabStop = false;
             // 
             // label9
             // 
@@ -741,6 +770,7 @@
             this.EV2A.Name = "EV2A";
             this.EV2A.Size = new System.Drawing.Size(33, 23);
             this.EV2A.TabIndex = 82;
+            this.EV2A.TabStop = false;
             // 
             // EV2B
             // 
@@ -748,6 +778,7 @@
             this.EV2B.Name = "EV2B";
             this.EV2B.Size = new System.Drawing.Size(33, 23);
             this.EV2B.TabIndex = 83;
+            this.EV2B.TabStop = false;
             // 
             // label10
             // 
@@ -773,6 +804,7 @@
             this.EigenValue1TextBox.Name = "EigenValue1TextBox";
             this.EigenValue1TextBox.Size = new System.Drawing.Size(33, 23);
             this.EigenValue1TextBox.TabIndex = 86;
+            this.EigenValue1TextBox.TabStop = false;
             // 
             // EigenValue2TextBox
             // 
@@ -780,6 +812,7 @@
             this.EigenValue2TextBox.Name = "EigenValue2TextBox";
             this.EigenValue2TextBox.Size = new System.Drawing.Size(33, 23);
             this.EigenValue2TextBox.TabIndex = 87;
+            this.EigenValue2TextBox.TabStop = false;
             // 
             // RestartButton
             // 
@@ -787,6 +820,7 @@
             this.RestartButton.Name = "RestartButton";
             this.RestartButton.Size = new System.Drawing.Size(75, 23);
             this.RestartButton.TabIndex = 88;
+            this.RestartButton.TabStop = false;
             this.RestartButton.Text = "Restart";
             this.RestartButton.UseVisualStyleBackColor = true;
             this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
@@ -797,6 +831,7 @@
             this.CopyButton.Name = "CopyButton";
             this.CopyButton.Size = new System.Drawing.Size(75, 23);
             this.CopyButton.TabIndex = 89;
+            this.CopyButton.TabStop = false;
             this.CopyButton.Text = "Copy";
             this.CopyButton.UseVisualStyleBackColor = true;
             this.CopyButton.Click += new System.EventHandler(this.CopyButton_Click);
@@ -816,6 +851,7 @@
             this.DegreesRadiansButton.Name = "DegreesRadiansButton";
             this.DegreesRadiansButton.Size = new System.Drawing.Size(100, 23);
             this.DegreesRadiansButton.TabIndex = 91;
+            this.DegreesRadiansButton.TabStop = false;
             this.DegreesRadiansButton.Text = "Radians";
             this.DegreesRadiansButton.UseVisualStyleBackColor = true;
             this.DegreesRadiansButton.Click += new System.EventHandler(this.DegreesRadiansButton_Click);

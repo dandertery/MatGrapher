@@ -21,7 +21,7 @@ namespace NEA4
 {
     public partial class MatGrapher : Form
     {
-        private int functionListNumber = 0; //counting functions 
+        private int functionListNumber = 1; //counting functions 
         private int steps; //for animation
         private double pitch;
         private double bounds;
@@ -1526,16 +1526,24 @@ namespace NEA4
             }
             else
             {
-                AnimateButton.Enabled = true;
-            }
-
-            if(rMat.GetStringType() == "rotation")
-            {
-                if(a2.Text != "cos(V)" || b2.Text != "-sin(V)" || c2.Text != "sin(V)" || d2.Text != "cos(V)")
+                if (rMat.GetStringType() == "rotation")
                 {
-                    AnimateButton.Enabled = false; 
+                    if (a2.Text != "cos(V)" || b2.Text != "-sin(V)" || c2.Text != "sin(V)" || d2.Text != "cos(V)")
+                    {
+                        AnimateButton.Enabled = false;
+                    }
+                    else
+                    {
+                        AnimateButton.Enabled = true;
+                    }
+                }
+                else
+                {
+                    AnimateButton.Enabled = true;
                 }
             }
+
+
 
             detA.Text = ErrorRounder(Double.Parse(TruncateText(lMat.getDet().ToString(), 5)), 2).ToString();
 
@@ -2137,7 +2145,9 @@ namespace NEA4
                     FunctionList.Items.Add(InvLine2);
                     functionListNumber++;
                 }
+                
                 UpdateFunctions();
+                
             }
             catch
             {
@@ -2157,6 +2167,7 @@ namespace NEA4
                     FunctionList.Items.Add(InvPointLine);
                     functionListNumber++;
                 }
+                FunctionList.Items.Add("");
 
                 UpdateFunctions();
             }
@@ -2251,8 +2262,8 @@ namespace NEA4
                     vTextBox.Text = V.value.ToString();
                 }
                 AniMatrix.requestChange("a", (Math.Cos(V.value).ToString()));
-                AniMatrix.requestChange("b", (Math.Sin(V.value).ToString()));
-                AniMatrix.requestChange("c", ((Math.Sin(V.value)*-1).ToString()));
+                AniMatrix.requestChange("b", (Math.Sin((V.value) * -1).ToString()));
+                AniMatrix.requestChange("c", ((Math.Sin(V.value)).ToString()));
                 AniMatrix.requestChange("d", (Math.Cos(V.value).ToString()));
             }
             else if (animationType == "reflection")
