@@ -89,7 +89,7 @@
             return EV2B;
         }
 
-        public string DetermineType() //determine type of matrix transformation for animation
+        private string DetermineType() //determine type of matrix transformation for animation
         {
             if (b == 0 && c == 0)
             {

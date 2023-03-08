@@ -56,9 +56,9 @@ namespace NEA4
         Variable E = new Variable();
         Variable PI = new Variable();
 
-        private ObservablePoint[] UnitSquare = new ObservablePoint[45];// initialising graph constructs of the Unit Square, Triangle and Grid
-        private ObservablePoint[] Triangle = new ObservablePoint[4]; //
-        private ObservablePoint[][] Grid = new ObservablePoint[8][]; //
+        private ObservablePoint[] unitSquare = new ObservablePoint[45];// initialising graph constructs of the Unit Square, Triangle and Grid
+        private ObservablePoint[] triangle = new ObservablePoint[4]; //
+        private ObservablePoint[][] grid = new ObservablePoint[8][]; //
         private ObservablePoint[] eigenVector1OP = new ObservablePoint[1]; //Eigenvectors to be transformed by the eigenvalues 
         private ObservablePoint[] eigenVector2OP = new ObservablePoint[1]; //
         
@@ -157,44 +157,44 @@ namespace NEA4
         private void DefineTriangle()
         {
 
-            Triangle[0] = new ObservablePoint(-4,-5);
-            Triangle[1] = new ObservablePoint(-2,3);
-            Triangle[2] = new ObservablePoint(6,-1);
-            Triangle[3] = new ObservablePoint(-4, -5);
+            triangle[0] = new ObservablePoint(-4,-5);
+            triangle[1] = new ObservablePoint(-2,3);
+            triangle[2] = new ObservablePoint(6,-1);
+            triangle[3] = new ObservablePoint(-4, -5);
 
         }
         private void DefineUnitSquare()
         {
-            UnitSquare[0] = new ObservablePoint(0, 0);
+            unitSquare[0] = new ObservablePoint(0, 0);
             int b = 1;
             for (double i = 0; i < 10; i++)
             {
-                UnitSquare[b] = new ObservablePoint(0, i / 10 + 0.1);
+                unitSquare[b] = new ObservablePoint(0, i / 10 + 0.1);
                 b++;
             }
-            UnitSquare[b] = new ObservablePoint(0, 1);
+            unitSquare[b] = new ObservablePoint(0, 1);
             b++;
             for (double i = 0; i < 10; i++)
             {
-                UnitSquare[b] = new ObservablePoint(i / 10 + 0.1, 1);
+                unitSquare[b] = new ObservablePoint(i / 10 + 0.1, 1);
                 b++;
             }
 
-            UnitSquare[b] = new ObservablePoint(1, 1);
+            unitSquare[b] = new ObservablePoint(1, 1);
             b++;
             for (double i = 10; i > 0; i--)
             {
-                UnitSquare[b] = new ObservablePoint(1, i / 10);
+                unitSquare[b] = new ObservablePoint(1, i / 10);
                 b++;
             }
-            UnitSquare[b] = new ObservablePoint(1, 0);
+            unitSquare[b] = new ObservablePoint(1, 0);
             b++;
             for (double i = 10; i > 0; i--)
             {
-                UnitSquare[b] = new ObservablePoint(i / 10, 0);
+                unitSquare[b] = new ObservablePoint(i / 10, 0);
                 b++;
             }
-            UnitSquare[b] = new ObservablePoint(0, 0);
+            unitSquare[b] = new ObservablePoint(0, 0);
         }
         private void DefineGrid()
         {
@@ -202,28 +202,28 @@ namespace NEA4
             double x;
             double y;
             double[] widthArray = new double[] { -width * 2, -width, width, width * 2 }; //defining away from each axis
-            for (int i = 0; i < (Grid.Length / 2); i++)
+            for (int i = 0; i < (grid.Length / 2); i++)
             {
                 x = widthArray[i];
                 y = -bounds * 10;
-                Grid[i] = new ObservablePoint[100];
-                for (int z = 0; z < Grid[i].Length; z++)
+                grid[i] = new ObservablePoint[100];
+                for (int z = 0; z < grid[i].Length; z++)
                 {
-                    Grid[i][z] = new ObservablePoint(x, y);
+                    grid[i][z] = new ObservablePoint(x, y);
                     y = y + (bounds / 5);
                     
                 }
                 
                 
             }           
-            for (int i = 4; i < (Grid.Length); i++)
+            for (int i = 4; i < (grid.Length); i++)
             {
                 x = -bounds * 10;
                 y = widthArray[i-4];
-                Grid[i] = new ObservablePoint[100];
-                for (int z = 0; z < Grid[i].Length; z++)
+                grid[i] = new ObservablePoint[100];
+                for (int z = 0; z < grid[i].Length; z++)
                 {
-                    Grid[i][z] = new ObservablePoint(x, y);
+                    grid[i][z] = new ObservablePoint(x, y);
                     x = x + (bounds / 5);
                    
                 }               
@@ -648,12 +648,12 @@ namespace NEA4
                 
                 if(unitSquareDisplay) //Defining / transforming Unit Square
                 {
-                    displayUnitSquare = new ObservablePoint[UnitSquare.Length];
-                    for (int i = 0; i < UnitSquare.Length; i++)
+                    displayUnitSquare = new ObservablePoint[unitSquare.Length];
+                    for (int i = 0; i < unitSquare.Length; i++)
                     {
-                        displayUnitSquare[i] = UnitSquare[i];
+                        displayUnitSquare[i] = unitSquare[i];
                     }
-                    for (int i = 0; i < UnitSquare.Length; i++)
+                    for (int i = 0; i < unitSquare.Length; i++)
                     {
                         displayUnitSquare[i] = ApplyToObservablePoint(displayUnitSquare[i], QueueMatrix);
                     }
@@ -676,13 +676,13 @@ namespace NEA4
                 if (displayGrid)
                 {
                     DefineGrid();
-                    for (int b = 0; b < Grid.Length; b++)
+                    for (int b = 0; b < grid.Length; b++)
                     {
-                        for (int i = 0; i < Grid[b].Length; i++)
+                        for (int i = 0; i < grid[b].Length; i++)
                         {
-                            Grid[b][i] = ApplyToObservablePoint(Grid[b][i], QueueMatrix);
+                            grid[b][i] = ApplyToObservablePoint(grid[b][i], QueueMatrix);
                         }
-                         displayGridOP[b] = CutFunctionToBounds(Grid[b])[0];
+                         displayGridOP[b] = CutFunctionToBounds(grid[b])[0];
                     }
                     
                 }
@@ -690,10 +690,10 @@ namespace NEA4
                 if(displayTriangle)
                 {
                     DefineTriangle();
-                    displayTriangleOP[0] = ApplyToObservablePoint(Triangle[0], QueueMatrix);
-                    displayTriangleOP[1] = ApplyToObservablePoint(Triangle[1], QueueMatrix);
-                    displayTriangleOP[2] = ApplyToObservablePoint(Triangle[2], QueueMatrix);
-                    displayTriangleOP[3] = ApplyToObservablePoint(Triangle[3], QueueMatrix);
+                    displayTriangleOP[0] = ApplyToObservablePoint(triangle[0], QueueMatrix);
+                    displayTriangleOP[1] = ApplyToObservablePoint(triangle[1], QueueMatrix);
+                    displayTriangleOP[2] = ApplyToObservablePoint(triangle[2], QueueMatrix);
+                    displayTriangleOP[3] = ApplyToObservablePoint(triangle[3], QueueMatrix);
                     displayTriangleOP = CutFunctionToBounds(displayTriangleOP)[0];
                 }
 

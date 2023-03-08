@@ -30,7 +30,6 @@ namespace NEA4
     public class Parsing
     {
         private string pInput;
-        private int greatestDepth;
         private TreeNode[] Tree;
 
         private char[] charOperationArray = { '^', '*', '/', '-', '+' };
@@ -42,7 +41,6 @@ namespace NEA4
             {
                 tokenArray = FunctionFix(tokenArray);
             }
-            greatestDepth = GreatestDepth(tokenArray);
             Tree = Parser(tokenArray);
             
         }
