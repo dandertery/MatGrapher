@@ -1493,23 +1493,9 @@ namespace NEA4
             }
             return false;
         }
-        private void NegativeZero(TextBox textBox)
-        {
-            if(textBox.Text == "-0")
-            {
-                textBox.Text = "0";
-            }
-        }
+
         private void CheckMatrix() //called many times per second on timer
         {
-            NegativeZero(a1);
-            NegativeZero(b1);
-            NegativeZero(c1);
-            NegativeZero(d1);
-            NegativeZero(a2);
-            NegativeZero(b2);
-            NegativeZero(c2);
-            NegativeZero(d2);
 
             if (lMat.getDet() == 0) //if determinant is 0 a matrix has no inverse
             {
