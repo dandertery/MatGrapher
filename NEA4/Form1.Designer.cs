@@ -106,6 +106,7 @@
             this.DegreesRadiansButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.TransformationTypeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -874,11 +875,21 @@
             this.label13.TabIndex = 93;
             this.label13.Text = "SPARE MATRIX";
             // 
+            // TransformationTypeLabel
+            // 
+            this.TransformationTypeLabel.AutoSize = true;
+            this.TransformationTypeLabel.Location = new System.Drawing.Point(366, 837);
+            this.TransformationTypeLabel.Name = "TransformationTypeLabel";
+            this.TransformationTypeLabel.Size = new System.Drawing.Size(116, 15);
+            this.TransformationTypeLabel.TabIndex = 94;
+            this.TransformationTypeLabel.Text = "Transformation type:";
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1292, 881);
+            this.Controls.Add(this.TransformationTypeLabel);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.DegreesRadiansButton);
@@ -1039,5 +1050,6 @@
         private Button DegreesRadiansButton;
         private Label label12;
         private Label label13;
+        private Label TransformationTypeLabel;
     }
 }

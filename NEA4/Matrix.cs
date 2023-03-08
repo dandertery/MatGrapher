@@ -91,6 +91,10 @@
 
         public string DetermineType() //determine type of matrix transformation for animation
         {
+            if (b == 0 && c == 0)
+            {
+                return "stretchlargement";
+            }
             if (checkForBinaryError(Math.Pow(a, 2) + Math.Pow(b, 2), 2) == 1) //(sin^2 x + cos^2 x = 1)
             {
                 if (a == d && b == -c)
@@ -102,10 +106,7 @@
                     return "reflection";
                 }
             }
-            if (b == 0 && c == 0)
-            {
-                return "stretchlargement";
-            }
+
             else if ( a == d && a == 1)
             {
                 if(b==0 || c==0)

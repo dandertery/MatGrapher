@@ -1528,13 +1528,15 @@ namespace NEA4
                 InverseLeft.Enabled = true;
             }
             CheckMatrixValues();
-            if (rMat.GetStringType() == "unknown" || rMat.GetStringType() == "reflection" || isAnimating) //reflection cannot be animated
+            string transType = rMat.GetStringType();
+            TransformationTypeLabel.Text = "Transformation Type: " + transType;
+            if (transType == "unknown" || transType == "reflection" || isAnimating) //reflection cannot be animated
             {
                 AnimateButton.Enabled = false;
             }
             else
             {
-                if (rMat.GetStringType() == "rotation")
+                if (transType == "rotation")
                 {
                     if (a2.Text != "cos(V)" || b2.Text != "-sin(V)" || c2.Text != "sin(V)" || d2.Text != "cos(V)")
                     {
@@ -1552,10 +1554,18 @@ namespace NEA4
             }
 
 
+            try
+            {
+                detA.Text = ErrorRounder(Double.Parse(TruncateText(lMat.getDet().ToString(), 5)), 2).ToString();
 
-            detA.Text = ErrorRounder(Double.Parse(TruncateText(lMat.getDet().ToString(), 5)), 2).ToString();
+                detB.Text = ErrorRounder(Double.Parse(TruncateText(rMat.getDet().ToString(), 5)), 2).ToString();
+            }
+            catch
+            {
 
-            detB.Text = ErrorRounder(Double.Parse(TruncateText(rMat.getDet().ToString(), 5)), 2).ToString();
+            }
+
+
 
             QueueMatrixLabel.Text = "(" + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("a").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("b").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("c").ToString(), 4)), 2) + ", " + ErrorRounder(Double.Parse(TruncateText(QueueMatrix.Get("d").ToString(), 4)), 2) + ")";
 
