@@ -1476,7 +1476,7 @@ namespace NEA4
         }
         private void CheckMatrixValue(TextBox textBox, string letter, Matrix inputMatrix)
         {
-            if (!CheckForFloatingPoint(textBox.Text))
+            if (!CheckForFloatingPoint(textBox.Text) && !CheckForNegativeSign(textBox.Text))
             {
                 if(TruncateText(ParseV(textBox.Text).ToString(), 6) != TruncateText(inputMatrix.Get(letter).ToString(), 6))
                 {
@@ -1484,6 +1484,14 @@ namespace NEA4
                 }
                 
             }
+        }
+        private bool CheckForNegativeSign(string text)
+        {
+            if(text == "-")
+            {
+                return true;
+            }
+            return false;
         }
         private void NegativeZero(TextBox textBox)
         {
