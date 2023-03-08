@@ -116,7 +116,7 @@
             }
             return "unknown";
         }
-        public string getName()
+        public string getName() //values of matrix as a string
         {
             string name = "(" + a + ", " + b + ", " + c + ", " + d + ")";
             return name;
@@ -169,10 +169,7 @@
                 type = DetermineType();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
 
 
 
@@ -207,8 +204,7 @@
             {
                 return ceiling / scalar;
             }
-            double output = scaled / scalar;
-            return output;
+            return input;
 
            
         }
