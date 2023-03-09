@@ -57,7 +57,7 @@ namespace NEA4
         Variable PI = new Variable();
 
         private ObservablePoint[] unitSquare = new ObservablePoint[45];// initialising graph constructs of the Unit Square, Triangle and Grid
-        private ObservablePoint[] triangle = new ObservablePoint[4]; //
+        private ObservablePoint[] triangle = new ObservablePoint[34]; //
         private ObservablePoint[][] grid = new ObservablePoint[8][]; //
         private ObservablePoint[] eigenVector1OP = new ObservablePoint[1]; //Eigenvectors to be transformed by the eigenvalues 
         private ObservablePoint[] eigenVector2OP = new ObservablePoint[1]; //
@@ -157,10 +157,47 @@ namespace NEA4
         private void DefineTriangle()
         {
 
-            triangle[0] = new ObservablePoint(-4,-5);
-            triangle[1] = new ObservablePoint(-2,3);
-            triangle[2] = new ObservablePoint(6,-1);
-            triangle[3] = new ObservablePoint(-4, -5);
+            
+            double x = -4;
+            double y = -5;
+            triangle[0] = new ObservablePoint(x,y);
+            double dx = -2 - x;
+            double dy = 3 - y;
+            int m = 1;
+            for (int i = 0; i < 10; i++)
+            {
+                x = x + (dx / 10);
+                y = y + (dy / 10);
+                triangle[m] = new ObservablePoint(x, y);
+                m++;
+            }
+            x = -2;
+            y = 3;
+            triangle[11] = new ObservablePoint(x,y);
+            dx = 6 - x;
+            dy = -1 - y;
+            m = 12;
+            for (int i = 0; i < 10; i++)
+            {
+                x = x + (dx / 10);
+                y = y + (dy / 10);
+                triangle[m] = new ObservablePoint(x, y);
+                m++;
+            }
+            x = 6;
+            y = -1;
+            triangle[22] = new ObservablePoint(x, y);
+            dx = -4 - x;
+            dy = -5 - y;
+            m = 23;
+            for (int i = 0; i < 10; i++)
+            {
+                x = x + (dx / 10);
+                y = y + (dy / 10);
+                triangle[m] = new ObservablePoint(x, y);
+                m++;
+            }
+            triangle[33] = new ObservablePoint(-4, -5);
 
         }
         private void DefineUnitSquare()
@@ -686,14 +723,14 @@ namespace NEA4
                     }
                     
                 }
-                ObservablePoint[] displayTriangleOP = new ObservablePoint[4]; //Defining / transforming Triangle
+                ObservablePoint[] displayTriangleOP = new ObservablePoint[34]; //Defining / transforming Triangle
                 if(displayTriangle)
                 {
                     DefineTriangle();
-                    displayTriangleOP[0] = ApplyToObservablePoint(triangle[0], QueueMatrix);
-                    displayTriangleOP[1] = ApplyToObservablePoint(triangle[1], QueueMatrix);
-                    displayTriangleOP[2] = ApplyToObservablePoint(triangle[2], QueueMatrix);
-                    displayTriangleOP[3] = ApplyToObservablePoint(triangle[3], QueueMatrix);
+                    for (int i = 0; i <triangle.Length; i++)
+                    {
+                        displayTriangleOP[i] = ApplyToObservablePoint(triangle[i], QueueMatrix);
+                    }                  
                     displayTriangleOP = CutFunctionToBounds(displayTriangleOP)[0];
                 }
 
