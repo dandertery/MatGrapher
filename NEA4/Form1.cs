@@ -98,7 +98,7 @@ namespace NEA4
             InitializeComponent();
             bounds = 10;
             pitch = 0.05;
-
+            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAll;
             fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
@@ -134,7 +134,7 @@ namespace NEA4
                     eigenVector1OP[0] = new ObservablePoint(QueueMatrix.GetEV1A(), QueueMatrix.GetEV1B());
 
                 }
-                catch (Exception ex)
+                catch
                 {
 
                 }
@@ -142,7 +142,7 @@ namespace NEA4
                 {
                     eigenVector2OP[0] = new ObservablePoint(QueueMatrix.GetEV2A(), QueueMatrix.GetEV2B());
                 }
-                catch (Exception ex)
+                catch
                 {
 
                 }
@@ -278,7 +278,7 @@ namespace NEA4
                 {
                     fs.Push(ToFunction(ApplyMatrix(ProcessInput(FunctionList.Items[i].ToString().Substring(4)), QueueMatrix)));
                 }
-                catch (Exception ex)
+                catch
                 {
 
                 }
@@ -616,7 +616,6 @@ namespace NEA4
             List<ObservablePoint[]> result = new List<ObservablePoint[]>();
             ObservablePoint[] temp = input;
             List<ObservablePoint> addTo = new List<ObservablePoint>();
-            int w = 0;
             for (int i = 0; i < temp.Length; i++)
             {
                 if(temp[i].X > bounds || temp[i].X < -bounds || input[i].Y > bounds || temp[i].Y < -bounds)
@@ -774,14 +773,16 @@ namespace NEA4
                         Fill = null,
                         GeometrySize = 0.1f,
 
-                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => ""
                     },
                     new LineSeries<ObservablePoint> // point at (-bounds, -bounds) to display axes down to that point
                     {
                         Values =  LowerBoundSet,
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => $""
 
                     },
                     new LineSeries<ObservablePoint>
@@ -790,14 +791,16 @@ namespace NEA4
                         Fill = null,
                         GeometrySize = 0.1f,
 
-                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 },
+                        TooltipLabelFormatter = (chartPoint) => $"X Axis"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = YAxis,
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 }
+                        Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 },
+                        TooltipLabelFormatter = (chartPoint) => $"Y Axis"
 
                     },
                     new LineSeries<ObservablePoint> //Displaying Grid, if enabled
@@ -875,448 +878,516 @@ namespace NEA4
                         Values = displayLines[0],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[1],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[2],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[3],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[4],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
+
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[5],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[6],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[7],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[8],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[9],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[10],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[11],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[12],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[13],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[14],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[15],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[16],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[17],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[18],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[19],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[20],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[21],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[22],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[23],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[24],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[25],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[26],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[27],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[28],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[29],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[30],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[31],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[32],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[33],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[34],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[35],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[36],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[37],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[38],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[39],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[40],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[41],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[42],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[43],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[44],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
+       
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[45],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[46],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[47],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[48],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[49],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[50],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[51],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[52],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[53],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
+
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[54],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[55],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[56],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[57],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[58],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[59],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[60],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[61],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[62],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
+
                     },
                     new LineSeries<ObservablePoint>
                     {
                         Values = displayLines[63],
                         Fill = null,
                         GeometrySize = 0.1f,
-                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 }
+                        Stroke = new SolidColorPaint(SKColors.Blue) { StrokeThickness = 5 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
                     },
                     new LineSeries<ObservablePoint> // displaying unit square
                     {
@@ -1341,7 +1412,8 @@ namespace NEA4
                         Fill = null,
                         GeometryFill = new SolidColorPaint(SKColors.Pink),
                         GeometryStroke = new SolidColorPaint(SKColors.DeepPink) { StrokeThickness = 4 },
-                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
 
                     },
                     new LineSeries<ObservablePoint> //displaying eigenvector 2 not transformed
@@ -1350,7 +1422,8 @@ namespace NEA4
                         Fill = null,
                         GeometryFill = new SolidColorPaint(SKColors.LightGreen),
                         GeometryStroke = new SolidColorPaint(SKColors.LightSeaGreen) { StrokeThickness = 4 },
-                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
 
                     },
                     new LineSeries<ObservablePoint> //displaying eigenvector1 transformed
@@ -1359,7 +1432,8 @@ namespace NEA4
                         Fill = null,
                         GeometryFill = new SolidColorPaint(SKColors.Red),
                         GeometryStroke = new SolidColorPaint(SKColors.Crimson) { StrokeThickness = 4 },
-                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
 
                     },
                     new LineSeries<ObservablePoint> //displaying eigenvector2 transformed
@@ -1368,7 +1442,8 @@ namespace NEA4
                         Fill = null,
                         GeometryFill = new SolidColorPaint(SKColors.Green),
                         GeometryStroke = new SolidColorPaint(SKColors.DarkGreen) { StrokeThickness = 4 },
-                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 }
+                        Stroke = new SolidColorPaint(SKColors.Red) { StrokeThickness = 0 },
+                        TooltipLabelFormatter = (chartPoint) => $"({TruncateText(chartPoint.PrimaryValue.ToString(), 4)}, {TruncateText(chartPoint.SecondaryValue.ToString(), 4)})"
 
                     },
                 }; //64
@@ -1450,7 +1525,7 @@ namespace NEA4
                 double value = checkForBinaryError(ProcessTree(abstractSyntaxTree, variableArray), 6);
                 return value;
             }
-            catch(Exception ex)
+            catch
             {
                 return double.NegativeInfinity; //used to return that the parsing of V was unsuccessful
             }
@@ -1930,7 +2005,7 @@ namespace NEA4
                     {
                         Parsing test = new Parsing(RPNinput);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         update = false;
                     }
