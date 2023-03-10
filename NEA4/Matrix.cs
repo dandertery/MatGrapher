@@ -71,6 +71,7 @@ namespace NEA4
         }
         public double GetEigenValue1()
         {
+            
             return Eigenvalue1;
         }
         public double GetEigenValue2()
@@ -253,12 +254,12 @@ namespace NEA4
         private void FindEigenvalues()
         {
             double temp = SolveQuadratic(1, -a - d, (a * d) - (b * c), true);
-            if(temp != double.NaN && temp != double.PositiveInfinity && temp != double.NegativeInfinity)
+            if(!double.IsNaN(temp) && temp != double.PositiveInfinity && temp != double.NegativeInfinity)
             {
                 Eigenvalue1 = temp;
             }
             double temp2 = SolveQuadratic(1, -a - d, (a * d) - (b * c), false);
-            if(temp2 != double.NaN && temp2 != double.PositiveInfinity && temp2 != double.NegativeInfinity)
+            if(!double.IsNaN(temp2) && temp2 != double.PositiveInfinity && temp2 != double.NegativeInfinity)
             {
                 Eigenvalue2 = temp2;
             }
@@ -269,12 +270,12 @@ namespace NEA4
             FindEigenvalues();           
             if(b!= 0)
             {
-                if(Eigenvalue1 != double.NaN &&  Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
+                if(!double.IsNaN(Eigenvalue1) &&  Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
                 {
                     EV1A = 1;
                     EV1B = (-a + Eigenvalue1) / b;
                 }
-                if (Eigenvalue1 != double.NaN && Eigenvalue1 != double.PositiveInfinity && Eigenvalue1 != double.NegativeInfinity)
+                if (!double.IsNaN(Eigenvalue2) && Eigenvalue2 != double.PositiveInfinity && Eigenvalue2 != double.NegativeInfinity)
                 {
                     EV2A = 1;
                     EV2B = (-a + Eigenvalue2) / b;
