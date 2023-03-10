@@ -1,4 +1,5 @@
-﻿namespace NEA4
+﻿using System.Diagnostics;
+namespace NEA4
 {
     public class Matrix
     {
@@ -20,13 +21,17 @@
         private double determinant;
         public Matrix(double aInput, double bInput, double cInput, double dInput)
         {
+            if(aInput == -1)
+            {
+                Debug.WriteLine("Breakpoint");
+            }
             a = aInput;
             b = bInput;
             c = cInput;
             d = dInput;
             determinant = checkForBinaryError((a*d) - (b*c), 6);
             FindInvariantLines();
-            FindLinesOfInvariantPoints();
+            FindLineOfInvariantPoints();
             FindEigenvectors();
             type = DetermineType();
         }
@@ -41,7 +46,7 @@
         }
         public string GetInvLine1()
         {
-            if(invLine1!=null && invLine1 != "y = NaNx")
+            if(invLine1!=null && invLine1 != "y = " + double.NaN.ToString() + "x")
             {
                 return invLine1;
             }
@@ -50,7 +55,7 @@
         }
         public string GetInvLine2()
         {
-            if (invLine1 != null && invLine1 != "y = NaNx")
+            if (invLine2 != null && invLine2 != "y = " + double.NaN.ToString() + "x")
             {
                 return invLine2;
             }
@@ -58,7 +63,7 @@
         }
         public string GetInvPointLine()
         {
-            if (invLine1 != null && invLine1 != "y = NaNx")
+            if (invPointLine != null && invPointLine != "y = " + double.NaN.ToString() + "x")
             {
                 return invPointLine;
             }
@@ -289,10 +294,10 @@
             invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
             invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
 
-            invPointLine = InvarianceExceptions(invLine1, m1);
-            invPointLine = InvarianceExceptions(invLine2, m2);
+            invLine1 = InvarianceExceptions(invLine1, m1);
+            invLine2 = InvarianceExceptions(invLine2, m2);
         }
-        private void FindLinesOfInvariantPoints()
+        private void FindLineOfInvariantPoints()
         {
             double m = 0;
             if(((1-a)/b) == ((-c)/(d-1)))
@@ -308,13 +313,13 @@
 
         private string InvarianceExceptions(string input, double m)
         {
-            if (m == double.PositiveInfinity || m == double.NegativeInfinity)
+            if (double.IsInfinity(m))
             {
-                return "y axis";
+                return "y Axis";
             }
             else if(m == 0)
             {
-                return "x axis";
+                return "x Axis";
             }
             return input;
         }

@@ -357,7 +357,7 @@ namespace NEA4
             for (int i = 0; i < (coordinates.Length); i++) //removing undefined coordinates and creating an array of number to  represent consecutive coordinate sequence lengths
             {
 
-                if (double.NaN.Equals(coordinates[i].y) || coordinates[i].y == double.PositiveInfinity || coordinates[i].y == double.NegativeInfinity) //checks if coordinate is undefined
+                if (double.NaN.Equals(coordinates[i].y) || double.IsInfinity(coordinates[i].y)) //checks if coordinate is undefined
                 {
 
                     
