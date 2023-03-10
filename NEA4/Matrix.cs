@@ -45,7 +45,7 @@
             {
                 return invLine1;
             }
-            return "error";
+            return "";
             
         }
         public string GetInvLine2()
@@ -54,7 +54,7 @@
             {
                 return invLine2;
             }
-            return "error";
+            return "";
         }
         public string GetInvPointLine()
         {
@@ -62,7 +62,7 @@
             {
                 return invPointLine;
             }
-            return "error";
+            return "";
         }
         public double GetEigenValue1()
         {
@@ -172,7 +172,6 @@
             return false;
 
 
-
         }
 
         public Matrix Inverse(Matrix inputMat) 
@@ -181,6 +180,7 @@
             double ib = inputMat.b;
             double ic = inputMat.c;
             double id = inputMat.d;
+
 
             ia = checkForBinaryError(ia / inputMat.getDet(), 6);
             ib = checkForBinaryError(ib / inputMat.getDet(), 6);
@@ -288,6 +288,9 @@
 
             invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
             invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
+
+            invPointLine = InvarianceExceptions(invLine1, m1);
+            invPointLine = InvarianceExceptions(invLine2, m2);
         }
         private void FindLinesOfInvariantPoints()
         {
@@ -295,9 +298,25 @@
             if(((1-a)/b) == ((-c)/(d-1)))
             {
                 m = (1 - a) / b;
+
                 invPointLine = "y = " + SixFigText(m.ToString()) + "x";
             }
+
+            invPointLine = InvarianceExceptions(invPointLine, m);
             
+        }
+
+        private string InvarianceExceptions(string input, double m)
+        {
+            if (m == double.PositiveInfinity || m == double.NegativeInfinity)
+            {
+                return "y axis";
+            }
+            else if(m == 0)
+            {
+                return "x axis";
+            }
+            return input;
         }
 
         private double SolveQuadratic(double aInput, double bInput, double cInput, bool isPlus)
@@ -334,76 +353,6 @@
             string output = input.Remove(index + 1);
             return output;
         }
-        private double ErrorRounder(double input, int sigFig)//defined in Matrix aswell for encapsulation purposes
-        {
-            double tempDouble = input;
-            string counter = input.ToString();
-            if (counter.Length > sigFig)
-            {
-
-                double scalar = Math.Pow(10, sigFig);
-                double check = 1 / scalar;
-                double floor = Math.Floor(tempDouble);
-                double ceiling = Math.Ceiling(tempDouble);
-                if (tempDouble - floor < check)
-                {
-                    bool oneCondition = false;
-
-                    bool zeroCondition = true;
-                    int i = counter.Length - 1;
-                    while (counter[i].ToString() != ".")
-                    {
-                        if (i == counter.Length - 1)
-                        {
-                            if (counter[i].ToString() == "1")
-                            {
-                                oneCondition = true;
-                            }
-
-                        }
-                        else
-                        {
-                            if (counter[i].ToString() != "0")
-                            {
-                                zeroCondition = false;
-                            }
-                        }
-                        i--;
-                    }
-                    if (zeroCondition && !oneCondition)
-                    {
-                        return floor;
-                    }
-                }
-                else if (ceiling - tempDouble < check)
-                {
-
-
-
-                    bool nineCondition = true;
-                    int i = counter.Length - 1;
-                    while (counter[i].ToString() != ".")
-                    {
-                        if (counter[i].ToString() != "9")
-                        {
-                            nineCondition = false;
-                        }
-
-
-                        i--;
-                    }
-                    if (nineCondition)
-                    {
-                        return ceiling;
-                    }
-                }
-
-                return input;
-            }
-            else
-            {
-                return input;
-            }
-        }
+ 
     }
 }
