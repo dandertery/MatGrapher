@@ -21,7 +21,7 @@ namespace NEA4
         private double determinant;
         public Matrix(double aInput, double bInput, double cInput, double dInput)
         {
-            if(aInput == -1)
+            if(aInput == -4)
             {
                 Debug.WriteLine("Breakpoint");
             }
@@ -299,16 +299,20 @@ namespace NEA4
         }
         private void FindLineOfInvariantPoints()
         {
-            double m = 0;
-            if(((1-a)/b) == ((-c)/(d-1)))
+            double m = (1 - a) / b;
+            if(a == 0)
             {
-                m = (1 - a) / b;
-
-                invPointLine = "y = " + SixFigText(m.ToString()) + "x";
+                m = 0;
             }
-
+            if (((1-a)/b) == ((-c)/(d-1)))
+            {
+                invPointLine = "y = " + SixFigText(m.ToString()) + "x";
+               
+            }
             invPointLine = InvarianceExceptions(invPointLine, m);
-            
+
+
+
         }
 
         private string InvarianceExceptions(string input, double m)
