@@ -2103,7 +2103,7 @@ namespace NEA4
                 }
                 else if (animationType == "shear") //determining shear nature
                 {
-                    if(Math.Abs(EndMatrix.Get("b")) < Math.Abs(EndMatrix.Get("c")))
+                    if(EndMatrix.Get("b") == 0 || Math.Abs(EndMatrix.Get("b")) < Math.Abs(EndMatrix.Get("c")))
                     {
                         aniPitch = (EndMatrix.Get("c") / steps);
                     }
@@ -2401,7 +2401,7 @@ namespace NEA4
             }
             else if (animationType == "shear")
             {
-                if (AniMatrix.Get("b") != 0)
+                if (EndMatrix.Get("b") != 0)
                 {
                     
                     AniMatrix.requestChange("b", (AniMatrix.Get("b") + aniPitch).ToString());
@@ -2439,7 +2439,7 @@ namespace NEA4
             {
                 AnimateTimer.Enabled = false;
                 isAnimating = false;
-                rMat = EndMatrix;
+                rMat = new Matrix(EndMatrix.Get("a"), EndMatrix.Get("b"), EndMatrix.Get("c"), EndMatrix.Get("d"));
                 a2.Text = EndMatrixA;
                 b2.Text = EndMatrixB;
                 c2.Text = EndMatrixC;
