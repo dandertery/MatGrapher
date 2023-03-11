@@ -262,7 +262,7 @@
 
 
 
-        private Token[] ImplicitMultiplication(Token[] input)
+        private Token[] ImplicitMultiplication(Token[] input) //adding multiplication signs between expressions implied to be multiplied together
         {
             List<Token> temp = ArrayToList(input);
 
@@ -297,7 +297,7 @@
 
 
         }
-        private Token[] ImplicitNegative(Token[] input)
+        private Token[] ImplicitNegative(Token[] input) //adds a 0 before any negative signs without a left value
         {
             List<Token> inputList = ArrayToList(input);
             Token zero = new Token();
@@ -322,7 +322,7 @@
             return output;
         }
 
-        private Token[] BracketDepth(Token[] input)
+        private Token[] BracketDepth(Token[] input) //calculates and add bracket depth of each token
         {
             bool[] processedBracket = new bool[input.Length];
             int[] bracketDepthatIndex = new int[input.Length]; //0 means no brackets
@@ -381,7 +381,7 @@
 
             return ListToArray(tempList);
         }
-        private int GreatestDepth(Token[] input)
+        private int GreatestDepth(Token[] input) //calculates greatest bracket depth
         {
             int localGreatestDepth = 0;
             for (int i = 0; i < input.Length; i++)
