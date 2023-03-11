@@ -129,7 +129,7 @@
             {
                 if (Char.IsDigit(input[i]) || input[i] == '.' || input[i].ToString() == ".") // IF DIGIT
                 {
-                    if (lasttokenname != "number")
+                    if (lasttokenname != "number") //checks whether to add digit to last created token
                     {
                         if (stringtoken != null)
                         {
@@ -179,7 +179,7 @@
                     }
                     else //treat as function - cos, sin
                     {
-                        if (lasttokenname != "function")
+                        if (lasttokenname != "function")//checks whether to add lower case letter to last created token if function
                         {
                             if (stringtoken != null)
                             {
