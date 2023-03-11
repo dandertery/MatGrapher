@@ -16,8 +16,6 @@ using System.Runtime;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
-
-//https://www.youtube.com/watch?v=TTsyUclt-XU
 namespace NEA4
 {
     public partial class MatGrapher : Form
@@ -27,7 +25,7 @@ namespace NEA4
         private double pitch;
         private double bounds;
         private double fBounds;
-        private double renderBounds;
+        private double renderBounds; //preprocessed bounds, larger than displayed bounds
         private double renderFBounds;
         private double aniPitch;
         private double aniPitch2; // for combined X/Y stretch animations
@@ -59,8 +57,8 @@ namespace NEA4
         private Variable q; 
         private Variable V; // for matrix value input use
 
-        Variable E = new Variable();
-        Variable PI = new Variable();
+        private Variable E = new Variable();
+        private Variable PI = new Variable();
 
         private ObservablePoint[] unitSquare = new ObservablePoint[45];// initialising graph constructs of the Unit Square, Triangle and Grid
         private ObservablePoint[] triangle = new ObservablePoint[34]; //
@@ -96,7 +94,7 @@ namespace NEA4
         struct Function
         {
             public int breakpoints;
-            public List<ObservablePoint[]> fSections;
+            public List<ObservablePoint[]> fSections; //list of different continous sections of the function
             public string name;
         }
         public MatGrapher()
@@ -104,7 +102,7 @@ namespace NEA4
             InitializeComponent();
             bounds = 10;
             pitch = 0.05;
-            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAll;
+            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAll; //Compares x and y of cursor to coordinates to show coordinate tooltip
             fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
@@ -160,7 +158,7 @@ namespace NEA4
             }
 
         }
-        private void DefineTriangle()
+        private void DefineTriangle() //defining a scalene triangle - vertices chosen only for scalene and medium size on default bounds
         {
 
             
@@ -316,8 +314,8 @@ namespace NEA4
         }
         private NamedCoordArray ProcessInput(string input) //processing a function
         {
-            Parsing TreeInput = new Parsing(input);
-            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree());
+            Parsing TreeInput = new Parsing(input); //Creating Abstract Syntax Tree
+            TreeNode abstractSyntaxTree = FindRoot(TreeInput.GetTree()); //finding root if not already selected
 
             pitch = 0.05; 
             fBounds = bounds / pitch;
@@ -418,14 +416,14 @@ namespace NEA4
                 while (c < Convert.ToInt32(coordinates.Length) &&(startOfSection || (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3)))) //checks for consecutive x coordinates, seperated by pitch
                 {
                     startOfSection = false;
-                    CoordinatesArrays[i][f] = coordinates[c]; //here
+                    CoordinatesArrays[i][f] = coordinates[c]; //Assigning each coordinate to the coordinate arrays
                     c++;
                     f++;
                 }
 
 
             }
-            ObservablePoint[][] ValuesArrays = new ObservablePoint[function.breakpoints + 1][];
+            ObservablePoint[][] ValuesArrays = new ObservablePoint[function.breakpoints + 1][]; //conversion to Livecharts ObservablePoint
 
             for (int i = 0; i < (function.breakpoints + 1); i++)
             {
@@ -617,7 +615,7 @@ namespace NEA4
             outputCoordinate.Y = y;
             return outputCoordinate;
         }
-        private ObservablePoint[][] CutFunctionToBounds(ObservablePoint[] input)
+        private ObservablePoint[][] CutFunctionToBounds(ObservablePoint[] input) //removing points out of bounds
         {
             List<ObservablePoint[]> result = new List<ObservablePoint[]>();
             ObservablePoint[] temp = input;
@@ -648,7 +646,7 @@ namespace NEA4
             }
             return output;
         }
-        private void DisplayFunctions(Stack<Function> fsinput) //64 functions! (WHY CAN'T I FIX THIS) all rage about this expressed here -> AHHG=GGGHGHGHGHGHHG ahahdhfgfggfgfgfggdf eilfjh\esklfjhhnse\lkj adhhshshdshdh hdidkifhfghgeh ahaujsidfhfidhe aoaoaoaoao
+        private void DisplayFunctions(Stack<Function> fsinput) //64 function slots due to LiveCharts limitations
         {
             
 
@@ -706,12 +704,12 @@ namespace NEA4
                 if (showEigen) //Defining / transforming Eigenvectors
                 {
                     DefineEigenVectors();
-                    displayEigenVector1[0] = ApplyToObservablePoint(eigenVector1OP[0], QueueMatrix);
+                    displayEigenVector1[0] = ApplyToObservablePoint(eigenVector1OP[0], QueueMatrix);//transformed eigenvectors
                     displayEigenVector2[0] = ApplyToObservablePoint(eigenVector2OP[0], QueueMatrix);
                     displayEigenVector1 = CutFunctionToBounds(displayEigenVector1)[0];
                     displayEigenVector2 = CutFunctionToBounds(displayEigenVector2)[0];
 
-                    eigenVector1OP = CutFunctionToBounds(eigenVector1OP)[0];
+                    eigenVector1OP = CutFunctionToBounds(eigenVector1OP)[0]; //non-transformed eigenvectors
                     eigenVector2OP = CutFunctionToBounds(eigenVector2OP)[0];
                 }
                 ObservablePoint[][] displayGridOP = new ObservablePoint[10][]; //Defining / transforming Grid
@@ -2469,10 +2467,6 @@ namespace NEA4
             Application.Restart();
         }
 
-        private void cartesianChart1_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void CopyButton_Click(object sender, EventArgs e)
         {

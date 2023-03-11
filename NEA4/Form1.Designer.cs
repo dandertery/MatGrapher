@@ -115,7 +115,7 @@
             this.cartesianChart1.Name = "cartesianChart1";
             this.cartesianChart1.Size = new System.Drawing.Size(550, 550);
             this.cartesianChart1.TabIndex = 0;
-            this.cartesianChart1.Load += new System.EventHandler(this.cartesianChart1_Load);
+            //this.cartesianChart1.Load += new System.EventHandler(this.cartesianChart1_Load);
             // 
             // RPNTextBox
             // 
