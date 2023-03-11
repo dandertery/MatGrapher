@@ -21,9 +21,9 @@ namespace NEA4
         private double determinant;
         public Matrix(double aInput, double bInput, double cInput, double dInput)
         {
-            if(aInput == -4)
+            if(a == 1 && b == 0 && c == 1 && d == 1)
             {
-                Debug.WriteLine("Breakpoint");
+                Debug.WriteLine("breapoint");
             }
             a = aInput;
             b = bInput;
@@ -107,13 +107,13 @@ namespace NEA4
                 {
                     return "rotation";
                 }
-                else if (a == -d && b == c)
+                if (a == -d && b == c)
                 {
                     return "reflection";
                 }
             }
 
-            else if ( a == d && a == 1)
+            if ( a == d && a == 1)
             {
                 if(b==0 || c==0)
                 {
@@ -122,10 +122,12 @@ namespace NEA4
             }
             return "unknown";
         }
+        
         public string getName() //values of matrix as a string
         {
-            string name = "(" + a + ", " + b + ", " + c + ", " + d + ")";
+            string name = "(" + TruncateText(a.ToString(), 3) + ", " + TruncateText(b.ToString(), 3) + ", " + TruncateText(c.ToString(), 3) + ", " + TruncateText(d.ToString(), 3) + ")";
             return name;
+            
         }
 
         public double Get(string letter)
@@ -152,6 +154,7 @@ namespace NEA4
         public bool requestChange(string intendedEdit, string value) // will handle string  / input error
         {
             double valueDouble;
+            
 
             if(Double.TryParse(value, out valueDouble))
             {
@@ -295,8 +298,8 @@ namespace NEA4
             invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
             invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
 
-            invLine1 = InvarianceExceptions(invLine1, m1);
-            invLine2 = InvarianceExceptions(invLine2, m2);
+            invLine1 = InvarianceExceptions(invLine1, m1, false);
+            invLine2 = InvarianceExceptions(invLine2, m2, false);
         }
         private void FindLineOfInvariantPoints()
         {
@@ -310,13 +313,13 @@ namespace NEA4
                 invPointLine = "y = " + SixFigText(m.ToString()) + "x";
                
             }
-            invPointLine = InvarianceExceptions(invPointLine, m);
+            invPointLine = InvarianceExceptions(invPointLine, m, true);
 
 
 
         }
 
-        private string InvarianceExceptions(string input, double m)
+        private string InvarianceExceptions(string input, double m, bool isInvariantPoint)
         {
             if (double.IsInfinity(m))
             {
@@ -324,7 +327,11 @@ namespace NEA4
             }
             else if(m == 0)
             {
-                return "x Axis";
+                if(a == 1 || !isInvariantPoint)
+                {
+                    return "x Axis";
+                }
+                
             }
             return input;
         }
@@ -363,6 +370,31 @@ namespace NEA4
             string output = input.Remove(index + 1);
             return output;
         }
- 
+        private string TruncateText(string input, int sigFig) //truncating values for display
+        {
+            bool foundPoint = false;
+            int z = sigFig;
+            int index = input.Length - 1;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '.')
+                {
+                    foundPoint = true;
+
+
+                }
+                if (foundPoint)
+                {
+                    z--;
+                }
+                if (z == 0)
+                {
+                    index = i;
+                }
+            }
+            string output = input.Remove(index + 1);
+            return output;
+        }
+
     }
 }

@@ -44,6 +44,11 @@ namespace NEA4
 
         private Matrix StartAniMatrix = new Matrix(1, 0, 0, 1); //starts as identity matrix
         private Matrix AniMatrix;
+        private Matrix EndMatrix;
+        private string EndMatrixA;
+        private string EndMatrixB;
+        private string EndMatrixC;
+        private string EndMatrixD;
         private Matrix lMat = new Matrix(-4, 3, 1, -2);
         private Matrix rMat = new Matrix(-4, 3, 1, -2);
         private Matrix QueueMatrix = new Matrix(1, 0, 0, 1);
@@ -2069,10 +2074,13 @@ namespace NEA4
         private void AnimateButton_Click(object sender, EventArgs e)
         {
             AnimateButton.Enabled = false;
-            if(MatrixList.Items.Count == 0)
-            {
 
-                AniMatrix = StartAniMatrix;
+                EndMatrix = new Matrix(rMat.Get("a"), rMat.Get("b"), rMat.Get("c"), rMat.Get("d"));
+                EndMatrixA = a2.Text;
+                EndMatrixB = b2.Text;
+                EndMatrixC = c2.Text;
+                EndMatrixD = d2.Text;
+            AniMatrix = StartAniMatrix;
                 
                 animationType = rMat.GetStringType();
                 steps = 150;
@@ -2090,30 +2098,30 @@ namespace NEA4
                 }
                 else if (animationType == "stretchlargement")
                 {
-                    aniPitch = ((rMat.Get("a") - 1) / steps); //stretch animation in x
-                    aniPitch2 = ((rMat.Get("d") - 1) / steps); //stretch animation in y
+                    aniPitch = ((EndMatrix.Get("a") - 1) / steps); //stretch animation in x
+                    aniPitch2 = ((EndMatrix.Get("d") - 1) / steps); //stretch animation in y
                 }
                 else if (animationType == "shear") //determining shear nature
                 {
-                    if(rMat.Get("b") == 0)
+                    if(Math.Abs(EndMatrix.Get("b")) < Math.Abs(EndMatrix.Get("c")))
                     {
-                        aniPitch = (rMat.Get("c") / steps);
+                        aniPitch = (EndMatrix.Get("c") / steps);
                     }
                     else
                     {
-                        aniPitch = (rMat.Get("b") / steps);
+                        aniPitch = (EndMatrix.Get("b") / steps);
                     }
                 }
                 isAnimating = true;
+                ms.Enqueue(new Matrix(1,0,0,1));
+
                 AnimateTimer.Start();
 
 
-            }
-            else
-            {
-                MessageBox.Show( "Please empty the Matrix List to animate", "Animation cannot be shown", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+                //MessageBox.Show( "Please empty the Matrix List to animate", "Animation cannot be shown", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            }
+          
 
         }
         private void Form1_Load_1(object sender, EventArgs e)
@@ -2404,15 +2412,48 @@ namespace NEA4
                 }
             }
             steps--;
+            rMat = AniMatrix;
+            a2.Text = TruncateText(AniMatrix.Get("a").ToString(), 5);
+            b2.Text = TruncateText(AniMatrix.Get("b").ToString(), 5);
+            c2.Text = TruncateText(AniMatrix.Get("c").ToString(), 5);
+            d2.Text = TruncateText(AniMatrix.Get("d").ToString(), 5);
 
-            if(steps == 0) //ending the animation
+            Queue<Matrix> msTemp = new Queue<Matrix>();
+            if(ms.Count > 1)
+            {
+                int counter = ms.Count - 1;
+                for (int i = 0; i < counter; i++)//clearing and added updated matrix transformation
+                {
+                    msTemp.Enqueue(ms.Dequeue());
+                }
+            }
+            else
+            {
+                msTemp = new Queue<Matrix>(ms);
+            }
+
+            msTemp.Enqueue(AniMatrix);
+            ms = new Queue<Matrix>(msTemp);
+
+            if (steps == 0) //ending the animation
             {
                 AnimateTimer.Enabled = false;
                 isAnimating = false;
+                rMat = EndMatrix;
+                a2.Text = EndMatrixA;
+                b2.Text = EndMatrixB;
+                c2.Text = EndMatrixC;
+                d2.Text = EndMatrixD;
+                int counter = ms.Count - 1;
+                msTemp = new Queue<Matrix>();
+                for (int i = 0; i < counter; i++)//clearing and added final matrix transformation
+                {
+                    msTemp.Enqueue(ms.Dequeue());
+                }
+                msTemp.Enqueue(EndMatrix);
+                ms = new Queue<Matrix>(msTemp);
+                MatrixList.Items.Add(EndMatrix.getName());
             }
-            rMat = AniMatrix; 
-            ms = new Queue<Matrix>(); //clearing and added updated matrix transformation
-            ms.Enqueue(AniMatrix);
             UpdateFunctions();
         }
 
