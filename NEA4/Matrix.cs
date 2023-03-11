@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-namespace NEA4
+﻿namespace NEA4
 {
     public class Matrix
     {
@@ -21,10 +20,6 @@ namespace NEA4
         private double determinant;
         public Matrix(double aInput, double bInput, double cInput, double dInput)
         {
-            if(a == 1 && b == 0 && c == 1 && d == 1)
-            {
-                Debug.WriteLine("breapoint");
-            }
             a = aInput;
             b = bInput;
             c = cInput;
@@ -229,7 +224,7 @@ namespace NEA4
             return output;
 
         }
-        public Matrix Multiplication(Matrix inputMatA, Matrix inputMatB) //(A * B, not commmutative!)
+        public Matrix Multiplication(Matrix inputMatA, Matrix inputMatB) //(A * B, not commutative!)
         {
             double a1 = inputMatA.Get("a");
             double b1 = inputMatA.Get("b");
@@ -268,7 +263,7 @@ namespace NEA4
             }
             
         }
-        private void FindEigenvectors()
+        private void FindEigenvectors() //creates eigenvectors with a base of x=1
         {
             FindEigenvalues();           
             if(b!= 0)
@@ -292,14 +287,22 @@ namespace NEA4
 
         private void FindInvariantLines()
         {
-            double m1 = SolveQuadratic(b, a - d, -c, true);
-            double m2 = SolveQuadratic(b, a - d, -c, false);
+            try
+            {
+                double m1 = SolveQuadratic(b, a - d, -c, true);
+                double m2 = SolveQuadratic(b, a - d, -c, false);
 
-            invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
-            invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
+                invLine1 = "y = " + SixFigText(m1.ToString()) + "x";
+                invLine2 = "y = " + SixFigText(m2.ToString()) + "x";
 
-            invLine1 = InvarianceExceptions(invLine1, m1, false);
-            invLine2 = InvarianceExceptions(invLine2, m2, false);
+                invLine1 = InvarianceExceptions(invLine1, m1, false);
+                invLine2 = InvarianceExceptions(invLine2, m2, false);
+            }
+            catch
+            {
+
+            }
+
         }
         private void FindLineOfInvariantPoints()
         {
@@ -321,13 +324,13 @@ namespace NEA4
 
         private string InvarianceExceptions(string input, double m, bool isInvariantPoint)
         {
-            if (double.IsInfinity(m))
+            if (double.IsInfinity(m)) //vertical line, through the origin
             {
                 return "y Axis";
             }
-            else if(m == 0)
+            else if(m == 0) //horizontal line, through the origin
             {
-                if(a == 1 || !isInvariantPoint)
+                if(a == 1 || !isInvariantPoint) //If is a line of invariant points, x must be unchanged by matrix transformation
                 {
                     return "x Axis";
                 }
@@ -336,8 +339,9 @@ namespace NEA4
             return input;
         }
 
-        private double SolveQuadratic(double aInput, double bInput, double cInput, bool isPlus)
+        private double SolveQuadratic(double aInput, double bInput, double cInput, bool isPlus) //isPlus bool decides which value to give (positive or negative discriminant
         {
+
             int quad = 1;
             if(!isPlus)
             {

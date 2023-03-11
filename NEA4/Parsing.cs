@@ -1,23 +1,4 @@
-﻿using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using SkiaSharp.Views;
-using LiveChartsCore.Defaults;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.Painting.Effects;
-using SkiaSharp;
-using System.Diagnostics;
-
-namespace NEA4
+﻿namespace NEA4
 {
     public struct Token
     {

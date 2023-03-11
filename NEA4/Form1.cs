@@ -11,11 +11,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Runtime;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
-using System.Diagnostics;
-using System.Runtime;
+
 //https://www.youtube.com/watch?v=TTsyUclt-XU
 namespace NEA4
 {
