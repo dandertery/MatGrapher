@@ -170,6 +170,9 @@
                     d=valueDouble;
                 }
                 determinant = checkForBinaryError((a * d) - (b * c), 6);
+                FindInvariantLines();
+                FindLineOfInvariantPoints();
+                FindEigenvectors();
                 type = DetermineType();
                 return true;
             }
