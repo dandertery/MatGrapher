@@ -41,7 +41,7 @@
             }
             return false;
         }
-        private Token[] FunctionFix(Token[] input)
+        private Token[] FunctionFix(Token[] input) //Fixing parsing issue where there are no operations, only functions
         {
             List<Token> result = ArrayToList(input);
             int depthCompare = GreatestDepth(input);
@@ -240,7 +240,7 @@
 
             if(stringtokens.Count == tokennames.Count)
             {
-                for (int i = 0; i < stringtokens.Count; i++) //CONVERT INTO SEMANTIC
+                for (int i = 0; i < stringtokens.Count; i++)
                 {
                     Token temp = new Token();
                     temp.contents = stringtokens[i];
