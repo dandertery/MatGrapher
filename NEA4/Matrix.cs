@@ -146,7 +146,7 @@
             return 0;
         }
 
-        public bool requestChange(string intendedEdit, string value) // will handle string  / input error
+        public bool requestChange(string intendedEdit, string value) //Protection of matrix data
         {
             double valueDouble;
             
