@@ -102,12 +102,14 @@ namespace NEA4
             InitializeComponent();
             bounds = 10;
             pitch = 0.05;
-            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAll; //Compares x and y of cursor to coordinates to show coordinate tooltip
+            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAllTakeClosest; //Compares x and y of cursor to coordinates to show coordinate tooltip
+            cartesianChart1.TooltipPosition = LiveChartsCore.Measure.TooltipPosition.Bottom;
             fBounds = bounds / pitch;    
             cartesianChart1.EasingFunction = null; //prevents bouncing animation when graph is initialised
             checkMatrixTimer.Start(); //Clock for updating displayed matrix values
             InitialiseVariables();          
             DefineUnitSquare();
+            DefineTriangle();
             UpdateFunctions(); //called upon every relevant change
 
            
@@ -159,9 +161,7 @@ namespace NEA4
 
         }
         private void DefineTriangle() //defining a scalene triangle - vertices chosen only for scalene and medium size on default bounds
-        {
-
-            
+        {           
             double x = -4;
             double y = -5;
             triangle[0] = new ObservablePoint(x,y);
@@ -729,7 +729,7 @@ namespace NEA4
                 ObservablePoint[] displayTriangleOP = new ObservablePoint[34]; //Defining / transforming Triangle
                 if(displayTriangle)
                 {
-                    DefineTriangle();
+                    
                     for (int i = 0; i <triangle.Length; i++)
                     {
                         displayTriangleOP[i] = ApplyToObservablePoint(triangle[i], QueueMatrix);
@@ -796,7 +796,7 @@ namespace NEA4
                         GeometrySize = 0.1f,
 
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 },
-                        TooltipLabelFormatter = (chartPoint) => $"X Axis"
+                        TooltipLabelFormatter = (chartPoint) => null
                     },
                     new LineSeries<ObservablePoint>
                     {
@@ -804,7 +804,7 @@ namespace NEA4
                         Fill = null,
                         GeometrySize = 0.1f,
                         Stroke = new SolidColorPaint(SKColors.Black) { StrokeThickness = 3 },
-                        TooltipLabelFormatter = (chartPoint) => $"Y Axis"
+                        TooltipLabelFormatter = (chartPoint) => null
 
                     },
                     new LineSeries<ObservablePoint> //Displaying Grid, if enabled
@@ -1659,8 +1659,8 @@ namespace NEA4
             try
             {
                 detA.Text = ErrorRounder(Double.Parse(TruncateText(lMat.getDet().ToString(), 5)), 2).ToString();
-
                 detB.Text = ErrorRounder(Double.Parse(TruncateText(rMat.getDet().ToString(), 5)), 2).ToString();
+                detQ.Text = ErrorRounder(Double.Parse(TruncateText(QueueMatrix.getDet().ToString(), 5)), 2).ToString();
             }
             catch
             {
@@ -2511,6 +2511,29 @@ namespace NEA4
             showEigen = !showEigen;
             DefineEigenVectors();
             UpdateFunctions();
+        }
+
+
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var m = new Form();
+            m.Show();
+        }
+
+        private void specificationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+        }
+
+        private void keyboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

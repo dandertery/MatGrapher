@@ -100,13 +100,20 @@
             this.label11 = new System.Windows.Forms.Label();
             this.EigenValue1TextBox = new System.Windows.Forms.TextBox();
             this.EigenValue2TextBox = new System.Windows.Forms.TextBox();
-            this.RestartButton = new System.Windows.Forms.Button();
             this.CopyButton = new System.Windows.Forms.Button();
             this.QueueMatrixLabel = new System.Windows.Forms.Label();
             this.DegreesRadiansButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.TransformationTypeLabel = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.detQ = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.specificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cartesianChart1
@@ -115,7 +122,6 @@
             this.cartesianChart1.Name = "cartesianChart1";
             this.cartesianChart1.Size = new System.Drawing.Size(550, 550);
             this.cartesianChart1.TabIndex = 0;
-            //this.cartesianChart1.Load += new System.EventHandler(this.cartesianChart1_Load);
             // 
             // RPNTextBox
             // 
@@ -599,7 +605,7 @@
             this.MatrixList.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MatrixList.FormattingEnabled = true;
             this.MatrixList.ItemHeight = 23;
-            this.MatrixList.Location = new System.Drawing.Point(980, 634);
+            this.MatrixList.Location = new System.Drawing.Point(980, 611);
             this.MatrixList.Name = "MatrixList";
             this.MatrixList.Size = new System.Drawing.Size(197, 188);
             this.MatrixList.TabIndex = 64;
@@ -607,7 +613,7 @@
             // ClearMatrix
             // 
             this.ClearMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ClearMatrix.Location = new System.Drawing.Point(1183, 641);
+            this.ClearMatrix.Location = new System.Drawing.Point(1183, 630);
             this.ClearMatrix.Name = "ClearMatrix";
             this.ClearMatrix.Size = new System.Drawing.Size(92, 32);
             this.ClearMatrix.TabIndex = 66;
@@ -619,7 +625,7 @@
             // RemoveMatrix
             // 
             this.RemoveMatrix.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RemoveMatrix.Location = new System.Drawing.Point(1183, 679);
+            this.RemoveMatrix.Location = new System.Drawing.Point(1183, 668);
             this.RemoveMatrix.Name = "RemoveMatrix";
             this.RemoveMatrix.Size = new System.Drawing.Size(92, 32);
             this.RemoveMatrix.TabIndex = 65;
@@ -658,7 +664,7 @@
             // LinesOf
             // 
             this.LinesOf.AutoSize = true;
-            this.LinesOf.Location = new System.Drawing.Point(1034, 450);
+            this.LinesOf.Location = new System.Drawing.Point(1033, 433);
             this.LinesOf.Name = "LinesOf";
             this.LinesOf.Size = new System.Drawing.Size(87, 15);
             this.LinesOf.TabIndex = 70;
@@ -667,7 +673,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1034, 482);
+            this.label8.Location = new System.Drawing.Point(1033, 465);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(87, 15);
             this.label8.TabIndex = 71;
@@ -676,7 +682,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1033, 425);
+            this.label7.Location = new System.Drawing.Point(1032, 408);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(133, 15);
             this.label7.TabIndex = 72;
@@ -684,7 +690,7 @@
             // 
             // InvLine1TextBox
             // 
-            this.InvLine1TextBox.Location = new System.Drawing.Point(1172, 451);
+            this.InvLine1TextBox.Location = new System.Drawing.Point(1171, 434);
             this.InvLine1TextBox.Name = "InvLine1TextBox";
             this.InvLine1TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine1TextBox.TabIndex = 73;
@@ -692,7 +698,7 @@
             // 
             // InvLine2TextBox
             // 
-            this.InvLine2TextBox.Location = new System.Drawing.Point(1172, 480);
+            this.InvLine2TextBox.Location = new System.Drawing.Point(1171, 463);
             this.InvLine2TextBox.Name = "InvLine2TextBox";
             this.InvLine2TextBox.Size = new System.Drawing.Size(100, 23);
             this.InvLine2TextBox.TabIndex = 74;
@@ -700,7 +706,7 @@
             // 
             // LOfInvPointsTextBox
             // 
-            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(1172, 422);
+            this.LOfInvPointsTextBox.Location = new System.Drawing.Point(1171, 405);
             this.LOfInvPointsTextBox.Name = "LOfInvPointsTextBox";
             this.LOfInvPointsTextBox.Size = new System.Drawing.Size(100, 23);
             this.LOfInvPointsTextBox.TabIndex = 75;
@@ -733,7 +739,7 @@
             // 
             // EV1A
             // 
-            this.EV1A.Location = new System.Drawing.Point(1224, 517);
+            this.EV1A.Location = new System.Drawing.Point(1223, 500);
             this.EV1A.Name = "EV1A";
             this.EV1A.Size = new System.Drawing.Size(33, 23);
             this.EV1A.TabIndex = 78;
@@ -742,7 +748,7 @@
             // EigenVectorLabel1
             // 
             this.EigenVectorLabel1.AutoSize = true;
-            this.EigenVectorLabel1.Location = new System.Drawing.Point(1143, 529);
+            this.EigenVectorLabel1.Location = new System.Drawing.Point(1142, 512);
             this.EigenVectorLabel1.Name = "EigenVectorLabel1";
             this.EigenVectorLabel1.Size = new System.Drawing.Size(75, 15);
             this.EigenVectorLabel1.TabIndex = 79;
@@ -750,7 +756,7 @@
             // 
             // EV1B
             // 
-            this.EV1B.Location = new System.Drawing.Point(1224, 546);
+            this.EV1B.Location = new System.Drawing.Point(1223, 529);
             this.EV1B.Name = "EV1B";
             this.EV1B.Size = new System.Drawing.Size(33, 23);
             this.EV1B.TabIndex = 80;
@@ -759,7 +765,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1143, 593);
+            this.label9.Location = new System.Drawing.Point(1142, 576);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(75, 15);
             this.label9.TabIndex = 81;
@@ -767,7 +773,7 @@
             // 
             // EV2A
             // 
-            this.EV2A.Location = new System.Drawing.Point(1224, 576);
+            this.EV2A.Location = new System.Drawing.Point(1223, 559);
             this.EV2A.Name = "EV2A";
             this.EV2A.Size = new System.Drawing.Size(33, 23);
             this.EV2A.TabIndex = 82;
@@ -775,7 +781,7 @@
             // 
             // EV2B
             // 
-            this.EV2B.Location = new System.Drawing.Point(1224, 605);
+            this.EV2B.Location = new System.Drawing.Point(1223, 588);
             this.EV2B.Name = "EV2B";
             this.EV2B.Size = new System.Drawing.Size(33, 23);
             this.EV2B.TabIndex = 83;
@@ -784,7 +790,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(1029, 529);
+            this.label10.Location = new System.Drawing.Point(1028, 512);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(70, 15);
             this.label10.TabIndex = 84;
@@ -793,7 +799,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1032, 593);
+            this.label11.Location = new System.Drawing.Point(1031, 576);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(70, 15);
             this.label11.TabIndex = 85;
@@ -801,7 +807,7 @@
             // 
             // EigenValue1TextBox
             // 
-            this.EigenValue1TextBox.Location = new System.Drawing.Point(1104, 526);
+            this.EigenValue1TextBox.Location = new System.Drawing.Point(1103, 509);
             this.EigenValue1TextBox.Name = "EigenValue1TextBox";
             this.EigenValue1TextBox.Size = new System.Drawing.Size(33, 23);
             this.EigenValue1TextBox.TabIndex = 86;
@@ -809,26 +815,15 @@
             // 
             // EigenValue2TextBox
             // 
-            this.EigenValue2TextBox.Location = new System.Drawing.Point(1104, 593);
+            this.EigenValue2TextBox.Location = new System.Drawing.Point(1103, 576);
             this.EigenValue2TextBox.Name = "EigenValue2TextBox";
             this.EigenValue2TextBox.Size = new System.Drawing.Size(33, 23);
             this.EigenValue2TextBox.TabIndex = 87;
             this.EigenValue2TextBox.TabStop = false;
             // 
-            // RestartButton
-            // 
-            this.RestartButton.Location = new System.Drawing.Point(1206, 22);
-            this.RestartButton.Name = "RestartButton";
-            this.RestartButton.Size = new System.Drawing.Size(75, 23);
-            this.RestartButton.TabIndex = 88;
-            this.RestartButton.TabStop = false;
-            this.RestartButton.Text = "Restart";
-            this.RestartButton.UseVisualStyleBackColor = true;
-            this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
-            // 
             // CopyButton
             // 
-            this.CopyButton.Location = new System.Drawing.Point(1181, 826);
+            this.CopyButton.Location = new System.Drawing.Point(1181, 800);
             this.CopyButton.Name = "CopyButton";
             this.CopyButton.Size = new System.Drawing.Size(75, 23);
             this.CopyButton.TabIndex = 89;
@@ -840,7 +835,7 @@
             // QueueMatrixLabel
             // 
             this.QueueMatrixLabel.AutoSize = true;
-            this.QueueMatrixLabel.Location = new System.Drawing.Point(995, 830);
+            this.QueueMatrixLabel.Location = new System.Drawing.Point(980, 804);
             this.QueueMatrixLabel.Name = "QueueMatrixLabel";
             this.QueueMatrixLabel.Size = new System.Drawing.Size(48, 15);
             this.QueueMatrixLabel.TabIndex = 90;
@@ -884,18 +879,80 @@
             this.TransformationTypeLabel.TabIndex = 94;
             this.TransformationTypeLabel.Text = "Transformation type:";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label14.Location = new System.Drawing.Point(980, 826);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(111, 46);
+            this.label14.TabIndex = 95;
+            this.label14.Text = "det = ";
+            // 
+            // detQ
+            // 
+            this.detQ.AutoSize = true;
+            this.detQ.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.detQ.Location = new System.Drawing.Point(1091, 826);
+            this.detQ.Name = "detQ";
+            this.detQ.Size = new System.Drawing.Size(0, 46);
+            this.detQ.TabIndex = 96;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.keyboardToolStripMenuItem,
+            this.restartToolStripMenuItem,
+            this.specificationToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1292, 24);
+            this.menuStrip1.TabIndex = 97;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // keyboardToolStripMenuItem
+            // 
+            this.keyboardToolStripMenuItem.Name = "keyboardToolStripMenuItem";
+            this.keyboardToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.keyboardToolStripMenuItem.Text = "Keyboard";
+            this.keyboardToolStripMenuItem.Click += new System.EventHandler(this.keyboardToolStripMenuItem_Click);
+            // 
+            // restartToolStripMenuItem
+            // 
+            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
+            this.restartToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.restartToolStripMenuItem.Text = "Restart";
+            this.restartToolStripMenuItem.Click += new System.EventHandler(this.restartToolStripMenuItem_Click);
+            // 
+            // specificationToolStripMenuItem
+            // 
+            this.specificationToolStripMenuItem.Name = "specificationToolStripMenuItem";
+            this.specificationToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
+            this.specificationToolStripMenuItem.Text = "Specification";
+            this.specificationToolStripMenuItem.Click += new System.EventHandler(this.specificationToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
             // MatGrapher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1292, 881);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.detQ);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.TransformationTypeLabel);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.DegreesRadiansButton);
             this.Controls.Add(this.QueueMatrixLabel);
             this.Controls.Add(this.CopyButton);
-            this.Controls.Add(this.RestartButton);
             this.Controls.Add(this.EigenValue2TextBox);
             this.Controls.Add(this.EigenValue1TextBox);
             this.Controls.Add(this.label11);
@@ -963,9 +1020,12 @@
             this.Controls.Add(this.GridButton);
             this.Controls.Add(this.RPNTextBox);
             this.Controls.Add(this.cartesianChart1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MatGrapher";
             this.Text = "MatGrapher";
             this.Load += new System.EventHandler(this.Form1_Load_1);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1044,12 +1104,18 @@
         private Label label11;
         private TextBox EigenValue1TextBox;
         private TextBox EigenValue2TextBox;
-        private Button RestartButton;
         private Button CopyButton;
         private Label QueueMatrixLabel;
         private Button DegreesRadiansButton;
         private Label label12;
         private Label label13;
         private Label TransformationTypeLabel;
+        private Label label14;
+        private Label detQ;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem restartToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem specificationToolStripMenuItem;
+        private ToolStripMenuItem keyboardToolStripMenuItem;
     }
 }
