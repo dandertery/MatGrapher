@@ -16,6 +16,7 @@ using System.Runtime;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using SkiaSharp;
+using Microsoft.Win32;
 namespace NEA4
 {
     public partial class MatGrapher : Form
@@ -100,6 +101,7 @@ namespace NEA4
         public MatGrapher()
         {
             InitializeComponent();
+            
             bounds = 10;
             pitch = 0.05;
             cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.CompareAllTakeClosest; //Compares x and y of cursor to coordinates to show coordinate tooltip
@@ -2301,31 +2303,15 @@ namespace NEA4
 
         }
 
-        private void cosButton_Click(object sender, EventArgs e)
-        {
-            RPNTextBox.Text = RPNTextBox.Text + "cos()";
-        }
 
 
 
         private void piButton_Click(object sender, EventArgs e)
         {
-            RPNTextBox.Text = RPNTextBox.Text + "π";
-        }
-
-        private void eButton_Click(object sender, EventArgs e)
-        {
-            RPNTextBox.Text = RPNTextBox.Text + "e";
+            KeyboardInput("π");
         }
 
 
-
-
-
-        private void sinButton_Click(object sender, EventArgs e)
-        {
-            RPNTextBox.Text = RPNTextBox.Text + "sin()";
-        }
 
 
 
@@ -2517,23 +2503,45 @@ namespace NEA4
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var m = new Form();
-            m.Show();
+            HelpForm helpForm = new HelpForm();
+            helpForm.ShowDialog();
         }
 
         private void specificationToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            Clipboard.SetText("https://filestore.aqa.org.uk/resources/mathematics/specifications/AQA-7367-SP-2017.PDF");
+        }
+
+
+        private void KeyboardInput(string key)
+        {
+            int index = RPNTextBox.SelectionStart;
+            string tempText = string.Empty;
+            bool inserted = false;
+            for (int i = 0; i < RPNTextBox.Text.Length; i++)
+            {
+                if (i == index)
+                {
+                    tempText = tempText + key;
+                    inserted = true;
+                }
+                tempText = tempText + RPNTextBox.Text[i];
+
+            }
+            RPNTextBox.Text = tempText;
+            if (!inserted)
+            {
+                RPNTextBox.Text = RPNTextBox.Text + key;
+            }
+            
+
 
         }
 
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Restart();
-        }
-
-        private void keyboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

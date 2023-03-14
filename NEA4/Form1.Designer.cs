@@ -109,7 +109,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.detQ = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.specificationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -435,7 +434,7 @@
             // AddButton
             // 
             this.AddButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.AddButton.Location = new System.Drawing.Point(958, 184);
+            this.AddButton.Location = new System.Drawing.Point(959, 194);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(240, 75);
             this.AddButton.TabIndex = 32;
@@ -449,9 +448,9 @@
             this.FunctionList.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FunctionList.FormattingEnabled = true;
             this.FunctionList.ItemHeight = 23;
-            this.FunctionList.Location = new System.Drawing.Point(648, 12);
+            this.FunctionList.Location = new System.Drawing.Point(648, 35);
             this.FunctionList.Name = "FunctionList";
-            this.FunctionList.Size = new System.Drawing.Size(305, 257);
+            this.FunctionList.Size = new System.Drawing.Size(305, 234);
             this.FunctionList.TabIndex = 33;
             this.FunctionList.SelectedIndexChanged += new System.EventHandler(this.FunctionList_SelectedIndexChanged);
             // 
@@ -481,7 +480,7 @@
             // RemoveButton
             // 
             this.RemoveButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RemoveButton.Location = new System.Drawing.Point(959, 22);
+            this.RemoveButton.Location = new System.Drawing.Point(959, 35);
             this.RemoveButton.Name = "RemoveButton";
             this.RemoveButton.Size = new System.Drawing.Size(240, 75);
             this.RemoveButton.TabIndex = 36;
@@ -493,7 +492,7 @@
             // ClearButton
             // 
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ClearButton.Location = new System.Drawing.Point(959, 103);
+            this.ClearButton.Location = new System.Drawing.Point(959, 113);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(240, 75);
             this.ClearButton.TabIndex = 37;
@@ -901,7 +900,6 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.keyboardToolStripMenuItem,
             this.restartToolStripMenuItem,
             this.specificationToolStripMenuItem,
             this.helpToolStripMenuItem});
@@ -910,13 +908,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1292, 24);
             this.menuStrip1.TabIndex = 97;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // keyboardToolStripMenuItem
-            // 
-            this.keyboardToolStripMenuItem.Name = "keyboardToolStripMenuItem";
-            this.keyboardToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
-            this.keyboardToolStripMenuItem.Text = "Keyboard";
-            this.keyboardToolStripMenuItem.Click += new System.EventHandler(this.keyboardToolStripMenuItem_Click);
             // 
             // restartToolStripMenuItem
             // 
@@ -1116,6 +1107,5 @@
         private ToolStripMenuItem restartToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem specificationToolStripMenuItem;
-        private ToolStripMenuItem keyboardToolStripMenuItem;
     }
 }
