@@ -2074,14 +2074,14 @@ namespace NEA4
 
         private void AnimateButton_Click(object sender, EventArgs e)
         {
-            AnimateButton.Enabled = false;
+                AnimateButton.Enabled = false;
 
                 EndMatrix = new Matrix(rMat.Get("a"), rMat.Get("b"), rMat.Get("c"), rMat.Get("d"));
                 EndMatrixA = a2.Text;
                 EndMatrixB = b2.Text;
                 EndMatrixC = c2.Text;
                 EndMatrixD = d2.Text;
-            AniMatrix = StartAniMatrix;
+                AniMatrix = new Matrix(1,0,0,1);
                 
                 animationType = rMat.GetStringType();
                 steps = 150;
@@ -2099,11 +2099,14 @@ namespace NEA4
                 }
                 else if (animationType == "stretchlargement")
                 {
+                    
                     aniPitch = ((EndMatrix.Get("a") - 1) / steps); //stretch animation in x
                     aniPitch2 = ((EndMatrix.Get("d") - 1) / steps); //stretch animation in y
+                    V.value = 0;
                 }
                 else if (animationType == "shear") //determining shear nature
                 {
+                   
                     if(EndMatrix.Get("b") == 0 || Math.Abs(EndMatrix.Get("b")) < Math.Abs(EndMatrix.Get("c")))
                     {
                         aniPitch = (EndMatrix.Get("c") / steps);
@@ -2112,6 +2115,7 @@ namespace NEA4
                     {
                         aniPitch = (EndMatrix.Get("b") / steps);
                     }
+                    V.value = 0;
                 }
                 isAnimating = true;
                 ms.Enqueue(new Matrix(1,0,0,1));
@@ -2381,11 +2385,13 @@ namespace NEA4
             }
             else if (animationType == "stretchlargement")
             {
+                V.value = V.value + aniPitch;
                 AniMatrix.requestChange("a", (AniMatrix.Get("a") + aniPitch).ToString());
                 AniMatrix.requestChange("d", (AniMatrix.Get("d") + aniPitch2).ToString());
             }
             else if (animationType == "shear")
             {
+                V.value = V.value + aniPitch;
                 if (EndMatrix.Get("b") != 0)
                 {
                     
@@ -2397,7 +2403,7 @@ namespace NEA4
                 }
             }
             steps--;
-            rMat = AniMatrix;
+            rMat = new Matrix(AniMatrix.Get("a"), AniMatrix.Get("b"), AniMatrix.Get("c"), AniMatrix.Get("d"));
             a2.Text = TruncateText(AniMatrix.Get("a").ToString(), 5);
             b2.Text = TruncateText(AniMatrix.Get("b").ToString(), 5);
             c2.Text = TruncateText(AniMatrix.Get("c").ToString(), 5);
@@ -2417,7 +2423,7 @@ namespace NEA4
                 msTemp = new Queue<Matrix>(ms);
             }
 
-            msTemp.Enqueue(AniMatrix);
+            msTemp.Enqueue(new Matrix(AniMatrix.Get("a"), AniMatrix.Get("b"), AniMatrix.Get("c"), AniMatrix.Get("d")));
             ms = new Queue<Matrix>(msTemp);
 
             if (steps == 0) //ending the animation
