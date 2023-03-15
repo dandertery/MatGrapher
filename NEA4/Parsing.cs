@@ -18,7 +18,7 @@
         {
             pInput = userInput;
             Token[] tokenArray = RemoveBrackets(BracketDepth(ImplicitNegative(ImplicitMultiplication(Lexer(pInput)))));
-            if(ContainsFunction(tokenArray))
+            if(ContainsFunction(tokenArray)) //Only looks to fix nested functions if it has a function
             {
                 tokenArray = FunctionFix(tokenArray);
             }
