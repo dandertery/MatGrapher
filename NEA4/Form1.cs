@@ -2291,7 +2291,7 @@ namespace NEA4
             {
                 UpdateQueueMatrix();
                 string InvPointLine = QueueMatrix.GetInvPointLine();
-                if(InvPointLine != "x axis" && InvPointLine != "y axis")
+                if(InvPointLine != "x Axis" && InvPointLine != "y Axis" && InvPointLine != "")
                 {
                     FunctionList.Items.Add(InvPointLine);
                     functionListNumber++;
