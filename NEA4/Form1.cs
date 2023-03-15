@@ -2264,12 +2264,12 @@ namespace NEA4
                 UpdateQueueMatrix();
                 string InvLine1 = QueueMatrix.GetInvLine1();
                 string InvLine2 = QueueMatrix.GetInvLine2();
-                if(InvLine1 != "x axis" && InvLine1 != "y axis")
+                if(InvLine1 != "x Axis" && InvLine1 != "y Axis" && InvLine1 != "")
                 {
                     FunctionList.Items.Add(InvLine1);
                     functionListNumber++;
                 }
-                if(InvLine2 != "x axis" && InvLine2 != "y axis")
+                if(InvLine2 != "x Axis" && InvLine2 != "y Axis" && InvLine2 != "")
                 {
                     FunctionList.Items.Add(InvLine2);
                     functionListNumber++;
