@@ -415,7 +415,7 @@ namespace NEA4
                     CoordinatesArrays[i] = new Coordinate[arrayLengths[i]];
                     f = 0;
                 }
-                while (c < Convert.ToInt32(coordinates.Length) &&(startOfSection || (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) == lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3)))) //checks for consecutive x coordinates, seperated by pitch
+                while (c < Convert.ToInt32(coordinates.Length) &&(startOfSection || (lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c], InverseQueueMatrix).x, 3) - lMat.checkForBinaryError(ApplyToCoordinate(coordinates[c - 1], InverseQueueMatrix).x + pitch, 3)) <= pitch)) //checks for consecutive x coordinates, seperated by pitch
                 {
                     startOfSection = false;
                     CoordinatesArrays[i][f] = coordinates[c]; //Assigning each coordinate to the coordinate arrays
