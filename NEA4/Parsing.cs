@@ -399,7 +399,7 @@
 
             List<Token> inputList = ArrayToList(input);   
             
-
+            TreeNode[] treeNodeArray = new TreeNode[inputList.Count];
             bool noBrackets = true;
             for (int i = 0; i < inputList.Count; i++) //checking if expression has only one bracket level (no brackets)
             {
