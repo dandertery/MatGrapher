@@ -652,7 +652,7 @@ namespace NEA4
         {
             
 
-            pitch = 0.1;
+            
             fBounds = bounds / pitch;
             int implementedMemory = 64; //number of functions allowed
             ObservablePoint[] displayUnitSquare = new ObservablePoint[1];
